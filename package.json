@@ -5,6 +5,9 @@
   "bugs": {
     "url": "https://github.com/boennemann/pouchdb-hoodie-api/issues"
   },
+  "dependencies": {
+    "pouchdb-extend": "^0.1.2"
+  },
   "devDependencies": {
     "istanbul": "^0.3.5",
     "istanbul-coveralls": "^1.0.1",
@@ -36,9 +39,9 @@
     "postpublish": "semantic-release post",
     "prepublish": "semantic-release pre",
     "test": "standard && npm run -s test:node | tap-spec",
-    "test:coverage": "istanbul cover tests && istanbul-coveralls",
-    "test:browser:local": "zuul --local 8080 -- tests",
     "test:browser:cloud": "zuul -- tests",
+    "test:browser:local": "zuul --local 8080 -- tests",
+    "test:coverage": "istanbul cover tests && istanbul-coveralls",
     "test:node": "node tests"
   }
 }
