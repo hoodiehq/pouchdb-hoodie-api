@@ -12,3 +12,4 @@ function Store (db) {
 
 Store.prototype.add = require('./lib/add')
 Store.prototype.find = require('./lib/find')
+Store.prototype.remove = require('./lib/remove')
