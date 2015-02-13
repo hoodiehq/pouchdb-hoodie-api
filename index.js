@@ -7,4 +7,5 @@ function Store (db) {
   if (typeof db !== 'object' || typeof db.adapter !== 'string') throw new Error('Must pass a PouchDB')
 
   this.db = db
+  this.PouchDB = db.constructor
 }
