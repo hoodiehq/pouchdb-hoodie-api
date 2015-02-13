@@ -6,6 +6,8 @@
     "url": "https://github.com/boennemann/pouchdb-hoodie-api/issues"
   },
   "devDependencies": {
+    "memdown": "^1.0.0",
+    "pouchdb": "^3.3.0",
     "semantic-release": "^3.0.2",
     "standard": "^2.6.2",
     "tap-spec": "^2.2.1",

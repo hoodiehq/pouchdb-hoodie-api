@@ -1,3 +1,3 @@
 'use strict'
 
-require('./specs/sum')
+require('./specs/constructor')
