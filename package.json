@@ -1,0 +1,39 @@
+{
+  "name": "pouchdb-hoodie-api",
+  "description": "pouchdb with Hoodie's API",
+  "version": "0.0.0-semantically-released",
+  "bugs": {
+    "url": "https://github.com/boennemann/pouchdb-hoodie-api/issues"
+  },
+  "devDependencies": {
+    "semantic-release": "^3.0.2",
+    "standard": "^2.6.2",
+    "tap-spec": "^2.2.1",
+    "tape": "^3.5.0",
+    "zuul": "^1.18.0"
+  },
+  "homepage": "https://github.com/boennemann/pouchdb-hoodie-api",
+  "keywords": [
+    "hoodie",
+    "offline",
+    "first",
+    "storage",
+    "pouchdb",
+    "sync",
+    "data"
+  ],
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/boennemann/pouchdb-hoodie-api.git"
+  },
+  "scripts": {
+    "postpublish": "semantic-release post",
+    "prepublish": "semantic-release pre",
+    "test": "standard && npm run -s test:node | tap-spec",
+    "test:browser:local": "zuul --local 8080 -- tests",
+    "test:browser:cloud": "zuul -- tests",
+    "test:node": "node tests"
+  }
+}
