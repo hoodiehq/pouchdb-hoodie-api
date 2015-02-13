@@ -6,6 +6,8 @@
     "url": "https://github.com/boennemann/pouchdb-hoodie-api/issues"
   },
   "devDependencies": {
+    "istanbul": "^0.3.5",
+    "istanbul-coveralls": "^1.0.1",
     "memdown": "^1.0.0",
     "pouchdb": "^3.3.0",
     "semantic-release": "^3.0.2",
@@ -34,6 +36,7 @@
     "postpublish": "semantic-release post",
     "prepublish": "semantic-release pre",
     "test": "standard && npm run -s test:node | tap-spec",
+    "test:coverage": "istanbul cover tests && istanbul-coveralls",
     "test:browser:local": "zuul --local 8080 -- tests",
     "test:browser:cloud": "zuul -- tests",
     "test:node": "node tests"

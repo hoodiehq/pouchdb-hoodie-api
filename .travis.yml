@@ -16,6 +16,7 @@ script: npm run $COMMAND
 env:
   matrix:
   - NODE=0.10 COMMAND=test:browser:cloud
+  - NODE=0.10 COMMAND=test:coverage
   - NODE=0.12 COMMAND=test
   - NODE=0.10 COMMAND=test
   - NODE=iojs-v1 COMMAND=test
