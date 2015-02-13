@@ -9,3 +9,5 @@ function Store (db) {
   this.db = db
   this.PouchDB = db.constructor
 }
+
+Store.prototype.add = require('./lib/add')
