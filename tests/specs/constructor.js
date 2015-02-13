@@ -6,13 +6,14 @@ var dbFactory = require('../utils/db')
 var Store = require('../../')
 
 test('constructs a store object', function (t) {
-  t.plan(2)
+  t.plan(3)
 
   var db = dbFactory()
   var store = new Store(db)
 
   t.is(typeof store, 'object', 'is object')
   t.is(store.db, db, 'exposes db')
+  t.ok(store.PouchDB, 'exposes PouchDB')
 })
 
 test('constructs a store object w/o new', function (t) {
