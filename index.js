@@ -8,9 +8,10 @@ function Store (db) {
 
   this.db = db
   this.PouchDB = db.constructor
-}
 
-Store.prototype.add = require('./lib/add')
-Store.prototype.find = require('./lib/find')
-Store.prototype.update = require('./lib/update')
-Store.prototype.remove = require('./lib/remove')
+  this.add = require('./lib/add').bind(this)
+  this.find = require('./lib/find').bind(this)
+  this.findAll = require('./lib/find-all').bind(this)
+  this.update = require('./lib/update').bind(this)
+  this.remove = require('./lib/remove').bind(this)
+}
