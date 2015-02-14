@@ -5,7 +5,7 @@ var test = require('tape')
 var dbFactory = require('../utils/db')
 var Store = require('../../')
 
-test('has "find" method', function (t) {
+test('store.find exists', function (t) {
   t.plan(1)
 
   var db = dbFactory()
@@ -14,7 +14,7 @@ test('has "find" method', function (t) {
   t.is(typeof store.find, 'function', 'has method')
 })
 
-test('finds existing by id', function (t) {
+test('store.find(id)', function (t) {
   t.plan(1)
 
   var db = dbFactory()
@@ -33,7 +33,7 @@ test('finds existing by id', function (t) {
   })
 })
 
-test('finds existing by object', function (t) {
+test('store.find(object)', function (t) {
   t.plan(1)
 
   var db = dbFactory()
@@ -52,7 +52,28 @@ test('finds existing by object', function (t) {
   })
 })
 
-test('fails for non-existing', function (t) {
+test('store.find(array)', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = new Store(db)
+
+  store.add([
+    { id: 'foo' },
+    { id: 'bar' }
+  ])
+
+  .then(function () {
+    return store.find(['foo', {id: 'bar'}])
+  })
+
+  .then(function (objects) {
+    t.is(objects[0].id, 'foo', 'resolves value')
+    t.is(objects[1].id, 'bar', 'resolves value')
+  })
+})
+
+test('store.find fails for non-existing', function (t) {
   t.plan(2)
 
   var db = dbFactory()
