@@ -74,20 +74,28 @@ test('store.find(array)', function (t) {
 })
 
 test('store.find fails for non-existing', function (t) {
-  t.plan(2)
+  t.plan(4)
 
   var db = dbFactory()
   var store = new Store(db)
 
-  store.find('foo')
+  store.add({
+    id: 'unrelated'
+  })
+
+  .then(function() {
+    return store.find('foo')
+  })
 
   .catch(function (err) {
     t.ok(err instanceof Error, 'rejects error')
+    t.is(err.status, 404)
   })
 
   store.find({id: 'foo'})
 
   .catch(function (err) {
     t.ok(err instanceof Error, 'rejects error')
+    t.is(err.status, 404)
   })
 })
