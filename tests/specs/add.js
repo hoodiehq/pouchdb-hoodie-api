@@ -62,7 +62,7 @@ test('adds object with id to db', function (t) {
 })
 
 test('fails for invalid object', function (t) {
-  t.plan(1)
+  t.plan(2)
 
   var db = dbFactory()
   var store = new Store(db)
@@ -71,6 +71,7 @@ test('fails for invalid object', function (t) {
 
   .catch(function (err) {
     t.ok(err instanceof Error, 'rejects error')
+    t.is(err.status, 400, 'rejects with error 400')
   })
 })
 
