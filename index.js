@@ -12,6 +12,7 @@ function Store (db) {
   this.add = require('./lib/add').bind(this)
   this.find = require('./lib/find').bind(this)
   this.findAll = require('./lib/find-all').bind(this)
+  this.findOrAdd = require('./lib/find-or-add').bind(this)
   this.update = require('./lib/update').bind(this)
   this.updateAll = require('./lib/update-all').bind(this)
   this.remove = require('./lib/remove').bind(this)
