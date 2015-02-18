@@ -20,8 +20,9 @@ test('constructs a store object w/o new', function (t) {
   t.plan(2)
 
   var db = dbFactory()
-  /*eslint new-cap:1*/
+  /*eslint-disable new-cap */
   var store = Store(db)
+  /*eslint-enable new-cap */
   t.is(typeof store, 'object', 'is object')
   t.is(store.db, db, 'exposes db')
 })

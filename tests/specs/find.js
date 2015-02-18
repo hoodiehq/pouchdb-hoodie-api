@@ -83,7 +83,7 @@ test('store.find fails for non-existing', function (t) {
     id: 'unrelated'
   })
 
-  .then(function() {
+  .then(function () {
     return store.find('foo')
   })
 

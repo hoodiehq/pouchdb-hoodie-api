@@ -83,7 +83,7 @@ test('fails for existing object', function (t) {
 
   store.add({id: 'foo', foo: 'bar'})
 
-  .then(function() {
+  .then(function () {
     return store.add({id: 'foo', foo: 'baz'})
   })
 
