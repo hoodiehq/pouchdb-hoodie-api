@@ -64,7 +64,7 @@ test('store.update("unknown", changedProperties)', function (t) {
   })
 })
 
-test('hoodie.store.update(id, updateFunction)', function (t) {
+test('store.update(id, updateFunction)', function (t) {
   t.plan(3)
 
   var db = dbFactory()
@@ -85,7 +85,7 @@ test('hoodie.store.update(id, updateFunction)', function (t) {
   })
 })
 
-test('hoodie.store.update(object)', function (t) {
+test('store.update(object)', function (t) {
   t.plan(3)
 
   var db = dbFactory()

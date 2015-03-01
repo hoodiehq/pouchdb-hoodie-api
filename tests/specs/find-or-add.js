@@ -53,7 +53,7 @@ test('hoodie.store.findOrAdd(id) fails if no object exists', function (t) {
 
   store.findOrAdd('thing')
   .catch(function (error) {
-    t.is(error.status, 400, 'rejects with 400 error')
+    t.is(error.status, 412, 'rejects with 412 error')
   })
 })
 
