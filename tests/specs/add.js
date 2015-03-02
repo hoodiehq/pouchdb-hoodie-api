@@ -5,7 +5,7 @@ var test = require('tape')
 var dbFactory = require('../utils/db')
 var Store = require('../../')
 
-test('has "add" method', function (t) {
+test('store.add exists', function (t) {
   t.plan(1)
 
   var db = dbFactory()
@@ -14,7 +14,7 @@ test('has "add" method', function (t) {
   t.is(typeof store.add, 'function', 'has method')
 })
 
-test('adds object to db', function (t) {
+test('store.add(object)', function (t) {
   t.plan(5)
 
   var db = dbFactory()
@@ -40,7 +40,7 @@ test('adds object to db', function (t) {
   })
 })
 
-test('adds object with id to db', function (t) {
+test('store.add({id: "foo"})', function (t) {
   t.plan(2)
 
   var db = dbFactory()
@@ -61,7 +61,7 @@ test('adds object with id to db', function (t) {
   })
 })
 
-test('fails for invalid object', function (t) {
+test('store.add() fails with 400 error', function (t) {
   t.plan(2)
 
   var db = dbFactory()
@@ -75,7 +75,7 @@ test('fails for invalid object', function (t) {
   })
 })
 
-test('fails for existing object', function (t) {
+test('store.add(existingObject) fails with 409 error', function (t) {
   t.plan(2)
 
   var db = dbFactory()
@@ -93,7 +93,7 @@ test('fails for existing object', function (t) {
   })
 })
 
-test('adds multiple objects to db', function (t) {
+test('store.add(objects)', function (t) {
   t.plan(8)
 
   var db = dbFactory()
@@ -131,5 +131,24 @@ test('adds multiple objects to db', function (t) {
 
   .then(function (res) {
     t.is(res.total_rows, 3, 'puts docs')
+  })
+})
+
+test.only('issue #13', function (t) {
+  t.plan(1)
+
+  var db = dbFactory()
+  var store = new Store(db)
+
+  store.add(
+    { id: 'exists' },
+    { id: 'foo' }
+  )
+
+  .then(function () {
+    return store.findAll()
+  })
+  .then(function (objects) {
+    t.is(objects.length, 2, 'finds added objects')
   })
 })
