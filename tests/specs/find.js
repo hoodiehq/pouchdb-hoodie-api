@@ -99,3 +99,23 @@ test('store.find(array)', function (t) {
     t.is(objects[1].id, 'bar', 'resolves value')
   })
 })
+
+test('store.find(array) with non-existing', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = new Store(db)
+
+  store.add([
+    { id: 'exists' }
+  ])
+
+  .then(function () {
+    return store.find(['exists', 'unknown'])
+  })
+
+  .then(function (objects) {
+    t.is(objects[0].id, 'exists', 'resolves with value for existing')
+    t.is(objects[1].status, 404, 'resolves with 404 error for unknown')
+  })
+})
