@@ -52,27 +52,6 @@ test('store.find(object)', function (t) {
   })
 })
 
-test('store.find(array)', function (t) {
-  t.plan(2)
-
-  var db = dbFactory()
-  var store = new Store(db)
-
-  store.add([
-    { id: 'foo' },
-    { id: 'bar' }
-  ])
-
-  .then(function () {
-    return store.find(['foo', {id: 'bar'}])
-  })
-
-  .then(function (objects) {
-    t.is(objects[0].id, 'foo', 'resolves value')
-    t.is(objects[1].id, 'bar', 'resolves value')
-  })
-})
-
 test('store.find fails for non-existing', function (t) {
   t.plan(4)
 
@@ -97,5 +76,26 @@ test('store.find fails for non-existing', function (t) {
   .catch(function (err) {
     t.ok(err instanceof Error, 'rejects error')
     t.is(err.status, 404)
+  })
+})
+
+test('store.find(array)', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = new Store(db)
+
+  store.add([
+    { id: 'foo' },
+    { id: 'bar' }
+  ])
+
+  .then(function () {
+    return store.find(['foo', {id: 'bar'}])
+  })
+
+  .then(function (objects) {
+    t.is(objects[0].id, 'foo', 'resolves value')
+    t.is(objects[1].id, 'bar', 'resolves value')
   })
 })
