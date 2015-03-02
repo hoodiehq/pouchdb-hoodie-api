@@ -137,7 +137,7 @@ test('store.update(array)', function (t) {
 })
 
 // blocked by https://github.com/boennemann/pouchdb-hoodie-api/issues/8
-test.skip('store.update(array) with non-existent object', function (t) {
+test('store.update(array) with non-existent object', function (t) {
   t.plan(3)
 
   var db = dbFactory()
@@ -156,7 +156,7 @@ test.skip('store.update(array) with non-existent object', function (t) {
     t.is(objects[0].id, 'exists')
     t.is(objects[0].foo, 'bar')
 
-    t.is(objects[1].status, 400)
+    t.is(objects[1].status, 404)
   })
 })
 
