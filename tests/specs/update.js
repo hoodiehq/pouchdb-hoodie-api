@@ -138,7 +138,7 @@ test('store.update(array)', function (t) {
 
 // blocked by https://github.com/boennemann/pouchdb-hoodie-api/issues/8
 test('store.update(array) with non-existent object', function (t) {
-  t.plan(3)
+  t.plan(4)
 
   var db = dbFactory()
   var store = new Store(db)
@@ -155,40 +155,44 @@ test('store.update(array) with non-existent object', function (t) {
   .then(function (objects) {
     t.is(objects[0].id, 'exists')
     t.is(objects[0].foo, 'bar')
+    t.is(parseInt(objects[0]._rev, 10), 2)
 
     t.is(objects[1].status, 404)
   })
 })
 
 // https://github.com/boennemann/pouchdb-hoodie-api/issues/9
-test.skip('store.update(array) with invalid objects', function (t) {
-  t.plan(3)
+test('store.update(array) with invalid objects', function (t) {
+  t.plan(5)
 
   var db = dbFactory()
   var store = new Store(db)
 
-  store.add(
+  store.add([
     { id: 'exists' },
     { id: 'foo' }
-  )
+  ])
 
   .then(function () {
     return store.update([
       { id: 'exists', foo: 'bar'},
-      'foo'
+      'foo',
+      []
     ])
   })
 
   .then(function (objects) {
     t.is(objects[0].id, 'exists')
     t.is(objects[0].foo, 'bar')
+    t.is(parseInt(objects[0]._rev, 10), 2)
 
     t.is(objects[1].status, 400)
+    t.is(objects[2].status, 404)
   })
 })
 
 test('store.update(array, changedProperties)', function (t) {
-  t.plan(6)
+  t.plan(7)
 
   var db = dbFactory()
   var store = new Store(db)
@@ -208,10 +212,39 @@ test('store.update(array, changedProperties)', function (t) {
     t.is(objects[0].id, '1')
     t.is(objects[0].foo, 'foo')
     t.is(objects[0].bar, 'baz')
+    t.is(parseInt(objects[0]._rev, 10), 2)
 
     t.is(objects[1].id, '2')
     t.is(objects[1].foo, 'bar')
     t.is(objects[1].bar, 'baz')
+  })
+})
+
+// https://github.com/boennemann/pouchdb-hoodie-api/issues/9
+test('store.update(array, changedProperties) with non-existent objects', function (t) {
+  t.plan(5)
+
+  var db = dbFactory()
+  var store = new Store(db)
+
+  store.add([
+    { id: 'exists' }
+  ])
+
+  .then(function () {
+    return store.update([
+      'exists',
+      'unknown'
+    ], {foo: 'bar'})
+  })
+
+  .then(function (objects) {
+    t.is(objects.length, 2)
+    t.is(objects[0].id, 'exists')
+    t.is(objects[0].foo, 'bar')
+    t.is(parseInt(objects[0]._rev, 10), 2)
+
+    t.is(objects[1].status, 404)
   })
 })
 
