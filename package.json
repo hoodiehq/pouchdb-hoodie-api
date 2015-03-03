@@ -1,6 +1,6 @@
 {
   "name": "pouchdb-hoodie-api",
-  "description": "pouchdb with Hoodie's API",
+  "description": "PouchDB plugin that provides Hoodie's store API",
   "version": "0.0.0-semantically-released",
   "bugs": {
     "url": "https://github.com/boennemann/pouchdb-hoodie-api/issues"
