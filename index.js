@@ -14,6 +14,7 @@ function Store (db) {
   this.findAll = require('./lib/find-all').bind(this)
   this.findOrAdd = require('./lib/find-or-add').bind(this)
   this.update = require('./lib/update').bind(this)
+  this.updateOrAdd = require('./lib/update-or-add').bind(this)
   this.updateAll = require('./lib/update-all').bind(this)
   this.remove = require('./lib/remove').bind(this)
 }
