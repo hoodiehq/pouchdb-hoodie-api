@@ -1,8 +1,14 @@
 ui: tape
 browsers:
   - name: chrome
-    version: latest
+    version: 30..latest
   - name: firefox
+    version: 29..latest
+  - name: safari
+    version: 5..latest
+  - name: ie
+    version: 10..latest
+  - name: opera
     version: latest
 scripts:
   - './node_modules/pouchdb/dist/pouchdb.js'
