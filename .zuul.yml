@@ -6,8 +6,6 @@ browsers:
     version: 29..latest
   - name: safari
     version: 5..latest
-  - name: ie
-    version: 10..latest
   - name: opera
     version: latest
 scripts:
