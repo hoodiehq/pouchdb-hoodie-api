@@ -3,7 +3,7 @@
   "description": "PouchDB plugin that provides Hoodie's store API",
   "version": "0.0.0-semantically-released",
   "bugs": {
-    "url": "https://github.com/boennemann/pouchdb-hoodie-api/issues"
+    "url": "https://github.com/hoodiehq/pouchdb-hoodie-api/issues"
   },
   "dependencies": {
     "pouchdb-extend": "^0.1.2"
@@ -19,7 +19,7 @@
     "tape": "^3.5.0",
     "zuul": "^1.18.0"
   },
-  "homepage": "https://github.com/boennemann/pouchdb-hoodie-api",
+  "homepage": "https://github.com/hoodiehq/pouchdb-hoodie-api",
   "keywords": [
     "hoodie",
     "offline",
@@ -33,7 +33,7 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/boennemann/pouchdb-hoodie-api.git"
+    "url": "https://github.com/hoodiehq/pouchdb-hoodie-api.git"
   },
   "scripts": {
     "postpublish": "semantic-release post",
