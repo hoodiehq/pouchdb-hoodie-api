@@ -15,9 +15,9 @@
     "pouchdb": "^3.3.0",
     "semantic-release": "^3.0.2",
     "standard": "^3.3.0",
-    "tap-spec": "^2.2.1",
-    "tape": "^3.5.0",
-    "zuul": "^1.18.0"
+    "tap-spec": "^3.0.0",
+    "tape": "^4.0.0",
+    "zuul": "^2.1.1"
   },
   "homepage": "https://github.com/hoodiehq/pouchdb-hoodie-api",
   "keywords": [
