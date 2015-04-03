@@ -30,7 +30,7 @@
     "data"
   ],
   "license": "Apache-2.0",
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/boennemann/pouchdb-hoodie-api.git"
