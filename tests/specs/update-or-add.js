@@ -103,7 +103,7 @@ test('store.updateOrAdd(object) without object.id fails with 400 error', functio
   })
 })
 
-test('hoodie.store.updateOrAdd(array) updates existing, adds new', function (t) {
+test('store.updateOrAdd(array) updates existing, adds new', function (t) {
   t.plan(5)
 
   var db = dbFactory()
