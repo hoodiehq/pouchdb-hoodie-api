@@ -3,13 +3,12 @@
 var test = require('tape')
 
 var dbFactory = require('../utils/db')
-var Store = require('../../')
 
 test('has "add" method', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   t.is(typeof store.add, 'function', 'has method')
 })
@@ -18,7 +17,7 @@ test('adds object to db', function (t) {
   t.plan(5)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({
     foo: 'bar'
@@ -44,7 +43,7 @@ test('adds object with id to db', function (t) {
   t.plan(2)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({
     id: 'baz',
@@ -65,7 +64,7 @@ test('fails for invalid object', function (t) {
   t.plan(2)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add()
 
@@ -79,7 +78,7 @@ test('fails for existing object', function (t) {
   t.plan(2)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({id: 'foo', foo: 'bar'})
 
@@ -97,7 +96,7 @@ test('adds multiple objects to db', function (t) {
   t.plan(8)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({
     id: 'foo',

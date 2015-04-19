@@ -3,13 +3,12 @@
 var test = require('tape')
 
 var dbFactory = require('../utils/db')
-var Store = require('../../')
 
 test('store.update() exists', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   t.is(typeof store.update, 'function', 'has method')
 })
@@ -18,7 +17,7 @@ test('store.update(id, changedProperties)', function (t) {
   t.plan(3)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({
     id: 'exists',
@@ -42,7 +41,7 @@ test('store.update(id)', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.update('nothinghere')
 
@@ -55,7 +54,7 @@ test('store.update("unknown", changedProperties)', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.update('unknown', {foo: 'bar'})
 
@@ -68,7 +67,7 @@ test('store.update(id, updateFunction)', function (t) {
   t.plan(3)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({ id: 'exists' })
 
@@ -89,7 +88,7 @@ test('store.update(object)', function (t) {
   t.plan(3)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({ id: 'exists' })
 
@@ -111,7 +110,7 @@ test('store.update(array)', function (t) {
   t.plan(6)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add([
     { id: '1', foo: 'foo', bar: 'foo'},
@@ -141,7 +140,7 @@ test('store.update(array) with non-existent object', function (t) {
   t.plan(4)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({ id: 'exists'})
 
@@ -166,7 +165,7 @@ test('store.update(array) with invalid objects', function (t) {
   t.plan(5)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add([
     { id: 'exists' },
@@ -195,7 +194,7 @@ test('store.update(array, changedProperties)', function (t) {
   t.plan(7)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add([
     { id: '1', foo: 'foo', bar: 'foo'},
@@ -225,7 +224,7 @@ test('store.update(array, changedProperties) with non-existent objects', functio
   t.plan(5)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add([
     { id: 'exists' }
@@ -252,7 +251,7 @@ test('store.update(array, updateFunction)', function (t) {
   t.plan(6)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add([
     { id: '1', foo: 'foo', bar: 'foo'},

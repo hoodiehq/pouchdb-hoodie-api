@@ -3,13 +3,12 @@
 var test = require('tape')
 
 var dbFactory = require('../utils/db')
-var Store = require('../../')
 
 test('store.removeAll exists', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   t.is(typeof store.removeAll, 'function', 'has method')
 })
@@ -18,7 +17,7 @@ test('store.removeAll()', function (t) {
   t.plan(4)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   return store.add([{
     foo: 'foo',
@@ -54,7 +53,7 @@ test('store.removeAll(filterFunction)', function (t) {
   t.plan(2)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add([{
     foo: 0
