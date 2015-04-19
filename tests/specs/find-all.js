@@ -3,13 +3,12 @@
 var test = require('tape')
 
 var dbFactory = require('../utils/db')
-var Store = require('../../')
 
 test('store.findAll exists', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   t.is(typeof store.findAll, 'function', 'has method')
 })
@@ -18,7 +17,7 @@ test('store.findAll()', function (t) {
   t.plan(3)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.findAll()
 
@@ -47,7 +46,7 @@ test('store.findAll(filterFunction)', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add([{
     foo: 0

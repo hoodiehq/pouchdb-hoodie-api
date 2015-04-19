@@ -3,13 +3,12 @@
 var test = require('tape')
 
 var dbFactory = require('../utils/db')
-var Store = require('../../')
 
 test('store.find exists', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   t.is(typeof store.find, 'function', 'has method')
 })
@@ -18,7 +17,7 @@ test('store.find(id)', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({
     id: 'foo'
@@ -37,7 +36,7 @@ test('store.find(object)', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({
     id: 'foo'
@@ -56,7 +55,7 @@ test('store.find fails for non-existing', function (t) {
   t.plan(4)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({
     id: 'unrelated'
@@ -83,7 +82,7 @@ test('store.find(array)', function (t) {
   t.plan(2)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add([
     { id: 'foo' },
@@ -104,7 +103,7 @@ test('store.find(array) with non-existing', function (t) {
   t.plan(2)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add([
     { id: 'exists' }
