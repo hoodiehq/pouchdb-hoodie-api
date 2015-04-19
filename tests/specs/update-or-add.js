@@ -3,13 +3,12 @@
 var test = require('tape')
 
 var dbFactory = require('../utils/db')
-var Store = require('../../')
 
 test('store.updateOrAdd exists', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   t.is(typeof store.updateOrAdd, 'function', 'has method')
 })
@@ -18,7 +17,7 @@ test('store.updateOrAdd(id, object) updates existing', function (t) {
   t.plan(2)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({id: 'exists', foo: 'bar'})
 
@@ -36,7 +35,7 @@ test('store.updateOrAdd(id, object) adds new if non-existent', function (t) {
   t.plan(2)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   return store.updateOrAdd('newid', {foo: 'baz'})
 
@@ -50,7 +49,7 @@ test('store.updateOrAdd(id) fails with 400 error', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   return store.updateOrAdd('id')
 
@@ -63,7 +62,7 @@ test('store.updateOrAdd(object) updates existing', function (t) {
   t.plan(2)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({id: 'exists', foo: 'bar'})
 
@@ -81,7 +80,7 @@ test('store.updateOrAdd(object) adds new if non-existent', function (t) {
   t.plan(2)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   return store.updateOrAdd({id: 'newid', foo: 'baz'})
 
@@ -95,7 +94,7 @@ test('store.updateOrAdd(object) without object.id fails with 400 error', functio
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   return store.updateOrAdd({foo: 'bar'})
 
@@ -108,7 +107,7 @@ test('hoodie.store.updateOrAdd(array) updates existing, adds new', function (t) 
   t.plan(5)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add([
     {id: 'exists', foo: 'bar'}

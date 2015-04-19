@@ -3,13 +3,12 @@
 var test = require('tape')
 
 var dbFactory = require('../utils/db')
-var Store = require('../../')
 
 test('has "remove" method', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   t.is(typeof store.remove, 'function', 'has method')
 })
@@ -18,7 +17,7 @@ test('removes existing by id', function (t) {
   t.plan(2)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({
     id: 'foo'
@@ -43,7 +42,7 @@ test('removes existing by object', function (t) {
   t.plan(3)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add({
     id: 'foo',
@@ -70,7 +69,7 @@ test('fails for non-existing', function (t) {
   t.plan(2)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.remove('foo')
 
@@ -89,7 +88,7 @@ test('store.remove(array) removes existing, returns error for non-existing', fun
   t.plan(7)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.add([
     { id: 'exists1', foo: 'bar' },

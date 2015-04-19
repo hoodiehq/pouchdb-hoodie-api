@@ -3,13 +3,12 @@
 var test = require('tape')
 
 var dbFactory = require('../utils/db')
-var Store = require('../../')
 
 test('has "updateAll" method', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   t.is(typeof store.updateAll, 'function', 'has method')
 })
@@ -18,7 +17,7 @@ test('store.updateAll(changedProperties)', function (t) {
   t.plan(10)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   return store.add([{
     foo: 'foo',
@@ -59,7 +58,7 @@ test('store.updateAll(updateFunction)', function (t) {
   t.plan(10)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   return store.add([{
     foo: 'foo',
@@ -101,7 +100,7 @@ test('fails store.updateAll()', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.updateAll()
 
@@ -114,7 +113,7 @@ test('store.updateAll(change) no objects', function (t) {
   t.plan(1)
 
   var db = dbFactory()
-  var store = new Store(db)
+  var store = db.hoodieApi()
 
   store.updateAll({})
 
