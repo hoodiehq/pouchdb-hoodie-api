@@ -92,7 +92,7 @@ PouchDB.plugin({
 
 ## Testing
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/db-pouch.svg)](https://saucelabs.com/u/db-pouch)
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/hoodie-pouch.svg)](https://saucelabs.com/u/hoodie-pouch)
 
 _Test are currently not running in >IE10. This is likely an error with the Promise polyfill and we would be more than happy if you'd want to fix that :)_
 
