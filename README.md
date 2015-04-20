@@ -3,7 +3,7 @@
 > PouchDB plugin that provides Hoodie's store API
 
 [![Build Status](https://travis-ci.org/hoodiehq/pouchdb-hoodie-api.svg?branch=master)](https://travis-ci.org/hoodiehq/pouchdb-hoodie-api)
-[![Coverage Status](https://coveralls.io/repos/hoodiehq/pouchdb-hoodie-api/badge.svg)](https://coveralls.io/r/hoodiehq/pouchdb-hoodie-api)
+[![Coverage Status](https://coveralls.io/repos/hoodiehq/pouchdb-hoodie-api/badge.svg?branch=master)](https://coveralls.io/r/hoodiehq/pouchdb-hoodie-api?branch=master)
 [![Dependency Status](https://david-dm.org/hoodiehq/pouchdb-hoodie-api.svg)](https://david-dm.org/hoodiehq/pouchdb-hoodie-api)
 [![devDependency Status](https://david-dm.org/hoodiehq/pouchdb-hoodie-api/dev-status.svg)](https://david-dm.org/hoodiehq/pouchdb-hoodie-api#info=devDependencies)
 
