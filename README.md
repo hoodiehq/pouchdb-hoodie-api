@@ -94,7 +94,7 @@ PouchDB.plugin({
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/hoodie-pouch.svg)](https://saucelabs.com/u/hoodie-pouch)
 
-_Test are currently not running in >IE10. This is likely an error with the Promise polyfill and we would be more than happy if you'd want to fix that :)_
+_Test are currently not running on >IE10 and mobile Safari. This is likely an error with the setup and we would be more than happy if you'd want to fix that :)_
 
 ### In Node.js
 
