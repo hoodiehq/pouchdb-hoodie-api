@@ -12,11 +12,32 @@ before_install:
 - nvm use $NODE
 before_script:
 - npm prune
+- curl -Lo travis_after_all.py https://raw.github.com/dmakhno/travis_after_all/master/travis_after_all.py
 script: npm run $COMMAND
+after_success:
+- python travis_after_all.py
+- export $(cat .to_export_back)
+after_failure:
+- python travis_after_all.py
+- export $(cat .to_export_back)
+before_deploy:
+- rm -f travis_after_all.py .to_export_back
+after_script:
+- echo leader=$BUILD_LEADER status=$BUILD_AGGREGATE_STATUS
 env:
   matrix:
   - NODE=0.10 COMMAND=test:browser:cloud
   - NODE=0.10 COMMAND=test:coverage
-  - NODE=0.12 COMMAND=test
   - NODE=0.10 COMMAND=test
+  - NODE=0.12 COMMAND=test
   - NODE=iojs-v1 COMMAND=test
+deploy:
+  provider: npm
+  email: stephan@thehoodiefirm.com
+  skip_cleanup: true
+  on:
+    branch: master
+    repo: hoodiehq/pouchdb-hoodie-api
+    condition: $BUILD_LEADER$BUILD_AGGREGATE_STATUS = YESothers_succeeded
+  api_key:
+    secure: lqre8bKklUk2AiZqohou9aDObAmfAXp6S1jYgO+ry4aGNHP0MZe6aLE0nhEFcvJyCrD6X/1J8YaTP1kt/apNNpDiPrxWyB94uikVoQyGJKM/huKOx5aacpxV3QxAoPlSjW4Y8n3ors7XuWh05g/FxnINoAFDwT2+WGabtHM/NBg=
