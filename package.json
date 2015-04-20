@@ -39,7 +39,7 @@
     "url": "https://github.com/hoodiehq/pouchdb-hoodie-api.git"
   },
   "scripts": {
-    "build": "browserify lib/index.js > dist/pouchdb-hoodie-api.js",
+    "build": "browserify index.js > dist/pouchdb-hoodie-api.js",
     "postbuild": "uglifyjs dist/pouchdb-hoodie-api.js -mc > dist/pouchdb-hoodie-api.min.js",
     "postpublish": "semantic-release post",
     "prebuild": "rimraf dist && mkdirp dist",
