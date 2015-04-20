@@ -80,6 +80,16 @@ Include this plugin after `pouchdb.js` in your HTML page:
 <script src="node_modules/pouchdb-hoodie-api/dist/pouchdb-hoodie-api.js"></script>
 ```
 
+### Modular Usage
+
+Every method is a PouchDB plugin of its own. If you only need certain ones you can require them individually:
+
+```js
+PouchDB.plugin({
+  add: require('pouchdb-hoodie-api/add')
+})
+```
+
 ## Testing
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/db-pouch.svg)](https://saucelabs.com/u/db-pouch)
