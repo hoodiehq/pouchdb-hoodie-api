@@ -69,7 +69,7 @@ Attach this plugin to the `PouchDB` object:
 
 ```js
 var PouchDB = require('pouchdb')
-PouchDB(require('pouchdb-hoodie-api'))
+PouchDB.plugin(require('pouchdb-hoodie-api'))
 ```
 
 #### In the browser
