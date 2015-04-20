@@ -3,18 +3,26 @@
 > PouchDB plugin that provides Hoodie's store API
 
 [![Build Status](https://travis-ci.org/hoodiehq/pouchdb-hoodie-api.svg?branch=master)](https://travis-ci.org/hoodiehq/pouchdb-hoodie-api)
+[![Coverage Status](https://coveralls.io/repos/hoodiehq/pouchdb-hoodie-api/badge.svg)](https://coveralls.io/r/hoodiehq/pouchdb-hoodie-api)
 [![Dependency Status](https://david-dm.org/hoodiehq/pouchdb-hoodie-api.svg)](https://david-dm.org/hoodiehq/pouchdb-hoodie-api)
+[![devDependency Status](https://david-dm.org/hoodiehq/pouchdb-hoodie-api/dev-status.svg)](https://david-dm.org/hoodiehq/pouchdb-hoodie-api#info=devDependencies)
+
 [![NPM](https://nodei.co/npm/pouchdb-hoodie-api.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/pouchdb-hoodie-api/)
 
 This plugin provides simple methods to add, find, update and remove data.
 
 ## Usage
 
+### Initialisation
+
 ```js
-PouchDB.plugin(hoodieApi)
 var db = new PouchDB('dbname')
 var api = db.hoodieApi()
+```
 
+### API
+
+```js
 // all methods return promises
 api.add(object)
 api.add([object1, object2])
@@ -41,28 +49,9 @@ api.removeAll(filterFunction)
 api.clear()
 ```
 
-Find the full API documentation at **TO BE DONE**
+Full API documentation is yet **TO BE DONE**.
 
-
-## Installation
-
-### In the browser
-
-To use this plugin, include it after `pouchdb.js` in your HTML page:
-
-```html
-<script src="pouchdb.js"></script>
-<script src="pouchdb.hoodie-api.js"></script>
-```
-
-This plugin is also available from Bower:
-
-```
-bower install pouchdb
-bower install pouchdb-hoodie-api
-```
-
-### In Node.js
+### Installation
 
 Install via npm
 
@@ -71,19 +60,31 @@ npm install pouchdb
 npm install pouchdb-hoodie-api
 ```
 
-And then attach it to the `PouchDB` object
+### Inlcuding the plugin
+
+#### With browserify or on node.js/io.js
+
+Attach this plugin to the `PouchDB` object:
 
 ```js
 var PouchDB = require('pouchdb')
 PouchDB(require('pouchdb-hoodie-api'))
 ```
 
+#### In the browser
+
+Include this plugin after `pouchdb.js` in your HTML page:
+
+```html
+<script src="node_modules/pouchdb/dist/pouchdb.js"></script>
+<script src="node_modules/pouchdb-hoodie-api/dist/pouchdb-hoodie-api.js"></script>
+```
 
 ## Testing
 
-[![Coverage Status](https://coveralls.io/repos/hoodiehq/pouchdb-hoodie-api/badge.svg)](https://coveralls.io/r/hoodiehq/pouchdb-hoodie-api)
-[![devDependency Status](https://david-dm.org/hoodiehq/pouchdb-hoodie-api/dev-status.svg)](https://david-dm.org/hoodiehq/pouchdb-hoodie-api#info=devDependencies)
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/db-pouch.svg)](https://saucelabs.com/u/db-pouch)
+
+_Test are currently not running in >IE10. This is likely an error with the Promise polyfill and we would be more than happy if you'd want to fix that :)_
 
 ### In Node.js
 
@@ -105,4 +106,9 @@ npm run test:node
 test:browser:local
 ```
 
-This will start a local server. All tests and coverage will be run at http://localhost:8080/__zuul
+This will start a local server. All tests and coverage will be run at [http://localhost:8080/__zuul](http://localhost:8080/__zuul)
+
+## Contributing
+
+Have a look at the Hoodie project's [contribution guidelines](https://github.com/hoodiehq/hoodie-dotfiles/blob/master/static/CONTRIBUTING.md).
+If you want to hang out you can join #hoodie-pouch on our [Hoodie Community Slack](http://hood.ie/chat/).
