@@ -1,6 +1,6 @@
 # pouchdb-hoodie-api
 
-> PouchDB plugin that provides Hoodie's store API
+> Hoodie-like API for PouchDB
 
 [![Build Status](https://travis-ci.org/hoodiehq/pouchdb-hoodie-api.svg?branch=master)](https://travis-ci.org/hoodiehq/pouchdb-hoodie-api)
 [![Coverage Status](https://coveralls.io/repos/hoodiehq/pouchdb-hoodie-api/badge.svg?branch=master)](https://coveralls.io/r/hoodiehq/pouchdb-hoodie-api?branch=master)
