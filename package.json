@@ -34,7 +34,6 @@
     "sync"
   ],
   "license": "Apache-2.0",
-  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/hoodiehq/pouchdb-hoodie-api.git"
