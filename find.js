@@ -3,6 +3,13 @@
 var findOne = require('./helpers/find-one')
 var findMany = require('./helpers/find-many')
 
+/**
+ * finds existing object in local database
+ *
+ * @param  {String|Object} idOrObject   Id of object or object with
+ *                                      `.id` property
+ * @return {Promise}
+ */
 module.exports = function find (objectsOrIds) {
   return Array.isArray(objectsOrIds) ?
     findMany.call(this, objectsOrIds) :
