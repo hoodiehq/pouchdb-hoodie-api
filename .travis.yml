@@ -40,4 +40,4 @@ deploy:
     repo: hoodiehq/pouchdb-hoodie-api
     condition: $BUILD_LEADER$BUILD_AGGREGATE_STATUS = YESothers_succeeded
   api_key:
-    secure: lqre8bKklUk2AiZqohou9aDObAmfAXp6S1jYgO+ry4aGNHP0MZe6aLE0nhEFcvJyCrD6X/1J8YaTP1kt/apNNpDiPrxWyB94uikVoQyGJKM/huKOx5aacpxV3QxAoPlSjW4Y8n3ors7XuWh05g/FxnINoAFDwT2+WGabtHM/NBg=
+    secure: KvccKOY56ZzHUJn7xcZhWnouYb2/Av+mZbo/ul4KZMTsIOIeJx1roOr3f0NRh7Ag/OInOkpfjSfn8hlYCfIqirldEU/jRFdklbvDEVaTIh8T7NEQqcGyCg0+XCHpqaNJHtZwHBNQmr278XMHF5BMIboUFNAhiKv+vqk62mMxviY=
