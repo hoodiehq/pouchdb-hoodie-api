@@ -1,5 +1,5 @@
 'use strict'
 
-module.exports = function objectsOrIdToId (objectOrId) {
+module.exports = function objectOrIdToId (objectOrId) {
   return typeof objectOrId === 'object' ? objectOrId.id : objectOrId
 }
