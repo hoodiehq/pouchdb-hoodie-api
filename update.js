@@ -3,6 +3,8 @@
 var updateOne = require('./helpers/update-one')
 var updateMany = require('./helpers/update-many')
 
+module.exports = update
+
 /**
  * updates existing object.
  *
@@ -11,7 +13,7 @@ var updateMany = require('./helpers/update-many')
  *                                        that changes existing object
  * @return {Promise}
  */
-module.exports = function update (objectsOrIds, change) {
+function update (objectsOrIds, change) {
   if (typeof objectsOrIds !== 'object' && !change) {
     return this.constructor.utils.Promise.reject(
       new Error('Must provide change')

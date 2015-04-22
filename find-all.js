@@ -2,6 +2,8 @@
 
 var toObject = require('./utils/to-object')
 
+module.exports = findAll
+
 /**
  * finds all existing objects in local database.
  *
@@ -9,7 +11,7 @@ var toObject = require('./utils/to-object')
  *                               to be returned.
  * @return {Promise}
  */
-module.exports = function findAll (filter) {
+function findAll (filter) {
   return this.allDocs({
     include_docs: true
   })
