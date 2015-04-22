@@ -9,7 +9,7 @@ var toObject = require('./utils/to-object')
  *                               to be returned.
  * @return {Promise}
  */
-module.exports = function findAll (filter) {
+function findAll (filter) {
   return this.allDocs({
     include_docs: true
   })
@@ -22,3 +22,5 @@ module.exports = function findAll (filter) {
     return typeof filter === 'function' ? objects.filter(filter) : objects
   })
 }
+
+module.exports = findAll

@@ -10,7 +10,7 @@ var toDoc = require('./utils/to-doc')
  *                               to be removed.
  * @return {Promise}
  */
-module.exports = function removeAll (filter) {
+function removeAll (filter) {
   var objects
   var db = this.db
 
@@ -43,3 +43,5 @@ module.exports = function removeAll (filter) {
     })
   })
 }
+
+module.exports = removeAll

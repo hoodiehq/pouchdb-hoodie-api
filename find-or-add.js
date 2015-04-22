@@ -12,8 +12,10 @@ var findOrAddMany = require('./helpers/find-or-add-many')
  *                                      as first option
  * @return {Promise}
  */
-module.exports = function findOrAdd (idOrObjectOrArray, newObject) {
+function findOrAdd (idOrObjectOrArray, newObject) {
   return Array.isArray(idOrObjectOrArray) ?
     findOrAddMany.call(this, idOrObjectOrArray) :
     findOrAddOne.call(this, idOrObjectOrArray, newObject)
 }
+
+module.exports = findOrAdd

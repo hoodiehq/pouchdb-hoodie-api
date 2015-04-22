@@ -10,8 +10,10 @@ var updateMany = require('./helpers/update-many')
  *                                    alters passed object
  * @return {Promise}
  */
-module.exports = function remove (objectsOrIds) {
+function remove (objectsOrIds) {
   return Array.isArray(objectsOrIds) ?
     updateMany.call(this, objectsOrIds, {_deleted: true}) :
     updateOne.call(this, objectsOrIds, {_deleted: true})
 }
+
+module.exports = remove
