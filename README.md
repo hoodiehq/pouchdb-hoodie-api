@@ -49,7 +49,8 @@ api.removeAll()
 api.removeAll(filterFunction)
 ```
 
-Full API documentation is yet **TO BE DONE**.
+Full API documentation is available at:
+http://hoodiehq.github.io/pouchdb-hoodie-api/
 
 ### Installation
 
