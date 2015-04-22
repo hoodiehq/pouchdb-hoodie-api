@@ -2,6 +2,8 @@
 
 var extend = require('pouchdb-extend')
 
+module.exports = updateAll
+
 /**
  * updates all existing objects
  *
@@ -9,7 +11,7 @@ var extend = require('pouchdb-extend')
  *                                    alters passed object
  * @return {Promise}
  */
-module.exports = function updateAll (changedProperties) {
+function updateAll (changedProperties) {
   var Promise = this.constructor.utils.Promise
 
   var type = typeof changedProperties

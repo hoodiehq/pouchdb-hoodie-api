@@ -3,6 +3,8 @@
 var updateOrAddOne = require('./helpers/update-or-add-one')
 var updateOrAddMany = require('./helpers/update-or-add-many')
 
+module.exports = updateOrAdd
+
 /**
  * updates existing object, or creates otherwise.
  *
@@ -12,7 +14,7 @@ var updateOrAddMany = require('./helpers/update-or-add-many')
  *                                    or existing object
  * @return {Promise}
  */
-module.exports = function updateOrAdd (idOrObjectOrArray, newObject) {
+function updateOrAdd (idOrObjectOrArray, newObject) {
   return Array.isArray(idOrObjectOrArray) ?
     updateOrAddMany.call(this, idOrObjectOrArray) :
     updateOrAddOne.call(this, idOrObjectOrArray, newObject)

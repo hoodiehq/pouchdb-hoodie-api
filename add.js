@@ -3,6 +3,8 @@
 var addOne = require('./helpers/add-one')
 var addMany = require('./helpers/add-many')
 
+module.exports = add
+
 /**
  * adds one or multiple objects to local database
  *
@@ -10,7 +12,7 @@ var addMany = require('./helpers/add-many')
  *                                        multiple objects
  * @return {Promise}
  */
-module.exports = function add (objects) {
+function add (objects) {
   return Array.isArray(objects) ?
     addMany.call(this, objects) :
     addOne.call(this, objects)

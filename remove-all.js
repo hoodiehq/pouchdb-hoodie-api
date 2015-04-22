@@ -3,6 +3,8 @@
 var toObject = require('./utils/to-object')
 var toDoc = require('./utils/to-doc')
 
+module.exports = removeAll
+
 /**
  * removes all existing objects
  *
@@ -10,7 +12,7 @@ var toDoc = require('./utils/to-doc')
  *                               to be removed.
  * @return {Promise}
  */
-module.exports = function removeAll (filter) {
+function removeAll (filter) {
   var objects
   var db = this.db
 
