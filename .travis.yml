@@ -22,6 +22,9 @@ after_failure:
 - export $(cat .to_export_back)
 before_deploy:
 - rm -f travis_after_all.py .to_export_back
+- npm run docs
+after_deploy:
+- npm run deploydocs
 after_script:
 - echo leader=$BUILD_LEADER status=$BUILD_AGGREGATE_STATUS
 env:
