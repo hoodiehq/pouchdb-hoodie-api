@@ -47,7 +47,6 @@ api.remove(object)
 api.remove([object1, id2])
 api.removeAll()
 api.removeAll(filterFunction)
-api.clear()
 ```
 
 Full API documentation is yet **TO BE DONE**.
