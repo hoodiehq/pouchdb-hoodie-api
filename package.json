@@ -10,6 +10,8 @@
   },
   "devDependencies": {
     "browserify": "^9.0.8",
+    "doxx": "^1.2.1",
+    "gh-pages-deploy": "^0.3.0",
     "istanbul": "^0.3.5",
     "istanbul-coveralls": "^1.0.1",
     "memdown": "^1.0.0",
@@ -22,6 +24,10 @@
     "tape": "^4.0.0",
     "uglify-js": "^2.4.20",
     "zuul": "^2.1.1"
+  },
+  "gh-pages-deploy": {
+    "staticpath": "docs/build",
+    "noprompt": true
   },
   "homepage": "https://github.com/hoodiehq/pouchdb-hoodie-api",
   "keywords": [
@@ -40,9 +46,13 @@
   },
   "scripts": {
     "build": "browserify index.js > dist/pouchdb-hoodie-api.js",
+    "deploydocs": "gh-pages-deploy",
+    "docs": "doxx --source ./ --target docs/build --template docs/template.jade --ignore coverage,dist,helpers,node_modules,tests,utils,index.js",
     "postbuild": "uglifyjs dist/pouchdb-hoodie-api.js -mc > dist/pouchdb-hoodie-api.min.js",
     "postpublish": "semantic-release post",
     "prebuild": "rimraf dist && mkdirp dist",
+    "predeploydocs": "./bin/authorize-push.js",
+    "predocs": "rimraf docs/build",
     "prepublish": "semantic-release pre",
     "pretest:browser:cloud": "npm run build",
     "pretest:browser:local": "npm run build",
