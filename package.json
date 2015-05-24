@@ -56,15 +56,11 @@
     "prepublish": "semantic-release pre",
     "pretest:browser:cloud": "npm run build",
     "pretest:browser:local": "npm run build",
-    "test": "standard && npm run -s test:node | tap-spec",
+    "standard": "standard *.js bin/*.js helpers/*.js tests/*.js utils/*.js",
+    "test": "npm run standard && npm run -s test:node | tap-spec",
     "test:browser:cloud": "zuul -- tests",
     "test:browser:local": "zuul --local 8080 -- tests",
     "test:coverage": "istanbul cover tests && istanbul-coveralls",
     "test:node": "node tests"
-  },
-  "standard": {
-    "ignore": [
-      "dist/**"
-    ]
   }
 }
