@@ -19,7 +19,7 @@
     "pouchdb": "^3.3.0",
     "rimraf": "^2.3.2",
     "semantic-release": "^3.0.4",
-    "standard": "^3.11.0",
+    "standard": "^3.11.1",
     "tap-spec": "^3.0.0",
     "tape": "^4.0.0",
     "uglify-js": "^2.4.20",
