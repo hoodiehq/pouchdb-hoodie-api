@@ -14,9 +14,9 @@ module.exports = removeAll
  */
 function removeAll (filter) {
   var objects
-  var db = this.db
+  var db = this
 
-  return this.db.allDocs({
+  return db.allDocs({
     include_docs: true
   })
 
