@@ -12,7 +12,8 @@ function hoodieApi () {
     update: require('./update').bind(this),
     updateOrAdd: require('./update-or-add').bind(this),
     updateAll: require('./update-all').bind(this),
-    remove: require('./remove').bind(this)
+    remove: require('./remove').bind(this),
+    removeAll: require('./remove-all').bind(this)
   }
 }
 
