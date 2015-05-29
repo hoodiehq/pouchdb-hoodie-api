@@ -1,7 +1,6 @@
 'use strict'
 
 var PouchDB = process.browser ? global.PouchDB : require('pouchdb')
-var uuid = PouchDB.utils.uuid
 
 if (!PouchDB.prototype.hoodieApi) PouchDB.plugin(require('../../'))
 
@@ -11,8 +10,12 @@ var options = process.browser ? {
   db: require('memdown')
 }
 
-module.exports = function (name) {
-  name = name || uuid(10)
+module.exports = function () {
+  return new PouchDB(uniqueName(), options)
+}
 
-  return new PouchDB(name, options)
+var uniqueNr = 0
+function uniqueName () {
+  uniqueNr += 1
+  return 'db-' + uniqueNr
 }
