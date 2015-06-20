@@ -33,4 +33,6 @@ function addListenerToOneOrMany (state, eventName, one, handler) {
   } else {
     state.emitter.on(eventName, handler)
   }
+
+  return this
 }
