@@ -486,6 +486,375 @@ test('store.on("change") with adding one and updating it afterwards', function (
   })
 })
 
+test('store.one("add") with adding one', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var addEvents = []
+
+  store.one('add', addEventToArray.bind(null, addEvents))
+
+  store.add({
+    foo: 'bar'
+  })
+
+  .then(waitFor(function () {
+    return addEvents.length
+  }, 1))
+
+  .then(function () {
+    t.is(addEvents.length, 1, 'triggers 1 add event')
+    t.is(addEvents[0].object.foo, 'bar', 'event passes object')
+  })
+})
+
+test('store.one("add") with adding two', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var oneAddEvent = []
+  var addEvents = []
+
+  store.one('add', addEventToArray.bind(null, oneAddEvent))
+  store.on('add', addEventToArray.bind(null, addEvents))
+
+  store.add([
+    {foo: 'bar'},
+    {foo: 'baz'}
+  ])
+
+  .then(waitFor(function () {
+    return addEvents.length
+  }, 2))
+
+  .then(function () {
+    t.is(oneAddEvent.length, 1, 'triggers only add event')
+    t.is(oneAddEvent[0].object.foo, 'bar', 'event passes object')
+  })
+})
+
+test('store.one("add") with add & update', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var addEvents = []
+
+  store.one('add', addEventToArray.bind(null, addEvents))
+
+  store.updateOrAdd({id: 'test', nr: 1})
+
+  .then(function () {
+    return store.updateOrAdd('test', {nr: 2})
+  })
+
+  .then(waitFor(function () {
+    return addEvents.length
+  }, 1))
+
+  .then(function () {
+    t.is(addEvents.length, 1, 'triggers 1 add event')
+    t.is(addEvents[0].object.nr, 1, 'event passes object')
+  })
+})
+
+test('store.one("add") with one element added before registering event and one after', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var addEvents = []
+
+  store.add({
+    foo: 'bar'
+  })
+
+  .then(function () {
+    store.one('add', addEventToArray.bind(null, addEvents))
+
+    return store.add({
+      foo: 'baz'
+    })
+  })
+
+  .then(waitFor(function () {
+    return addEvents.length
+  }, 1))
+
+  .then(function () {
+    t.is(addEvents.length, 1, 'triggers only 1 add event')
+    t.is(addEvents[0].object.foo, 'baz', 'event passes object')
+  })
+})
+
+test('store.one("update") with updating one', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var updateEvents = []
+
+  store.one('update', addEventToArray.bind(null, updateEvents))
+
+  store.add({
+    id: 'test'
+  })
+
+  .then(function (obj) {
+    return store.update({
+      id: 'test',
+      foo: 'bar'
+    })
+  })
+
+  .then(waitFor(function () {
+    return updateEvents.length
+  }, 1))
+
+  .then(function () {
+    t.is(updateEvents.length, 1, 'triggers 1 update event')
+    t.is(updateEvents[0].object.foo, 'bar', 'event passes object')
+  })
+})
+
+test('store.one("update") with updating two', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var oneUpdateEvent = []
+  var updateEvents = []
+
+  store.one('update', addEventToArray.bind(null, oneUpdateEvent))
+  store.on('update', addEventToArray.bind(null, updateEvents))
+
+  store.add([
+    {id: 'first'},
+    {id: 'second'}
+  ])
+
+  .then(function (obj) {
+
+    return store.update([
+      { id: 'first', foo: 'bar'},
+      { id: 'second', foo: 'baz'}
+    ])
+  })
+
+  .then(waitFor(function () {
+    return updateEvents.length
+  }, 2))
+
+  .then(function () {
+    t.is(oneUpdateEvent.length, 1, 'triggers 1 update event')
+    t.is(oneUpdateEvent[0].object.foo, 'bar', 'event passes object')
+  })
+})
+
+test('store.one("update") with add & update', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var updateEvents = []
+
+  store.one('update', addEventToArray.bind(null, updateEvents))
+
+  store.updateOrAdd({
+    id: 'test',
+    nr: 1
+  })
+
+  .then(function (obj) {
+    return store.updateOrAdd({
+      id: 'test',
+      foo: 'bar'
+    })
+  })
+
+  .then(waitFor(function () {
+    return updateEvents.length
+  }, 1))
+
+  .then(function () {
+    t.is(updateEvents.length, 1, 'triggers 1 update event')
+    t.is(updateEvents[0].object.foo, 'bar', 'event passes object')
+  })
+})
+
+test('store.one("update") with update all', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var oneUpdateEvent = []
+  var updateEvents = []
+
+  store.one('update', addEventToArray.bind(null, oneUpdateEvent))
+  store.on('update', addEventToArray.bind(null, updateEvents))
+
+  store.add([
+    {id: 'first'},
+    {id: 'second'}
+  ])
+
+  .then(function () {
+    return store.updateAll({
+      foo: 'bar'
+    })
+  })
+
+  .then(waitFor(function () {
+    return updateEvents.length
+  }, 2))
+
+  .then(function () {
+    t.is(oneUpdateEvent.length, 1, 'triggers 1 update event')
+    t.is(oneUpdateEvent[0].object.id, 'first', 'event passes object')
+  })
+})
+
+test('store.one("remove") with removing one', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var removeEvents = []
+
+  store.one('remove', addEventToArray.bind(null, removeEvents))
+
+  store.add({
+    id: 'one',
+    foo: 'bar'
+  })
+
+  .then(function () {
+    return store.remove('one')
+  })
+
+  .then(waitFor(function () {
+    return removeEvents.length
+  }, 1))
+
+  .then(function () {
+    t.is(removeEvents.length, 1, 'triggers 1 remove event')
+    t.is(removeEvents[0].object.id, 'one', 'event passes object')
+  })
+})
+
+test('store.one("remove") with removing two', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var oneRemoveEvent = []
+  var removeEvents = []
+
+  store.one('remove', addEventToArray.bind(null, oneRemoveEvent))
+  store.on('remove', addEventToArray.bind(null, removeEvents))
+
+  store.add([
+    {id: 'one'},
+    {id: 'two'}
+  ])
+
+  .then(function () {
+    return store.remove(['one', 'two'])
+  })
+
+  .then(waitFor(function () {
+    return removeEvents.length
+  }, 2))
+
+  .then(function () {
+    t.is(oneRemoveEvent.length, 1, 'triggers 1 remove event')
+    t.is(oneRemoveEvent[0].object.id, 'one', 'event passes object')
+  })
+})
+
+test('store.one("remove") with remove all', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var oneRemoveEvent = []
+  var removeEvents = []
+
+  store.one('remove', addEventToArray.bind(null, oneRemoveEvent))
+  store.on('remove', addEventToArray.bind(null, removeEvents))
+
+  store.add([
+    {id: 'one'},
+    {id: 'two'}
+  ])
+
+  .then(function () {
+    return store.removeAll()
+  })
+
+  .then(waitFor(function () {
+    return removeEvents.length
+  }, 2))
+
+  .then(function () {
+    t.is(oneRemoveEvent.length, 1, 'triggers 1 remove event')
+    t.is(oneRemoveEvent[0].object.id, 'one', 'event passes object')
+  })
+})
+
+test('store.one("change") with adding one', function (t) {
+  t.plan(3)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var changeEvents = []
+
+  store.one('change', addEventToArray.bind(null, changeEvents))
+
+  store.add({
+    foo: 'bar'
+  })
+
+  .then(waitFor(function () {
+    return changeEvents.length
+  }, 1))
+
+  .then(function () {
+    t.is(changeEvents.length, 1, 'triggers 1 change event')
+    t.is(changeEvents[0].eventName, 'add', 'passes the event name')
+    t.is(changeEvents[0].object.foo, 'bar', 'event passes object')
+  })
+})
+
+test('store.one("change") with adding two', function (t) {
+  t.plan(3)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var oneChangeEvent = []
+  var changeEvents = []
+
+  store.one('change', addEventToArray.bind(null, oneChangeEvent))
+  store.on('change', addEventToArray.bind(null, changeEvents))
+
+  store.add([
+    {foo: 'bar'},
+    {foo: 'baz'}
+  ])
+
+  .then(waitFor(function () {
+    return changeEvents.length
+  }, 2))
+
+  .then(function () {
+    t.is(oneChangeEvent.length, 1, 'triggers 1 change event')
+    t.is(oneChangeEvent[0].eventName, 'add', 'passes the event name')
+    t.is(oneChangeEvent[0].object.foo, 'bar', 'event passes object')
+  })
+})
+
 function addEventToArray (array, object) {
   if (arguments.length > 2) {
     arguments[0].push({
