@@ -486,6 +486,133 @@ test('store.on("change") with adding one and updating it afterwards', function (
   })
 })
 
+test('store.off("add") with one add handler', function (t) {
+  t.plan(1)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var addEvents = []
+  var changeEvents = []
+
+  var addHandler = function () {
+    return addEventToArray.bind(null, addEvents)
+  }
+
+  store.on('add', addHandler)
+  store.on('change', addEventToArray.bind(null, changeEvents))
+  store.off('add', addHandler)
+
+  store.add({
+    foo: 'bar'
+  })
+
+  .then(waitFor(function () {
+    return changeEvents.length
+  }, 1))
+
+  .then(function () {
+    t.is(addEvents.length, 0, 'triggers no add event')
+  })
+})
+
+test('store.off("add") with removing one of two add handlers', function (t) {
+  t.plan(1)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var firstAddHandlerEvents = []
+  var secondAddHandlerEvents = []
+
+  var firstAddHandler = function () {
+    return addEventToArray.bind(null, firstAddHandlerEvents)
+  }
+
+  store.on('add', firstAddHandler)
+  store.on('add', addEventToArray.bind(null, secondAddHandlerEvents))
+  store.off('add', addEventToArray)
+
+  store.add({
+    foo: 'bar'
+  })
+
+  .then(waitFor(function () {
+    return secondAddHandlerEvents.length
+  }, 1))
+
+  .then(function () {
+    t.is(firstAddHandlerEvents.length, 0, 'triggers no add event on removed handler')
+  })
+})
+
+test('store.off("update") with one update handler', function (t) {
+  t.plan(1)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var updateEvents = []
+  var changeEvents = []
+
+  var updateHandler = function (object) {
+    return addEventToArray.bind(null, updateEvents)
+  }
+
+  store.add({
+    id: 'one'
+  })
+
+  .then(function () {
+    store.on('update', updateHandler)
+    store.on('change', addEventToArray.bind(null, changeEvents))
+    store.off('update', updateHandler)
+
+    return store.update({
+      id: 'one',
+      foo: 'bar'
+    })
+  })
+
+  .then(waitFor(function () {
+    return changeEvents.length
+  }, 1))
+
+  .then(function () {
+    t.is(updateEvents.length, 0, 'triggers no update event')
+  })
+})
+
+test('store.off("remove") with one remove handler', function (t) {
+  t.plan(1)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var removeEvents = []
+  var changeEvents = []
+
+  var removeHandler = function () {
+    return addEventToArray.bind(null, removeEvents)
+  }
+
+  store.add({
+    id: 'one'
+  })
+
+  .then(function () {
+    store.on('remove', removeHandler)
+    store.on('change', addEventToArray.bind(null, changeEvents))
+    store.off('remove', removeHandler)
+
+    return store.remove('one')
+  })
+
+  .then(waitFor(function () {
+    return changeEvents.length
+  }, 1))
+
+  .then(function () {
+    t.is(removeEvents.length, 0, 'triggers no remove event')
+  })
+})
+
 test('store.one("add") with adding one', function (t) {
   t.plan(2)
 
