@@ -982,6 +982,36 @@ test('store.one("change") with adding two', function (t) {
   })
 })
 
+test('store.on returns store', function (t) {
+  t.plan(1)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var isFunction = store.on('add', noop) && typeof store.on('add', noop).on === 'function'
+
+  t.ok(isFunction, 'allows chaining')
+})
+
+test('store.one returns store', function (t) {
+  t.plan(1)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var isFunction = store.one('add', noop) && typeof store.one('add', noop).on === 'function'
+
+  t.ok(isFunction, 'allows chaining')
+})
+
+test('store.off returns store', function (t) {
+  t.plan(1)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var isFunction = store.off('add', noop) && typeof store.off('add', noop).on === 'function'
+
+  t.ok(isFunction, 'allows chaining')
+})
+
 function addEventToArray (array, object) {
   if (arguments.length > 2) {
     arguments[0].push({
@@ -994,3 +1024,5 @@ function addEventToArray (array, object) {
     })
   }
 }
+
+function noop () {}
