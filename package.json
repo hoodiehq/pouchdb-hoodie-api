@@ -47,7 +47,7 @@
   "scripts": {
     "build": "browserify index.js > dist/pouchdb-hoodie-api.js",
     "deploydocs": "gh-pages-deploy",
-    "docs": "doxx --source ./ --target docs/build --template docs/template.jade --ignore coverage,dist,helpers,node_modules,tests,utils,index.js",
+    "docs": "doxx --source ./ --target docs/build --template docs/template.jade --ignore coverage,bin,dist,helpers,node_modules,tests,utils,index.js",
     "postbuild": "uglifyjs dist/pouchdb-hoodie-api.js -mc > dist/pouchdb-hoodie-api.min.js",
     "postpublish": "semantic-release post",
     "prebuild": "rimraf dist && mkdirp dist",
