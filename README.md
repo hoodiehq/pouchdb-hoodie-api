@@ -47,6 +47,14 @@ api.remove(object)
 api.remove([object1, id2])
 api.removeAll()
 api.removeAll(filterFunction)
+
+// events
+api.on('add', function(object, options) {})
+api.on('update', function(object, options) {})
+api.on('remove', function(object, options) {})
+api.on('change', function(eventName, object, options) {})
+api.one(eventName, eventHandlerFunction)
+api.off(eventName, eventHandlerFunction)
 ```
 
 Full API documentation is available at:
