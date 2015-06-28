@@ -17,6 +17,7 @@ script: npm run $COMMAND
 after_success:
 - python travis_after_all.py
 - export $(cat .to_export_back)
+- if [[ $COMMAND = test:coverage ]]; then npm run test:coverage:upload; fi
 after_failure:
 - python travis_after_all.py
 - export $(cat .to_export_back)
