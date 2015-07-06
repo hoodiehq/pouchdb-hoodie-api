@@ -1,12 +1,9 @@
-'use strict'
+module.exports = startListenToChanges
 
 var toObject = require('../utils/to-object')
 
-module.exports = addListenerToOneOrMany
-
-function addListenerToOneOrMany (state, eventName, one, handler) {
-  if (!state.pouchDBChangesFeedEmitter) {
-    state.pouchDBChangesFeedEmitter = this.changes({
+function startListenToChanges (state) {
+  this.changes({
       since: 'now',
       live: true,
       include_docs: true
@@ -26,13 +23,4 @@ function addListenerToOneOrMany (state, eventName, one, handler) {
       state.emitter.emit('remove', toObject(doc))
       state.emitter.emit('change', 'remove', toObject(doc))
     })
-  }
-
-  if (one) {
-    state.emitter.once(eventName, handler)
-  } else {
-    state.emitter.on(eventName, handler)
-  }
-
-  return this
 }
