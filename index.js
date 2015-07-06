@@ -3,12 +3,14 @@
 var exports = module.exports = { hoodieApi: hoodieApi }
 
 var EventEmitter = require('events').EventEmitter
+var startListenToChanges = require('./helpers/start-listen-to-changes')
 
 function hoodieApi (options) {
   var state = {
-    emitter: options && options.emitter || new EventEmitter(),
-    pouchDBChangesFeedEmitter: undefined
+    emitter: options && options.emitter || new EventEmitter()
   }
+
+  state.emitter.once('newListener', startListenToChanges.bind(this, state))
 
   return {
     db: this,
