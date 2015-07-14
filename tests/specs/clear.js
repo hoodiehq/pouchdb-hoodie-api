@@ -41,4 +41,3 @@ test('removes existing db', function (t) {
       t.equal(error.status, 404, 'doc removed after store.clear')
     })
 })
-

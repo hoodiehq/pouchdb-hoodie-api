@@ -25,7 +25,8 @@ function hoodieApi (options) {
     removeAll: require('./remove-all').bind(this),
     on: require('./lib/on').bind(this, state),
     one: require('./lib/one').bind(this, state),
-    off: require('./lib/off').bind(this, state)
+    off: require('./lib/off').bind(this, state),
+    clear: require('./clear').bind(this, state)
   }
 }
 
