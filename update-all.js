@@ -29,7 +29,9 @@ function updateAll (changedProperties) {
       return row.doc
     })
 
-    if (type === 'function') return docs.map(changedProperties)
+    if (type === 'function') {
+      return docs.map(changedProperties)
+    }
 
     return docs.map(function (doc) {
       return extend(doc, changedProperties)

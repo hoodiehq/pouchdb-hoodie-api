@@ -18,15 +18,21 @@ module.exports = function updateMany (array, change) {
   .then(function (objects) {
     if (change) {
       return objects.map(function (object) {
-        if (object instanceof Error) return object
+        if (object instanceof Error) {
+          return object
+        }
         return changeObject(change, object)
       })
     }
 
     return objects.map(function (object, index) {
       var passedObject = array[index]
-      if (object instanceof Error) return object
-      if (typeof passedObject !== 'object') return errors.NOT_AN_OBJECT
+      if (object instanceof Error) {
+        return object
+      }
+      if (typeof passedObject !== 'object') {
+        return errors.NOT_AN_OBJECT
+      }
       return extend(object, passedObject)
     })
   })

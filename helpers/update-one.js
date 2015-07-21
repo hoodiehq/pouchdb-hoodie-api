@@ -19,7 +19,9 @@ module.exports = function updateOne (idOrObject, change) {
   return findOne.call(this, idOrObject)
 
   .then(function (object) {
-    if (!change) return extend(object, idOrObject)
+    if (!change) {
+      return extend(object, idOrObject)
+    }
     return changeObject(change, object)
   })
 

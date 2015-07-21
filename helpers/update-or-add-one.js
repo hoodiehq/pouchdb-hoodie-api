@@ -7,7 +7,9 @@ module.exports = function updateOrAddOne (idOrObject, newObject) {
   return updateOne.call(this, idOrObject, newObject)
 
   .catch(function (error) {
-    if (error.status !== 404) throw error
+    if (error.status !== 404) {
+      throw error
+    }
 
     if (newObject) {
       newObject.id = toId(idOrObject)

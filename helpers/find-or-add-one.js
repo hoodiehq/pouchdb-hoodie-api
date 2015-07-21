@@ -8,7 +8,9 @@ module.exports = function findOrAddOne (idOrObject, newObject) {
   var errors = this.constructor.Errors
   var id = toId(idOrObject)
 
-  if (!id) return Promise.reject(errors.MISSING_ID)
+  if (!id) {
+    return Promise.reject(errors.MISSING_ID)
+  }
 
   if (idOrObject === id && !newObject) {
     return Promise.reject(errors.MISSING_ID)

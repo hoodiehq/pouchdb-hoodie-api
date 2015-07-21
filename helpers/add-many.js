@@ -9,7 +9,9 @@ module.exports = function addMany (objects) {
 
   .then(function (responses) {
     return responses.map(function (response, i) {
-      if (response instanceof Error) return response
+      if (response instanceof Error) {
+        return response
+      }
 
       objects[i].id = response.id
       objects[i]._rev = response.rev
