@@ -29,7 +29,9 @@ module.exports = function updateOrAddMany (passedObjects) {
 
     updatedObjects.concat(addedObjects).forEach(function (object) {
       var index = passedObjectIds.indexOf(object.id)
-      if (index !== -1) objects[index] = object
+      if (index !== -1) {
+        objects[index] = object
+      }
     })
 
     return objects

@@ -16,7 +16,9 @@ module.exports = function findMany (idsOrObjects) {
     }, {})
     var docs = ids.map(function (id) {
       var doc = foundMap[id]
-      if (doc) return doc
+      if (doc) {
+        return doc
+      }
 
       return errors.MISSING_DOC
     })

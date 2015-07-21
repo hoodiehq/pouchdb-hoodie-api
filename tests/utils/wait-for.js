@@ -4,10 +4,16 @@ var Promise = require('pouchdb/extras/promise')
 
 function waitFor (check, expected, timeout, interval) {
   return function () {
-    if (!timeout) timeout = 1000
-    if (!interval) interval = 10
+    if (!timeout) {
+      timeout = 1000
+    }
+    if (!interval) {
+      interval = 10
+    }
 
-    if (check() === expected) return Promise.resolve()
+    if (check() === expected) {
+      return Promise.resolve()
+    }
 
     return new Promise(function (resolve, reject) {
       var i = setInterval(test, interval)
@@ -19,8 +25,9 @@ function waitFor (check, expected, timeout, interval) {
           clearInterval(i)
           return
         }
-        if (check() !== expected) return
-
+        if (check() !== expected) {
+          return
+          }
         resolve()
         clearInterval(i)
       }

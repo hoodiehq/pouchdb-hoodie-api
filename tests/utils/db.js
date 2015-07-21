@@ -2,7 +2,9 @@
 
 var PouchDB = process.browser ? global.PouchDB : require('pouchdb')
 
-if (!PouchDB.prototype.hoodieApi) PouchDB.plugin(require('../../'))
+if (!PouchDB.prototype.hoodieApi) {
+  PouchDB.plugin(require('../../'))
+}
 
 var options = process.browser ? {
   adapter: 'memory'
