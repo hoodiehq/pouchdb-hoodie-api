@@ -27,7 +27,7 @@ function waitFor (check, expected, timeout, interval) {
         }
         if (check() !== expected) {
           return
-          }
+        }
         resolve()
         clearInterval(i)
       }
