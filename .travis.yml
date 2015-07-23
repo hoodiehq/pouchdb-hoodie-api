@@ -10,24 +10,18 @@ notifications:
 before_install:
 - nvm install $NODE
 - nvm use $NODE
+- npm i -g npm@^2.0.0
 before_script:
 - npm prune
-- curl -Lo travis_after_all.py https://raw.github.com/dmakhno/travis_after_all/master/travis_after_all.py
+- curl -Lo travis_after_all.py https://git.io/vLSON
 script: npm run $COMMAND
 after_success:
 - python travis_after_all.py
 - export $(cat .to_export_back)
 - if [[ $COMMAND = test:coverage ]]; then npm run test:coverage:upload; fi
-after_failure:
-- python travis_after_all.py
-- export $(cat .to_export_back)
-before_deploy:
-- rm -f travis_after_all.py .to_export_back
 - npm run docs
-after_deploy:
+- npm run semantic-release
 - npm run deploydocs
-after_script:
-- echo leader=$BUILD_LEADER status=$BUILD_AGGREGATE_STATUS
 env:
   matrix:
   - NODE=0.10 COMMAND=test:browser:cloud
@@ -35,13 +29,3 @@ env:
   - NODE=0.10 COMMAND=test
   - NODE=0.12 COMMAND=test
   - NODE=iojs-v1 COMMAND=test
-deploy:
-  provider: npm
-  email: stephan@thehoodiefirm.com
-  skip_cleanup: true
-  on:
-    branch: master
-    repo: hoodiehq/pouchdb-hoodie-api
-    condition: $BUILD_LEADER$BUILD_AGGREGATE_STATUS = YESothers_succeeded
-  api_key:
-    secure: KvccKOY56ZzHUJn7xcZhWnouYb2/Av+mZbo/ul4KZMTsIOIeJx1roOr3f0NRh7Ag/OInOkpfjSfn8hlYCfIqirldEU/jRFdklbvDEVaTIh8T7NEQqcGyCg0+XCHpqaNJHtZwHBNQmr278XMHF5BMIboUFNAhiKv+vqk62mMxviY=
