@@ -1,7 +1,6 @@
 {
   "name": "pouchdb-hoodie-api",
   "description": "Hoodie-like API for PouchDB",
-  "version": "0.0.0-placeholder",
   "bugs": {
     "url": "https://github.com/hoodiehq/pouchdb-hoodie-api/issues"
   },
@@ -18,7 +17,7 @@
     "mkdirp": "^0.5.0",
     "pouchdb": "^3.3.0",
     "rimraf": "^2.3.2",
-    "semantic-release": "^3.0.4",
+    "semantic-release": "^4.0.0",
     "standard": "^3.11.1",
     "tap-spec": "^3.0.0",
     "tape": "^4.0.0",
@@ -59,7 +58,8 @@
     "test:browser:local": "zuul --local 8080 -- tests",
     "test:coverage": "istanbul cover tests",
     "test:coverage:upload": "istanbul-coveralls",
-    "test:node": "node tests"
+    "test:node": "node tests",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "standard": {
     "ignore": [
