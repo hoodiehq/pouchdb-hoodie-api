@@ -14,7 +14,7 @@ test('has "updateAll" method', function (t) {
 })
 
 test('store.updateAll(changedProperties)', function (t) {
-  t.plan(10)
+  t.plan(12)
 
   var db = dbFactory()
   var store = db.hoodieApi()
@@ -36,9 +36,11 @@ test('store.updateAll(changedProperties)', function (t) {
 
   .then(function (results) {
     t.is(results.length, 3, 'resolves all')
+    t.ok(results[0].id, 'resolves with id')
+    t.is(results[0].bar, 'bar', 'resolves with properties')
 
     results.forEach(function (result) {
-      t.ok(/^2-/.test(result.rev), 'new revision')
+      t.ok(/^2-/.test(result._rev), 'new revision')
     })
 
     return null
@@ -80,7 +82,7 @@ test('store.updateAll(updateFunction)', function (t) {
     t.is(results.length, 3, 'resolves all')
 
     results.forEach(function (result) {
-      t.ok(/^2-/.test(result.rev), 'new revision')
+      t.ok(/^2-/.test(result._rev), 'new revision')
     })
 
     return null

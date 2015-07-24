@@ -14,18 +14,17 @@ test('store.removeAll exists', function (t) {
 })
 
 test('store.removeAll()', function (t) {
-  t.plan(4)
+  t.plan(6)
 
   var db = dbFactory()
   var store = db.hoodieApi()
 
   return store.add([{
-    foo: 'foo',
-    bar: 'foo'
+    foo: 'foo'
   }, {
-    foo: 'bar'
+    foo: 'foo'
   }, {
-    foo: 'baz'
+    foo: 'foo'
   }])
 
   .then(function () {
@@ -33,6 +32,9 @@ test('store.removeAll()', function (t) {
   })
 
   .then(function (objects) {
+    t.is(objects.length, 3, 'resolves all')
+    t.is(objects[0].foo, 'foo', 'resolves with properties')
+
     objects.forEach(function (object) {
       t.is(parseInt(object._rev, 10), 2, 'new revision')
     })
