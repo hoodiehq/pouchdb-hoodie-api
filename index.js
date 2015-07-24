@@ -3,26 +3,25 @@
 var exports = module.exports = { hoodieApi: hoodieApi }
 
 var EventEmitter = require('events').EventEmitter
-var startListenToChanges = require('./helpers/start-listen-to-changes')
+
+var eventify = require('./helpers/eventify')
 
 function hoodieApi (options) {
   var state = {
     emitter: options && options.emitter || new EventEmitter()
   }
 
-  state.emitter.once('newListener', startListenToChanges.bind(this, state))
-
   return {
     db: this,
-    add: require('./add').bind(this),
+    add: eventify(this, state, require('./add')),
     find: require('./find').bind(this),
     findAll: require('./find-all').bind(this),
-    findOrAdd: require('./find-or-add').bind(this),
-    update: require('./update').bind(this),
-    updateOrAdd: require('./update-or-add').bind(this),
-    updateAll: require('./update-all').bind(this),
-    remove: require('./remove').bind(this),
-    removeAll: require('./remove-all').bind(this),
+    findOrAdd: eventify(this, state, require('./find-or-add')),
+    update: eventify(this, state, require('./update')),
+    updateOrAdd: eventify(this, state, require('./update-or-add')),
+    updateAll: eventify(this, state, require('./update-all')),
+    remove: eventify(this, state, require('./remove'), 'remove'),
+    removeAll: eventify(this, state, require('./remove-all'), 'remove'),
     on: require('./lib/on').bind(this, state),
     one: require('./lib/one').bind(this, state),
     off: require('./lib/off').bind(this, state),
