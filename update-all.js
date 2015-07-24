@@ -2,6 +2,9 @@
 
 var extend = require('pouchdb-extend')
 
+var toObject = require('./utils/to-object')
+var toDoc = require('./utils/to-doc')
+
 module.exports = updateAll
 
 /**
@@ -15,6 +18,7 @@ function updateAll (changedProperties) {
   var Promise = this.constructor.utils.Promise
 
   var type = typeof changedProperties
+  var objects
 
   if (type !== 'object' && type !== 'function') {
     return Promise.reject(new Error('Must provide object or function'))
@@ -25,22 +29,30 @@ function updateAll (changedProperties) {
   })
 
   .then(function (res) {
-    var docs = res.rows.map(function (row) {
-      return row.doc
+    objects = res.rows.map(function (row) {
+      return toObject(row.doc)
     })
 
     if (type === 'function') {
-      return docs.map(changedProperties)
+      objects.forEach(changedProperties)
+      return objects.map(toDoc)
     }
 
-    return docs.map(function (doc) {
-      return extend(doc, changedProperties)
+    return objects.map(function (object) {
+      extend(object, changedProperties)
+      return toDoc(object)
     })
   })
 
+  .then(function (result) {
+    return result
+  })
   .then(this.bulkDocs.bind(this))
 
   .then(function (results) {
-    return results
+    return results.map(function (result, i) {
+      objects[i]._rev = result.rev
+      return objects[i]
+    })
   })
 }
