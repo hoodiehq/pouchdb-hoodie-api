@@ -2,7 +2,6 @@
 
 var test = require('tape')
 var dbFactory = require('../utils/db')
-var waitFor = require('../utils/wait-for')
 
 test('has "on" method', function (t) {
   t.plan(1)
@@ -44,10 +43,6 @@ test('store.on("add") with adding one', function (t) {
     foo: 'bar'
   })
 
-  .then(waitFor(function () {
-    return addEvents.length
-  }, 1))
-
   .then(function () {
     t.is(addEvents.length, 1, 'triggers 1 add event')
     t.is(addEvents[0].object.foo, 'bar', 'event passes object')
@@ -67,10 +62,6 @@ test('store.on("add") with adding two', function (t) {
     {foo: 'bar'},
     {foo: 'baz'}
   ])
-
-  .then(waitFor(function () {
-    return addEvents.length
-  }, 2))
 
   .then(function () {
     var orderedObjAttrs = [
@@ -103,10 +94,6 @@ test('store.on("add") with one element added before registering event and one af
     })
   })
 
-  .then(waitFor(function () {
-    return addEvents.length
-  }, 1))
-
   .then(function () {
     t.is(addEvents.length, 1, 'triggers only 1 add event')
     t.is(addEvents[0].object.foo, 'baz', 'event passes object')
@@ -130,10 +117,6 @@ test('store.on("add") with add & update', function (t) {
   .then(function () {
     return store.updateOrAdd('test', {nr: 2})
   })
-
-  .then(waitFor(function () {
-    return addEvents.length
-  }, 1))
 
   .then(function () {
     t.is(addEvents.length, 1, 'triggers 1 add event')
@@ -161,10 +144,6 @@ test('store.on("update") with updating one', function (t) {
     })
   })
 
-  .then(waitFor(function () {
-    return updateEvents.length
-  }, 1))
-
   .then(function () {
     t.is(updateEvents.length, 1, 'triggers 1 update event')
     t.is(updateEvents[0].object.foo, 'bar', 'event passes object')
@@ -191,10 +170,6 @@ test('store.on("update") with updating two', function (t) {
       { id: 'second', foo: 'baz'}
     ])
   })
-
-  .then(waitFor(function () {
-    return updateEvents.length
-  }, 2))
 
   .then(function () {
     var orderedObjAttrs = [
@@ -226,10 +201,6 @@ test('store.on("update") with add & update', function (t) {
     return store.updateOrAdd('test', {nr: 2})
   })
 
-  .then(waitFor(function () {
-    return updateEvents.length
-  }, 1))
-
   .then(function () {
     t.is(updateEvents.length, 1, 'triggers 1 update event')
     t.is(updateEvents[0].object.nr, 2, 'event passes object')
@@ -255,10 +226,6 @@ test('store.on("update") with update all', function (t) {
       bar: 'baz'
     })
   })
-
-  .then(waitFor(function () {
-    return updateEvents.length
-  }, 2))
 
   .then(function () {
     var orderedObjAttrs = [
@@ -290,10 +257,6 @@ test('store.on("remove") with removing one', function (t) {
     return store.remove('one')
   })
 
-  .then(waitFor(function () {
-    return removeEvents.length
-  }, 1))
-
   .then(function () {
     t.is(removeEvents.length, 1, 'triggers 1 remove event')
     t.is(removeEvents[0].object.foo, 'bar', 'event passes object')
@@ -317,10 +280,6 @@ test('store.on("remove") with removing two', function (t) {
   .then(function () {
     return store.remove(['one', 'two'])
   })
-
-  .then(waitFor(function () {
-    return removeEvents.length
-  }, 2))
 
   .then(function () {
     var orderedObjAttrs = [
@@ -352,10 +311,6 @@ test('store.on("remove") with remove all', function (t) {
     return store.removeAll()
   })
 
-  .then(waitFor(function () {
-    return removeEvents.length
-  }, 2))
-
   .then(function () {
     var orderedObjAttrs = [
         removeEvents[0].object.id,
@@ -380,10 +335,6 @@ test('store.on("change") with adding one', function (t) {
   store.add({
     foo: 'bar'
   })
-
-  .then(waitFor(function () {
-    return changeEvents.length
-  }, 1))
 
   .then(function () {
     t.is(changeEvents.length, 1, 'triggers 1 change event')
@@ -412,10 +363,6 @@ test('store.on("change") with updating one', function (t) {
     })
   })
 
-  .then(waitFor(function () {
-    return changeEvents.length
-  }, 1))
-
   .then(function () {
     t.is(changeEvents.length, 1, 'triggers 1 change event')
     t.is(changeEvents[0].eventName, 'update', 'passes the event name')
@@ -440,10 +387,6 @@ test('store.on("change") with removing one', function (t) {
 
     return store.remove('test')
   })
-
-  .then(waitFor(function () {
-    return changeEvents.length
-  }, 1))
 
   .then(function () {
     t.is(changeEvents.length, 1, 'triggers 1 change event')
@@ -472,10 +415,6 @@ test('store.on("change") with adding one and updating it afterwards', function (
       foo: 'baz'
     })
   })
-
-  .then(waitFor(function () {
-    return changeEvents.length
-  }, 2))
 
   .then(function () {
     t.is(changeEvents.length, 2, 'triggers 2 change events')
@@ -506,10 +445,6 @@ test('store.off("add") with one add handler', function (t) {
     foo: 'bar'
   })
 
-  .then(waitFor(function () {
-    return changeEvents.length
-  }, 1))
-
   .then(function () {
     t.is(addEvents.length, 0, 'triggers no add event')
   })
@@ -534,10 +469,6 @@ test('store.off("add") with removing one of two add handlers', function (t) {
   store.add({
     foo: 'bar'
   })
-
-  .then(waitFor(function () {
-    return secondAddHandlerEvents.length
-  }, 1))
 
   .then(function () {
     t.is(firstAddHandlerEvents.length, 0, 'triggers no add event on removed handler')
@@ -571,10 +502,6 @@ test('store.off("update") with one update handler', function (t) {
     })
   })
 
-  .then(waitFor(function () {
-    return changeEvents.length
-  }, 1))
-
   .then(function () {
     t.is(updateEvents.length, 0, 'triggers no update event')
   })
@@ -604,10 +531,6 @@ test('store.off("remove") with one remove handler', function (t) {
     return store.remove('one')
   })
 
-  .then(waitFor(function () {
-    return changeEvents.length
-  }, 1))
-
   .then(function () {
     t.is(removeEvents.length, 0, 'triggers no remove event')
   })
@@ -625,10 +548,6 @@ test('store.one("add") with adding one', function (t) {
   store.add({
     foo: 'bar'
   })
-
-  .then(waitFor(function () {
-    return addEvents.length
-  }, 1))
 
   .then(function () {
     t.is(addEvents.length, 1, 'triggers 1 add event')
@@ -652,10 +571,6 @@ test('store.one("add") with adding two', function (t) {
     {foo: 'baz'}
   ])
 
-  .then(waitFor(function () {
-    return addEvents.length
-  }, 2))
-
   .then(function () {
     t.is(oneAddEvent.length, 1, 'triggers only add event')
     t.is(oneAddEvent[0].object.foo, 'bar', 'event passes object')
@@ -676,10 +591,6 @@ test('store.one("add") with add & update', function (t) {
   .then(function () {
     return store.updateOrAdd('test', {nr: 2})
   })
-
-  .then(waitFor(function () {
-    return addEvents.length
-  }, 1))
 
   .then(function () {
     t.is(addEvents.length, 1, 'triggers 1 add event')
@@ -706,10 +617,6 @@ test('store.one("add") with one element added before registering event and one a
     })
   })
 
-  .then(waitFor(function () {
-    return addEvents.length
-  }, 1))
-
   .then(function () {
     t.is(addEvents.length, 1, 'triggers only 1 add event')
     t.is(addEvents[0].object.foo, 'baz', 'event passes object')
@@ -735,10 +642,6 @@ test('store.one("update") with updating one', function (t) {
       foo: 'bar'
     })
   })
-
-  .then(waitFor(function () {
-    return updateEvents.length
-  }, 1))
 
   .then(function () {
     t.is(updateEvents.length, 1, 'triggers 1 update event')
@@ -770,10 +673,6 @@ test('store.one("update") with updating two', function (t) {
     ])
   })
 
-  .then(waitFor(function () {
-    return updateEvents.length
-  }, 2))
-
   .then(function () {
     t.is(oneUpdateEvent.length, 1, 'triggers 1 update event')
     t.is(oneUpdateEvent[0].object.foo, 'bar', 'event passes object')
@@ -800,10 +699,6 @@ test('store.one("update") with add & update', function (t) {
       foo: 'bar'
     })
   })
-
-  .then(waitFor(function () {
-    return updateEvents.length
-  }, 1))
 
   .then(function () {
     t.is(updateEvents.length, 1, 'triggers 1 update event')
@@ -833,10 +728,6 @@ test('store.one("update") with update all', function (t) {
     })
   })
 
-  .then(waitFor(function () {
-    return updateEvents.length
-  }, 2))
-
   .then(function () {
     t.is(oneUpdateEvent.length, 1, 'triggers 1 update event')
     t.is(oneUpdateEvent[0].object.id, 'first', 'event passes object')
@@ -860,10 +751,6 @@ test('store.one("remove") with removing one', function (t) {
   .then(function () {
     return store.remove('one')
   })
-
-  .then(waitFor(function () {
-    return removeEvents.length
-  }, 1))
 
   .then(function () {
     t.is(removeEvents.length, 1, 'triggers 1 remove event')
@@ -891,10 +778,6 @@ test('store.one("remove") with removing two', function (t) {
     return store.remove(['one', 'two'])
   })
 
-  .then(waitFor(function () {
-    return removeEvents.length
-  }, 2))
-
   .then(function () {
     t.is(oneRemoveEvent.length, 1, 'triggers 1 remove event')
     t.is(oneRemoveEvent[0].object.id, 'one', 'event passes object')
@@ -921,10 +804,6 @@ test('store.one("remove") with remove all', function (t) {
     return store.removeAll()
   })
 
-  .then(waitFor(function () {
-    return removeEvents.length
-  }, 2))
-
   .then(function () {
     t.is(oneRemoveEvent.length, 1, 'triggers 1 remove event')
     t.is(oneRemoveEvent[0].object.id, 'one', 'event passes object')
@@ -943,10 +822,6 @@ test('store.one("change") with adding one', function (t) {
   store.add({
     foo: 'bar'
   })
-
-  .then(waitFor(function () {
-    return changeEvents.length
-  }, 1))
 
   .then(function () {
     t.is(changeEvents.length, 1, 'triggers 1 change event')
@@ -970,10 +845,6 @@ test('store.one("change") with adding two', function (t) {
     {foo: 'bar'},
     {foo: 'baz'}
   ])
-
-  .then(waitFor(function () {
-    return changeEvents.length
-  }, 2))
 
   .then(function () {
     t.is(oneChangeEvent.length, 1, 'triggers 1 change event')
