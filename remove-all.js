@@ -14,9 +14,8 @@ module.exports = removeAll
  */
 function removeAll (filter) {
   var objects
-  var db = this
 
-  return db.allDocs({
+  return this.allDocs({
     include_docs: true
   })
 
@@ -36,7 +35,7 @@ function removeAll (filter) {
     })
   })
 
-  .then(db.bulkDocs.bind(db))
+  .then(this.bulkDocs.bind(this))
 
   .then(function (results) {
     return results.map(function (result, i) {
