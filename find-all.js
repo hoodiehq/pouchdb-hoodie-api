@@ -1,6 +1,7 @@
 'use strict'
 
 var toObject = require('./utils/to-object')
+var filterExcluded = require('./utils/filter-excluded')
 
 module.exports = findAll
 
@@ -17,9 +18,11 @@ function findAll (filter) {
   })
 
   .then(function (res) {
-    var objects = res.rows.map(function (row) {
-      return toObject(row.doc)
-    })
+    var objects = res.rows
+      .filter(filterExcluded)
+      .map(function (row) {
+        return toObject(row.doc)
+      })
 
     return typeof filter === 'function' ? objects.filter(filter) : objects
   })
