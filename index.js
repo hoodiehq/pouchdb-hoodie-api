@@ -11,12 +11,12 @@ function hoodieApi (options) {
     emitter: options && options.emitter || new EventEmitter()
   }
 
-  return {
+  state.api = {
     db: this,
     add: eventify(this, state, require('./add')),
     find: require('./find').bind(this),
     findAll: require('./find-all').bind(this),
-    findOrAdd: eventify(this, state, require('./find-or-add')),
+    findOrAdd: require('./find-or-add').bind(this, state),
     update: eventify(this, state, require('./update')),
     updateOrAdd: eventify(this, state, require('./update-or-add')),
     updateAll: eventify(this, state, require('./update-all')),
@@ -27,6 +27,7 @@ function hoodieApi (options) {
     off: require('./lib/off').bind(this, state),
     clear: require('./clear').bind(this, state)
   }
+  return state.api
 }
 
 /* istanbul ignore next */

@@ -14,8 +14,8 @@ module.exports = findOrAdd
  *                                      as first option
  * @return {Promise}
  */
-function findOrAdd (idOrObjectOrArray, newObject) {
+function findOrAdd (state, idOrObjectOrArray, newObject) {
   return Array.isArray(idOrObjectOrArray) ?
-    findOrAddMany.call(this, idOrObjectOrArray) :
-    findOrAddOne.call(this, idOrObjectOrArray, newObject)
+    findOrAddMany.call(this, state, idOrObjectOrArray) :
+    findOrAddOne.call(this, state, idOrObjectOrArray, newObject)
 }
