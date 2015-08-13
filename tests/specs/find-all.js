@@ -86,7 +86,7 @@ test('store.findAll() doesnt return _design docs', function (t) {
   .then(store.findAll)
 
   .then(function (objects) {
-    t.is(objects.length, 1, 'resolves non _design docs')
+    t.is(objects.length, 1, 'resolves everything but _design/bar')
     t.isNot(objects[0].id, '_design/bar', 'resolved doc isn\'t _design/bar')
   })
 })

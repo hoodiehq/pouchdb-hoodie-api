@@ -110,7 +110,7 @@ test('store.removeAll()', function (t) {
   })
 
   .then(function (objects) {
-    t.is(objects.length, 1, 'resolves all')
+    t.is(objects.length, 1, 'resolves everything but _design/bar')
     t.is(objects[0].foo, 'foo', 'resolves with properties')
 
     return null
