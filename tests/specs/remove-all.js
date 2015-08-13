@@ -91,3 +91,36 @@ test('store.removeAll(filterFunction)', function (t) {
     t.is(objects.length, 3, 'does not remove other 3 objects')
   })
 })
+
+test('store.removeAll()', function (t) {
+  t.plan(3)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  return store.add([{
+    foo: 'foo'
+  }, {
+    _id: '_design/bar',
+    foo: 'foo'
+  }])
+
+  .then(function () {
+    return store.removeAll()
+  })
+
+  .then(function (objects) {
+    t.is(objects.length, 1, 'resolves all')
+    t.is(objects[0].foo, 'foo', 'resolves with properties')
+
+    return null
+  })
+
+  .then(function () {
+    return db.get('_design/bar')
+  })
+
+  .then(function (doc) {
+    t.is(doc._id, '_design/bar', 'check _design/bar still exists')
+  })
+})
