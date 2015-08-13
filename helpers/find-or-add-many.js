@@ -2,7 +2,7 @@ var toId = require('../utils/to-id')
 var findMany = require('./find-many')
 var addMany = require('./add-many')
 
-module.exports = function findOrAddMany (passedObjects) {
+module.exports = function findOrAddMany (state, passedObjects) {
   var self = this
   var foundObjects
   var passedObjectIds = passedObjects.map(toId)
@@ -20,7 +20,7 @@ module.exports = function findOrAddMany (passedObjects) {
       return notFoundObjects
     }, [])
 
-    return addMany.call(self, notFoundObjects)
+    return state.api.add.call(self, notFoundObjects)
   })
 
   .then(function (addedObjects) {
