@@ -57,6 +57,9 @@ api.on('change', function(eventName, object, options) {})
 api.on('clear', function() {})
 api.one(eventName, eventHandlerFunction)
 api.off(eventName, eventHandlerFunction)
+
+// original PouchDB (http://pouchdb.com/api.html) instance used for the store
+api.db
 ```
 
 Full API documentation is available at:
