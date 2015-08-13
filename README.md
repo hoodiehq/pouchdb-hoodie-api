@@ -23,6 +23,14 @@ var api = db.hoodieApi()
 ### API
 
 ```js
+// Options
+// emitter: Optionally pass an instance of EventEmitter for hoodieApi to use
+
+var db = new PouchDB('dbname')
+var api = db.hoodieApi({
+  emitter: existingEventEmitter
+})
+
 // all methods return promises
 api.add(object)
 api.add([object1, id2])
