@@ -1,7 +1,7 @@
 'use strict'
 
 var toObject = require('./utils/to-object')
-var filterExcluded = require('./utils/filter-excluded')
+var isntDesignDoc = require('./utils/isnt-design-doc')
 
 module.exports = findAll
 
@@ -19,7 +19,7 @@ function findAll (filter) {
 
   .then(function (res) {
     var objects = res.rows
-      .filter(filterExcluded)
+      .filter(isntDesignDoc)
       .map(function (row) {
         return toObject(row.doc)
       })
