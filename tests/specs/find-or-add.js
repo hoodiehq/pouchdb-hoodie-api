@@ -123,15 +123,15 @@ test('store.findOrAdd([object1, object2])', function (t) {
   })
 })
 
-test.skip('#58 store.findOrAdd(id, object) triggers no events when finds existing', function (t) {
+test('#58 store.findOrAdd(id, object) triggers no events when finds existing', function (t) {
   t.plan(1)
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var triggeredEvents = false
+  var triggeredEvents = 0
 
   store.on('add', function () {
-    triggeredEvents = true
+    triggeredEvents++
   })
 
   store.add({id: 'exists', foo: 'bar'})
@@ -141,6 +141,6 @@ test.skip('#58 store.findOrAdd(id, object) triggers no events when finds existin
   })
 
   .then(function () {
-    t.is(triggeredEvents, false, 'triggers no events')
+    t.is(triggeredEvents, 1, 'triggers only one event')
   })
 })
