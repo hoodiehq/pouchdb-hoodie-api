@@ -123,3 +123,38 @@ test('store.updateAll(change) no objects', function (t) {
     t.same(results, [], 'reolves empty array')
   })
 })
+
+test('store.updateAll() doesnt update design docs', function (t) {
+  t.plan(3)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  return store.add([{
+    bar: 'foo'
+  }, {
+    _id: '_design/bar',
+    bar: 'foo'
+  }])
+
+  .then(function () {
+    return store.updateAll({
+      bar: 'bar'
+    })
+  })
+
+  .then(function (results) {
+    t.is(results.length, 1, 'resolves everything but _design/bar')
+    t.isNot(results[0].id, '_design/bar', 'resolves with id')
+
+    return null
+  })
+
+  .then(function () {
+    return db.get('_design/bar')
+  })
+
+  .then(function (doc) {
+    t.isNot(doc.bar, 'bar', 'check _design/bar for mutation')
+  })
+})
