@@ -2,6 +2,7 @@
 
 var toObject = require('./utils/to-object')
 var toDoc = require('./utils/to-doc')
+var isntDesignDoc = require('./utils/isnt-design-doc')
 
 module.exports = removeAll
 
@@ -20,9 +21,11 @@ function removeAll (filter) {
   })
 
   .then(function (res) {
-    objects = res.rows.map(function (row) {
-      return toObject(row.doc)
-    })
+    objects = res.rows
+      .filter(isntDesignDoc)
+      .map(function (row) {
+        return toObject(row.doc)
+      })
 
     if (typeof filter === 'function') {
       objects = objects.filter(filter)
