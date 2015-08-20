@@ -123,7 +123,7 @@ test('store.findOrAdd([object1, object2])', function (t) {
   })
 })
 
-test.skip('#58 store.findOrAdd(id, object) triggers no events when finds existing', function (t) {
+test('#58 store.findOrAdd(id, object) triggers no events when finds existing', function (t) {
   t.plan(2)
 
   var db = dbFactory()
@@ -153,7 +153,7 @@ test.skip('#58 store.findOrAdd(id, object) triggers no events when finds existin
   })
 })
 
-test.skip('#58 store.findOrAdd([object1, object2]) triggers no events when finds existing', function (t) {
+test('#58 store.findOrAdd([object1, object2]) triggers no events when finds existing', function (t) {
   t.plan(2)
 
   var db = dbFactory()

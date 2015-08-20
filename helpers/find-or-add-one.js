@@ -1,8 +1,9 @@
 var toId = require('../utils/to-id')
 var findOne = require('./find-one')
 var addOne = require('./add-one')
+var eventify = require('./eventify')
 
-module.exports = function findOrAddOne (idOrObject, newObject) {
+module.exports = function findOrAddOne (state, idOrObject, newObject) {
   var self = this
   var Promise = this.constructor.utils.Promise
   var errors = this.constructor.Errors
@@ -23,6 +24,10 @@ module.exports = function findOrAddOne (idOrObject, newObject) {
       newObject.id = id
     } else {
       newObject = idOrObject
+    }
+
+    if (state) {
+      return eventify(self, state, addOne)(newObject)
     }
 
     return addOne.call(self, newObject)

@@ -16,7 +16,7 @@ function hoodieApi (options) {
     add: eventify(this, state, require('./add')),
     find: require('./find').bind(this),
     findAll: require('./find-all').bind(this),
-    findOrAdd: eventify(this, state, require('./find-or-add')),
+    findOrAdd: require('./lib/find-or-add-with-events').bind(this, state),
     update: eventify(this, state, require('./update')),
     updateOrAdd: eventify(this, state, require('./update-or-add')),
     updateAll: eventify(this, state, require('./update-all')),
