@@ -126,7 +126,7 @@ test('store.updateOrAdd(array) updates existing, adds new', function (t) {
   })
 })
 
-test.skip('#58 store.updateOrAdd(id, object) triggers no extra events', function (t) {
+test('#58 store.updateOrAdd(id, object) triggers no extra events', function (t) {
   t.plan(2)
 
   var db = dbFactory()
