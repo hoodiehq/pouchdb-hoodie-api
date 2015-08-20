@@ -124,3 +124,62 @@ test('store.removeAll()', function (t) {
     t.is(doc._id, '_design/bar', 'check _design/bar still exists')
   })
 })
+
+test.skip('store.removeAll(changedProperties) updates before removing', function (t) {
+  t.plan(7)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  return store.add([{
+    foo: 'foo'
+  }, {
+    foo: 'bar'
+  }, {
+    foo: 'baz'
+  }])
+
+  .then(function () {
+    return store.removeAll({
+      foo: 'changed'
+    })
+  })
+
+  .then(function (results) {
+    t.is(results.length, 3, 'resolves all')
+    results.forEach(function (result) {
+      t.ok(result.id, 'resolves with id')
+      t.is(result.foo, 'changed', 'check all results have changed')
+    })
+  })
+})
+
+test.skip('store.removeAll(updateFunction) updates before removing', function (t) {
+  t.plan(7)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  return store.add([{
+    foo: 'foo'
+  }, {
+    foo: 'bar'
+  }, {
+    foo: 'baz'
+  }])
+
+  .then(function () {
+    return store.removeAll(function (object) {
+      object.foo = 'changed'
+      return object
+    })
+  })
+
+  .then(function (results) {
+    t.is(results.length, 3, 'resolves all')
+    results.forEach(function (result) {
+      t.ok(result.id, 'resolves with id')
+      t.is(result.foo, 'changed', 'check all results have changed')
+    })
+  })
+})

@@ -113,3 +113,99 @@ test('store.remove(array) removes existing, returns error for non-existing', fun
     t.is(objects[2].status, 404, 'resolves with 404 error for non-existing')
   })
 })
+
+test.skip('store.remove([changedObjects]) updates before removing', function (t) {
+  t.plan(4)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  store.add([{
+    id: 'foo',
+    foo: 'bar'
+  }, {
+    id: 'bar',
+    foo: 'foo'
+  }])
+
+  .then(function () {
+    return store.remove([{
+      id: 'foo', foo: 'changed'
+    }, {
+      id: 'bar', foo: 'changed'
+    }])
+  })
+
+  .then(function (object) {
+    t.is(object[0].id, 'foo', 'resolves value')
+    t.is(object[0].foo, 'changed', 'check foo is changed')
+    t.is(object[1].id, 'bar', 'resolves value')
+    t.is(object[1].foo, 'changed', 'check foo is changed')
+  })
+})
+
+test.skip('store.remove(changedObject) updates before removing', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  store.add({
+    id: 'foo',
+    foo: 'bar'
+  })
+
+  .then(function () {
+    return store.remove({ id: 'foo', foo: 'changed' })
+  })
+
+  .then(function (object) {
+    t.is(object.id, 'foo', 'resolves value')
+    t.is(object.foo, 'changed', 'check foo is changed')
+  })
+})
+
+test.skip('store.remove(id, changedProperties) updates before removing', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  store.add({
+    id: 'foo',
+    foo: 'bar'
+  })
+
+  .then(function () {
+    return store.remove('foo', { foo: 'changed' })
+  })
+
+  .then(function (object) {
+    t.is(object.id, 'foo', 'resolves value')
+    t.is(object.foo, 'changed', 'check foo is changed')
+  })
+})
+
+test.skip('remove(id, changeFunction) updates before removing', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  store.add({
+    id: 'foo',
+    foo: 'bar'
+  })
+
+  .then(function () {
+    return store.remove('foo', function (doc) {
+      doc.foo = 'changed'
+      return doc
+    })
+  })
+
+  .then(function (object) {
+    t.is(object.id, 'foo', 'resolves value')
+    t.is(object.foo, 'changed', 'check foo is changed')
+  })
+})
