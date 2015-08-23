@@ -6,6 +6,7 @@ var changeObject = require('../utils/change-object')
 var toDoc = require('../utils/to-doc')
 var addTimestamps = require('../utils/add-timestamps')
 var toId = require('../utils/to-id')
+
 var findMany = require('./find-many')
 
 module.exports = function updateMany (array, change) {
