@@ -276,7 +276,7 @@ test('store.update(array, updateFunction)', function (t) {
 })
 
 test('store.update(object) updates updatedAt timestamp', function (t) {
-  t.plan(4)
+  t.plan(5)
 
   var clock = lolex.install(0, ['Date'])
   var db = dbFactory()
@@ -300,6 +300,7 @@ test('store.update(object) updates updatedAt timestamp', function (t) {
 
   store.on('update', function (object) {
     t.is(object.id, 'shouldHaveTimestamps', 'resolves doc')
+    t.is(typeof object.deletedAt, 'undefined', 'deletedAt shouldnt be set')
     t.ok(isValidDate(object.updatedAt), 'updatedAt should be a valid date')
     t.is(now(), object.updatedAt, 'updatedAt should be the same time as right now')
     t.not(object.createdAt, object.updatedAt, 'createdAt and updatedAt should not be the same')
@@ -309,7 +310,7 @@ test('store.update(object) updates updatedAt timestamp', function (t) {
 })
 
 test('store.update([objects]) updates updatedAt timestamps', function (t) {
-  t.plan(8)
+  t.plan(10)
 
   var clock = lolex.install(0, ['Date'])
   var db = dbFactory()
@@ -334,6 +335,7 @@ test('store.update([objects]) updates updatedAt timestamps', function (t) {
 
   store.on('update', function (object) {
     t.ok(object.id, 'resolves doc')
+    t.is(typeof object.deletedAt, 'undefined', 'deletedAt shouldnt be set')
     t.ok(isValidDate(object.updatedAt), 'updatedAt should be a valid date')
     t.is(now(), object.updatedAt, 'updatedAt should be the same time as right now')
     t.not(object.createdAt, object.updatedAt, 'createdAt and updatedAt should not be the same')
