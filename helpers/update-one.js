@@ -4,6 +4,8 @@ var extend = require('pouchdb-extend')
 
 var changeObject = require('../utils/change-object')
 var toDoc = require('../utils/to-doc')
+var addTimestamps = require('../utils/add-timestamps')
+
 var findOne = require('./find-one')
 
 module.exports = function updateOne (idOrObject, change) {
@@ -27,7 +29,7 @@ module.exports = function updateOne (idOrObject, change) {
 
   .then(function (_object) {
     object = _object
-    return self.put(toDoc(object))
+    return self.put(toDoc(addTimestamps(object)))
   })
 
   .then(function (response) {

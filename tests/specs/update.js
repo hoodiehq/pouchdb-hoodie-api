@@ -1,6 +1,7 @@
 'use strict'
 
 var test = require('tape')
+var lolex = require('lolex')
 
 var dbFactory = require('../utils/db')
 
@@ -155,7 +156,6 @@ test('store.update(array) with non-existent object', function (t) {
     t.is(objects[0].id, 'exists')
     t.is(objects[0].foo, 'bar')
     t.is(parseInt(objects[0]._rev, 10), 2)
-
     t.is(objects[1].status, 404)
   })
 })
@@ -272,5 +272,74 @@ test('store.update(array, updateFunction)', function (t) {
     t.is(objects[1].id, '2')
     t.is(objects[1].foo, 'bar')
     t.is(objects[1].bar, '2baz')
+  })
+})
+
+test('store.update(object) updates updatedAt timestamp', function (t) {
+  t.plan(4)
+
+  var clock = lolex.install(0, ['Date'])
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  var now = require('../../utils/now')
+  var isValidDate = require('../utils/is-valid-date')
+
+  store.add({
+    id: 'shouldHaveTimestamps'
+  })
+
+  .then(function () {
+    clock.tick(100)
+
+    store.update({
+      id: 'shouldHaveTimestamps',
+      foo: 'bar'
+    })
+  })
+
+  store.on('update', function (object) {
+    t.is(object.id, 'shouldHaveTimestamps', 'resolves doc')
+    t.ok(isValidDate(object.updatedAt), 'updatedAt should be a valid date')
+    t.is(now(), object.updatedAt, 'updatedAt should be the same time as right now')
+    t.not(object.createdAt, object.updatedAt, 'createdAt and updatedAt should not be the same')
+
+    clock.uninstall()
+  })
+})
+
+test('store.update([objects]) updates updatedAt timestamps', function (t) {
+  t.plan(8)
+
+  var clock = lolex.install(0, ['Date'])
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  var now = require('../../utils/now')
+  var isValidDate = require('../utils/is-valid-date')
+
+  var updatedCount = 0
+  var objectsToAdd = [{
+    id: 'shouldHaveTimestamps'
+  }, {
+    id: 'shouldAlsoHaveTimestamps'
+  }]
+
+  store.add(objectsToAdd)
+
+  .then(function () {
+    clock.tick(100)
+    store.update(objectsToAdd, { foo: 'bar' })
+  })
+
+  store.on('update', function (object) {
+    t.ok(object.id, 'resolves doc')
+    t.ok(isValidDate(object.updatedAt), 'updatedAt should be a valid date')
+    t.is(now(), object.updatedAt, 'updatedAt should be the same time as right now')
+    t.not(object.createdAt, object.updatedAt, 'createdAt and updatedAt should not be the same')
+
+    if (++updatedCount === objectsToAdd.length) {
+      clock.uninstall()
+    }
   })
 })

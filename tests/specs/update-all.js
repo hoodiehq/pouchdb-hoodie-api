@@ -1,6 +1,7 @@
 'use strict'
 
 var test = require('tape')
+var lolex = require('lolex')
 
 var dbFactory = require('../utils/db')
 
@@ -156,5 +157,42 @@ test('store.updateAll() doesnt update design docs', function (t) {
 
   .then(function (doc) {
     t.isNot(doc.bar, 'bar', 'check _design/bar for mutation')
+  })
+})
+
+test('store.updateAll([objects]) updates all updatedAt timestamps', function (t) {
+  t.plan(8)
+
+  var clock = lolex.install(0, ['Date'])
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  var now = require('../../utils/now')
+  var isValidDate = require('../utils/is-valid-date')
+
+  var updatedCount = 0
+  var objectsToAdd = [{
+    id: 'shouldHaveTimestamps'
+  }, {
+    id: 'shouldAlsoHaveTimestamps'
+  }]
+
+  store.add(objectsToAdd)
+
+  .then(function () {
+    clock.tick(100)
+
+    store.updateAll({ foo: 'bar' })
+  })
+
+  store.on('update', function (object) {
+    t.ok(object.id, 'resolves doc')
+    t.ok(isValidDate(object.updatedAt), 'updatedAt should be a valid date')
+    t.is(now(), object.updatedAt, 'updatedAt should be the same time as right now')
+    t.not(object.createdAt, object.updatedAt, 'createdAt and updatedAt should not be the same')
+
+    if (++updatedCount === objectsToAdd.length) {
+      clock.uninstall()
+    }
   })
 })

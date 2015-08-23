@@ -4,6 +4,7 @@ var extend = require('pouchdb-extend')
 
 var changeObject = require('../utils/change-object')
 var toDoc = require('../utils/to-doc')
+var addTimestamps = require('../utils/add-timestamps')
 var toId = require('../utils/to-id')
 var findMany = require('./find-many')
 
@@ -42,6 +43,7 @@ module.exports = function updateMany (array, change) {
     var validObjects = objects.filter(function (object) {
       return !(object instanceof Error)
     })
+    validObjects.forEach(addTimestamps)
     return self.bulkDocs(validObjects.map(toDoc))
   })
 

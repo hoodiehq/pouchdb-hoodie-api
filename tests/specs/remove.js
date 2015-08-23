@@ -1,6 +1,7 @@
 'use strict'
 
 var test = require('tape')
+var lolex = require('lolex')
 
 var dbFactory = require('../utils/db')
 
@@ -207,5 +208,64 @@ test('remove(id, changeFunction) updates before removing', function (t) {
   .then(function (object) {
     t.is(object.id, 'foo', 'resolves value')
     t.is(object.foo, 'changed', 'check foo is changed')
+  })
+})
+
+test('store.remove(object) creates deletedAt timestamp', function (t) {
+  t.plan(4)
+
+  var clock = lolex.install(0, ['Date'])
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  var now = require('../../utils/now')
+  var isValidDate = require('../utils/is-valid-date')
+
+  store.add({
+    id: 'shouldHaveTimestamps'
+  })
+
+  .then(store.remove.bind(store))
+
+  .then(function (object) {
+    t.is(object.id, 'shouldHaveTimestamps', 'resolves doc')
+    t.ok(object.deletedAt, 'should have deleteAt timestamps')
+    t.ok(isValidDate(object.deletedAt), 'createdAt should be a valid date')
+    t.is(now(), object.deletedAt, 'createdAt should be the same time as right now')
+
+    clock.uninstall()
+  })
+})
+
+test('store.remove([objects]) creates deletedAt timestamps', function (t) {
+  t.plan(12)
+
+  var clock = lolex.install(0, ['Date'])
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  var now = require('../../utils/now')
+  var isValidDate = require('../utils/is-valid-date')
+
+  store.add([{
+    id: 'shouldHaveTimestamps'
+  }, {
+    id: 'shouldAlsoHaveTimestamps'
+  }])
+
+  .then(store.remove.bind(store))
+
+  .then(function (objects) {
+    t.is(objects[0].id, 'shouldHaveTimestamps', 'resolves doc')
+    t.is(objects[1].id, 'shouldAlsoHaveTimestamps', 'resolves doc')
+    objects.forEach(function (object) {
+      t.ok(object.createdAt, 'should have createdAt timestamp')
+      t.ok(object.updatedAt, 'should have updatedAt timestamp')
+      t.ok(object.deletedAt, 'should have deleteAt timestamp')
+      t.ok(isValidDate(object.deletedAt), 'createdAt should be a valid date')
+      t.is(now(), object.deletedAt, 'createdAt should be the same time as right now')
+    })
+
+    clock.uninstall()
   })
 })
