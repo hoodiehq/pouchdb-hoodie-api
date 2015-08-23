@@ -1,6 +1,7 @@
 'use strict'
 
 var toDoc = require('../utils/to-doc')
+var addTimestamps = require('../utils/add-timestamps')
 
 module.exports = function addOne (object) {
   var Promise = this.constructor.utils.Promise
@@ -12,7 +13,7 @@ module.exports = function addOne (object) {
 
   var method = object.id ? 'put' : 'post'
 
-  return this[method](toDoc(object))
+  return this[method](toDoc(addTimestamps(object)))
 
   .then(function (response) {
     object.id = response.id

@@ -1,6 +1,7 @@
 'use strict'
 
 var test = require('tape')
+var lolex = require('lolex')
 
 var dbFactory = require('../utils/db')
 
@@ -130,5 +131,59 @@ test('adds multiple objects to db', function (t) {
 
   .then(function (res) {
     t.is(res.total_rows, 3, 'puts docs')
+  })
+})
+
+test('store.add(object) makes createdAt and updatedAt timestamps', function (t) {
+  t.plan(4)
+
+  var clock = lolex.install(0, ['Date'])
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  var now = require('../../utils/now')
+  var isValidDate = require('../utils/is-valid-date')
+
+  store.add({
+    id: 'shouldHaveTimestamps'
+  })
+
+  .then(function (object) {
+    t.is(object.id, 'shouldHaveTimestamps', 'resolves doc')
+    t.ok(isValidDate(object.createdAt), 'createdAt should be a valid date')
+    t.is(now(), object.createdAt, 'createdAt should be the same time as right now')
+    t.is(object.createdAt, object.updatedAt, 'createdAt and updatedAt should be the same')
+
+    clock.uninstall()
+  })
+
+})
+
+test('store.add([objects]) makes createdAt and updatedAt timestamps', function (t) {
+  t.plan(8)
+
+  var clock = lolex.install(0, ['Date'])
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  var now = require('../../utils/now')
+  var isValidDate = require('../utils/is-valid-date')
+
+  store.add([{
+    id: 'shouldHaveTimestamps'
+  }, {
+    id: 'shouldAlsoHaveTimestamps'
+  }])
+
+  .then(function (objects) {
+    t.is(objects[0].id, 'shouldHaveTimestamps', 'resolves doc')
+    t.is(objects[1].id, 'shouldAlsoHaveTimestamps', 'resolves doc')
+    objects.forEach(function (object) {
+      t.ok(isValidDate(object.createdAt), 'createdAt should be a valid date')
+      t.is(now(), object.createdAt, 'createdAt should be the same time as right now')
+      t.is(object.createdAt, object.updatedAt, 'createdAt and updatedAt should be the same')
+    })
+
+    clock.uninstall()
   })
 })

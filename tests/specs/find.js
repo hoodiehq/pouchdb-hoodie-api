@@ -118,3 +118,47 @@ test('store.find(array) with non-existing', function (t) {
     t.is(objects[1].status, 404, 'resolves with 404 error for unknown')
   })
 })
+
+test('store.find(object) should return timestamps', function (t) {
+  t.plan(3)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  store.add({ id: 'shouldHaveTimestamps' })
+
+  .then(function () {
+    return store.find(['shouldHaveTimestamps'])
+  })
+
+  .then(function (objects) {
+    t.is(objects[0].id, 'shouldHaveTimestamps', 'resolves with value for existing')
+    t.ok(objects[0].createdAt, 'resolves with createdAt timestamp')
+    t.ok(objects[0].updatedAt, 'resolves with updatedAt timestamp')
+  })
+})
+
+test('store.find([object]) should return timestamps', function (t) {
+  t.plan(6)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  store.add([{
+    id: 'shouldHaveTimestamps'
+  }, {
+    id: 'shouldAlsoHaveTimestamps'
+  }])
+
+  .then(function () {
+    return store.find(['shouldHaveTimestamps', 'shouldAlsoHaveTimestamps'])
+  })
+
+  .then(function (objects) {
+    objects.forEach(function (object) {
+      t.ok(object.id, 'resolves with value for existing')
+      t.ok(object.createdAt, 'resolves with createdAt timestamp')
+      t.ok(object.updatedAt, 'resolves with updatedAt timestamp')
+    })
+  })
+})

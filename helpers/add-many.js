@@ -1,11 +1,11 @@
 'use strict'
 
 var toDoc = require('../utils/to-doc')
+var addTimestamps = require('../utils/add-timestamps')
 
 module.exports = function addMany (objects) {
-  var docs = objects.map(toDoc)
-
-  return this.bulkDocs(docs)
+  objects.forEach(addTimestamps)
+  return this.bulkDocs(objects.map(toDoc))
 
   .then(function (responses) {
     return responses.map(function (response, i) {

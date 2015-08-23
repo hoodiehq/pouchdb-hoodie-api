@@ -4,6 +4,7 @@ var extend = require('pouchdb-extend')
 
 var toObject = require('./utils/to-object')
 var toDoc = require('./utils/to-doc')
+var addTimestamps = require('./utils/add-timestamps')
 var isntDesignDoc = require('./utils/isnt-design-doc')
 
 module.exports = updateAll
@@ -35,6 +36,8 @@ function updateAll (changedProperties) {
       .map(function (row) {
         return toObject(row.doc)
       })
+
+    objects.forEach(addTimestamps)
 
     if (type === 'function') {
       objects.forEach(changedProperties)

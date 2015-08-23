@@ -3,6 +3,7 @@
 var toObject = require('./utils/to-object')
 var toDoc = require('./utils/to-doc')
 var isntDesignDoc = require('./utils/isnt-design-doc')
+var addTimestamps = require('./utils/add-timestamps')
 
 module.exports = removeAll
 
@@ -32,9 +33,8 @@ function removeAll (filter) {
     }
 
     return objects.map(function (object) {
-      var doc = toDoc(object)
-      doc._deleted = true
-      return doc
+      object._deleted = true
+      return toDoc(addTimestamps(object))
     })
   })
 

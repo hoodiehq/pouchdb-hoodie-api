@@ -1,6 +1,7 @@
 'use strict'
 
 var test = require('tape')
+var lolex = require('lolex')
 
 var dbFactory = require('../utils/db')
 
@@ -181,5 +182,37 @@ test.skip('store.removeAll(updateFunction) updates before removing', function (t
       t.ok(result.id, 'resolves with id')
       t.is(result.foo, 'changed', 'check all results have changed')
     })
+  })
+})
+
+test('store.removeAll([objects]) creates deletedAt timestamps', function (t) {
+  t.plan(12)
+
+  var clock = lolex.install(0, ['Date'])
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  var now = require('../../utils/now')
+  var isValidDate = require('../utils/is-valid-date')
+
+  store.add([{
+    id: 'shouldHaveTimestamps'
+  }, {
+    id: 'shouldAlsoHaveTimestamps'
+  }])
+
+  .then(store.removeAll.bind(store))
+
+  .then(function (objects) {
+    objects.forEach(function (object) {
+      t.ok(object.id, 'resolves doc')
+      t.ok(object.createdAt, 'should have createdAt timestamp')
+      t.ok(object.updatedAt, 'should have updatedAt timestamp')
+      t.ok(object.deletedAt, 'should have deleteAt timestamp')
+      t.ok(isValidDate(object.deletedAt), 'createdAt should be a valid date')
+      t.is(now(), object.deletedAt, 'createdAt should be the same time as right now')
+    })
+
+    clock.uninstall()
   })
 })
