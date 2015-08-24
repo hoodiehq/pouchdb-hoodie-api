@@ -114,7 +114,7 @@ test('store.remove(array) removes existing, returns error for non-existing', fun
   })
 })
 
-test.skip('store.remove([changedObjects]) updates before removing', function (t) {
+test('store.remove([changedObjects]) updates before removing', function (t) {
   t.plan(4)
 
   var db = dbFactory()
@@ -144,7 +144,7 @@ test.skip('store.remove([changedObjects]) updates before removing', function (t)
   })
 })
 
-test.skip('store.remove(changedObject) updates before removing', function (t) {
+test('store.remove(changedObject) updates before removing', function (t) {
   t.plan(2)
 
   var db = dbFactory()
@@ -165,7 +165,7 @@ test.skip('store.remove(changedObject) updates before removing', function (t) {
   })
 })
 
-test.skip('store.remove(id, changedProperties) updates before removing', function (t) {
+test('store.remove(id, changedProperties) updates before removing', function (t) {
   t.plan(2)
 
   var db = dbFactory()
@@ -186,7 +186,7 @@ test.skip('store.remove(id, changedProperties) updates before removing', functio
   })
 })
 
-test.skip('remove(id, changeFunction) updates before removing', function (t) {
+test('remove(id, changeFunction) updates before removing', function (t) {
   t.plan(2)
 
   var db = dbFactory()
