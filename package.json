@@ -23,7 +23,7 @@
     "tap-spec": "^3.0.0",
     "tape": "^4.0.0",
     "uglify-js": "^2.4.20",
-    "zuul": "^2.1.1"
+    "zuul": "^3.3.0"
   },
   "gh-pages-deploy": {
     "staticpath": "docs/build",
