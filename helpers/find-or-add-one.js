@@ -19,7 +19,7 @@ module.exports = function findOrAddOne (state, idOrObject, newObject) {
 
   return findOne.call(this, id)
 
-  .catch(function (/*error*/) {
+  .catch(function (/* error */) {
     if (typeof newObject === 'object') {
       newObject.id = id
     } else {

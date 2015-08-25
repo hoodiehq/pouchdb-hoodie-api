@@ -113,14 +113,14 @@ test('store.update(array)', function (t) {
   var store = db.hoodieApi()
 
   store.add([
-    { id: '1', foo: 'foo', bar: 'foo'},
-    { id: '2', foo: 'bar'}
+    { id: '1', foo: 'foo', bar: 'foo' },
+    { id: '2', foo: 'bar' }
   ])
 
   .then(function () {
     return store.update([
-      { id: '1', bar: 'baz'},
-      { id: '2', bar: 'baz'}
+      { id: '1', bar: 'baz' },
+      { id: '2', bar: 'baz' }
     ])
   })
 
@@ -142,12 +142,12 @@ test('store.update(array) with non-existent object', function (t) {
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  store.add({ id: 'exists'})
+  store.add({ id: 'exists' })
 
   .then(function () {
     return store.update([
-      { id: 'exists', foo: 'bar'},
-      { id: 'unknown', foo: 'baz'}
+      { id: 'exists', foo: 'bar' },
+      { id: 'unknown', foo: 'baz' }
     ])
   })
 
@@ -174,7 +174,7 @@ test('store.update(array) with invalid objects', function (t) {
 
   .then(function () {
     return store.update([
-      { id: 'exists', foo: 'bar'},
+      { id: 'exists', foo: 'bar' },
       'foo',
       []
     ])
@@ -197,8 +197,8 @@ test('store.update(array, changedProperties)', function (t) {
   var store = db.hoodieApi()
 
   store.add([
-    { id: '1', foo: 'foo', bar: 'foo'},
-    { id: '2', foo: 'bar'}
+    { id: '1', foo: 'foo', bar: 'foo' },
+    { id: '2', foo: 'bar' }
   ])
 
   .then(function () {
@@ -254,8 +254,8 @@ test('store.update(array, updateFunction)', function (t) {
   var store = db.hoodieApi()
 
   store.add([
-    { id: '1', foo: 'foo', bar: 'foo'},
-    { id: '2', foo: 'bar'}
+    { id: '1', foo: 'foo', bar: 'foo' },
+    { id: '2', foo: 'bar' }
   ])
 
   .then(function () {

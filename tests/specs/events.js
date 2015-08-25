@@ -166,8 +166,8 @@ test('store.on("update") with updating two', function (t) {
 
   .then(function (obj) {
     return store.update([
-      { id: 'first', foo: 'bar'},
-      { id: 'second', foo: 'baz'}
+      { id: 'first', foo: 'bar' },
+      { id: 'second', foo: 'baz' }
     ])
   })
 
@@ -283,9 +283,9 @@ test('store.on("remove") with removing two', function (t) {
 
   .then(function () {
     var orderedObjAttrs = [
-        removeEvents[0].object.id,
-        removeEvents[1].object.id
-      ].sort()
+      removeEvents[0].object.id,
+      removeEvents[1].object.id
+    ].sort()
 
     t.is(orderedObjAttrs.length, 2, 'triggers 2 remove events')
     t.is(orderedObjAttrs[0], 'one', '1st event passes object')
@@ -313,9 +313,9 @@ test('store.on("remove") with remove all', function (t) {
 
   .then(function () {
     var orderedObjAttrs = [
-        removeEvents[0].object.id,
-        removeEvents[1].object.id
-      ].sort()
+      removeEvents[0].object.id,
+      removeEvents[1].object.id
+    ].sort()
 
     t.is(orderedObjAttrs.length, 2, 'triggers 2 remove events')
     t.is(orderedObjAttrs[0], 'one', '1st event passes object')
@@ -668,8 +668,8 @@ test('store.one("update") with updating two', function (t) {
   .then(function (obj) {
 
     return store.update([
-      { id: 'first', foo: 'bar'},
-      { id: 'second', foo: 'baz'}
+      { id: 'first', foo: 'bar' },
+      { id: 'second', foo: 'baz' }
     ])
   })
 
