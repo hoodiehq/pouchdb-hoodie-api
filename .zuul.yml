@@ -5,7 +5,11 @@ browsers:
   - name: firefox
     version: [31, latest]
   - name: safari
-    version: 6
+    version: [6, 7, 8]
+  - name: iphone
+    version: [7.0, 8.0, latest]
+  - name: internet explorer
+    version: [10, 11]
 scripts:
   - './node_modules/pouchdb/dist/pouchdb.js'
   - './node_modules/pouchdb/dist/pouchdb.memory.js'
