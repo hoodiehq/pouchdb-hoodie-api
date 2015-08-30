@@ -6,10 +6,10 @@ browsers:
     version: '29..latest'
   - name: safari
     version: '7..latest'
-  - name: iPhone
+  - name: iphone
     version: '7.0..latest'
   - name: android
-    version: '4.3..latest'
+    version: '4.0..latest'
 scripts:
   - './node_modules/pouchdb/dist/pouchdb.js'
   - './node_modules/pouchdb/dist/pouchdb.memory.js'
