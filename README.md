@@ -116,7 +116,7 @@ PouchDB.plugin({
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/hoodie-pouch.svg)](https://saucelabs.com/u/hoodie-pouch)
 
-_Test are currently not running on >IE10 and mobile Safari. This is likely an error with the setup and we would be more than happy if you'd want to fix that :)_
+_Tests are currently not running on >IE10 however once https://github.com/pouchdb/pouchdb/pull/4220 lands we can enable this._
 
 ### In Node.js
 
