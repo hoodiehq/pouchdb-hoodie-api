@@ -13,7 +13,7 @@ test('has "clear" method', function (test) {
   test.is(typeof store.clear, 'function', 'has method')
 })
 
-test('removes existing db', function (t) {
+test.skip('removes existing db', function (t) {
   t.plan(2)
 
   var db = dbFactory()
