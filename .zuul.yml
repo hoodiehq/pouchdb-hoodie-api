@@ -9,7 +9,7 @@ browsers:
   - name: iphone
     version: '7.0..latest'
   - name: android
-    version: '4.0..latest'
+    version: [4.4, 'latest']
   - name: internet explorer
     version: '11'
   - name: microsoftedge
