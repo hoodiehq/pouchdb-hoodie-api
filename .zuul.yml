@@ -10,6 +10,10 @@ browsers:
     version: '7.0..latest'
   - name: android
     version: '4.0..latest'
+  - name: internet explorer
+    version: '11'
+  - name: microsoftedge
+    version: 'latest'
 scripts:
   - './node_modules/pouchdb/dist/pouchdb.js'
   - './node_modules/pouchdb/dist/pouchdb.memory.js'
