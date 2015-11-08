@@ -16,9 +16,8 @@ before_script:
 script: npm run $COMMAND
 after_success:
 - if [[ $COMMAND = test:coverage ]]; then npm run test:coverage:upload; fi
-- npm run docs
+- if [[ $TRAVIS_BRANCH == 'master' ]]; npm run docs && npm run deploydocs; fi
 - npm run semantic-release
-- npm run deploydocs
 env:
   matrix:
   - NODE=4 COMMAND=test:browser:cloud
@@ -27,3 +26,6 @@ env:
   - NODE=0.12 COMMAND=test
   - NODE=4 COMMAND=test
   - NODE=5 COMMAND=test
+branches:
+  except:
+    - "/^v\\d+\\.\\d+\\.\\d+$/"
