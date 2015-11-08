@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- '0.12'
+- stable
 sudo: false
 cache:
   directories:
@@ -10,22 +10,20 @@ notifications:
 before_install:
 - nvm install $NODE
 - nvm use $NODE
-- npm i -g npm@^2.0.0
+- npm i -g npm@3
 before_script:
 - npm prune
-- curl -Lo travis_after_all.py https://git.io/vLSON
 script: npm run $COMMAND
 after_success:
-- python travis_after_all.py
-- export $(cat .to_export_back)
 - if [[ $COMMAND = test:coverage ]]; then npm run test:coverage:upload; fi
 - npm run docs
 - npm run semantic-release
 - npm run deploydocs
 env:
   matrix:
-  - NODE=0.10 COMMAND=test:browser:cloud
-  - NODE=0.10 COMMAND=test:coverage
+  - NODE=4 COMMAND=test:browser:cloud
+  - NODE=4 COMMAND=test:coverage
   - NODE=0.10 COMMAND=test
   - NODE=0.12 COMMAND=test
-  - NODE=iojs-v1 COMMAND=test
+  - NODE=4 COMMAND=test
+  - NODE=5 COMMAND=test
