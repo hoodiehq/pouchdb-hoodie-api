@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>pouchdb-hoodie-api</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/cayman.css">
+    <link rel="stylesheet" href="css/prism.css">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">pouchdb-hoodie-api</h1>
+      <h2 class="project-tagline">Hoodie-like API for PouchDB</h2><a href="https://github.com/hoodiehq/pouchdb-hoodie-api" target="_blank" class="btn">View on GitHub</a><a href="https://npmjs.com/package/pouchdb-hoodie-api" target="_blank" class="btn">View on npm</a>
+    </section>
+    <section data-spy="scroll" data-target=".scrollspy" class="main-content">
+      <div class="row">
+        <div class="col-md-3 col-xs-3 bs-docs-sidebar">
+          <ul id="sidebar" class="nav nav-stacked fixed">
+            <li class="active"><a href="index.html">Main
+                <ul class="nav nav-stacked">
+                </ul></a></li>
+            <li><a href="add.js.html">add.js</a></li>
+            <li><a href="clear.js.html">clear.js</a></li>
+            <li><a href="find-all.js.html">find-all.js</a></li>
+            <li><a href="find-or-add.js.html">find-or-add.js</a></li>
+            <li><a href="find.js.html">find.js</a></li>
+            <li><a href="lib/find-or-add-with-events.js.html">lib/find-or-add-with-events.js</a></li>
+            <li><a href="lib/off.js.html">lib/off.js</a></li>
+            <li><a href="lib/on.js.html">lib/on.js</a></li>
+            <li><a href="lib/one.js.html">lib/one.js</a></li>
+            <li><a href="remove-all.js.html">remove-all.js</a></li>
+            <li><a href="remove.js.html">remove.js</a></li>
+            <li><a href="update-all.js.html">update-all.js</a></li>
+            <li><a href="update-or-add.js.html">update-or-add.js</a></li>
+            <li><a href="update.js.html">update.js</a></li>
+          </ul>
+        </div>
+        <div class="col-md-9">
+          <section id="Main" class="readme"><h1>pouchdb-hoodie-api</h1>
+<blockquote>
+<p>Hoodie-like API for PouchDB</p>
+</blockquote>
+<p><a href="https://travis-ci.org/hoodiehq/pouchdb-hoodie-api"><img src="https://travis-ci.org/hoodiehq/pouchdb-hoodie-api.svg?branch=master" alt="Build Status"></a>
+<a href="https://coveralls.io/r/hoodiehq/pouchdb-hoodie-api?branch=master"><img src="https://coveralls.io/repos/hoodiehq/pouchdb-hoodie-api/badge.svg?branch=master" alt="Coverage Status"></a>
+<a href="https://david-dm.org/hoodiehq/pouchdb-hoodie-api"><img src="https://david-dm.org/hoodiehq/pouchdb-hoodie-api.svg" alt="Dependency Status"></a>
+<a href="https://david-dm.org/hoodiehq/pouchdb-hoodie-api#info=devDependencies"><img src="https://david-dm.org/hoodiehq/pouchdb-hoodie-api/dev-status.svg" alt="devDependency Status"></a></p>
+<p><a href="https://nodei.co/npm/pouchdb-hoodie-api/"><img src="https://nodei.co/npm/pouchdb-hoodie-api.png?downloads=true&amp;downloadRank=true&amp;stars=true" alt="NPM"></a></p>
+<p>This plugin provides simple methods to add, find, update and remove data.</p>
+<h2>Usage</h2>
+<h3>Initialisation</h3>
+<pre><code class="language-js">var db = new PouchDB('dbname')
+var api = db.hoodieApi()
+</code></pre>
+<h3>API</h3>
+<pre><code class="language-js">// Options
+// emitter: Optionally pass an instance of EventEmitter for hoodieApi to use
+
+var db = new PouchDB('dbname')
+var api = db.hoodieApi({
+  emitter: existingEventEmitter
+})
+
+// all methods return promises
+api.add(object)
+api.add([object1, id2])
+api.find(id)
+api.find(object) // with id property
+api.findOrAdd(id, object)
+api.findOrAdd(object)
+api.findOrAdd([object1, id2])
+api.findAll()
+api.findAll(filterFunction)
+api.update(id, changedProperties)
+api.update(id, updateFunction)
+api.update(object)
+api.update([object1, id2])
+api.updateOrAdd(id, object)
+api.updateOrAdd(object)
+api.updateOrAdd([object1, id2])
+api.updateAll(changedProperties)
+api.updateAll(updateFunction)
+api.remove(id)
+api.remove(object)
+api.remove([object1, id2])
+api.removeAll()
+api.removeAll(filterFunction)
+api.clear()
+
+// events
+api.on('add', function(object, options) {})
+api.on('update', function(object, options) {})
+api.on('remove', function(object, options) {})
+api.on('change', function(eventName, object, options) {})
+api.on('clear', function() {})
+api.one(eventName, eventHandlerFunction)
+api.off(eventName, eventHandlerFunction)
+
+// original PouchDB (http://pouchdb.com/api.html) instance used for the store
+api.db
+</code></pre>
+<p>Full API documentation is available at:
+http://hoodiehq.github.io/pouchdb-hoodie-api/</p>
+<h3>Installation</h3>
+<p>Install via npm</p>
+<pre><code>npm install pouchdb
+npm install pouchdb-hoodie-api
+</code></pre>
+<h3>Including the plugin</h3>
+<h4>With browserify or on node.js/io.js</h4>
+<p>Attach this plugin to the <code>PouchDB</code> object:</p>
+<pre><code class="language-js">var PouchDB = require('pouchdb')
+PouchDB.plugin(require('pouchdb-hoodie-api'))
+</code></pre>
+<h4>In the browser</h4>
+<p>Include this plugin after <code>pouchdb.js</code> in your HTML page:</p>
+<pre><code class="language-html">&lt;script src=&quot;node_modules/pouchdb/dist/pouchdb.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;node_modules/pouchdb-hoodie-api/dist/pouchdb-hoodie-api.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<h3>Modular Usage</h3>
+<p>Every method is a PouchDB plugin of its own. If you only need certain ones you can require them individually:</p>
+<pre><code class="language-js">PouchDB.plugin({
+  add: require('pouchdb-hoodie-api/add')
+})
+</code></pre>
+<h2>Testing</h2>
+<p><a href="https://saucelabs.com/u/hoodie-pouch"><img src="https://saucelabs.com/browser-matrix/hoodie-pouch.svg" alt="Sauce Test Status"></a></p>
+<p><em>Tests are currently not running on &gt;IE10 however once https://github.com/pouchdb/pouchdb/pull/4220 lands we can enable this.</em></p>
+<h3>In Node.js</h3>
+<p>Run all tests and validates JavaScript Code Style using <a href="https://www.npmjs.com/package/standard">standard</a></p>
+<pre><code>npm test
+</code></pre>
+<p>To run only the tests</p>
+<pre><code>npm run test:node
+</code></pre>
+<h3>In the browser</h3>
+<pre><code>test:browser:local
+</code></pre>
+<p>This will start a local server. All tests and coverage will be run at <a href="http://localhost:8080/__zuul">http://localhost:8080/__zuul</a></p>
+<h2>Contributing</h2>
+<p>Have a look at the Hoodie project's <a href="https://github.com/hoodiehq/hoodie-dotfiles/blob/master/static/CONTRIBUTING.md">contribution guidelines</a>.
+If you want to hang out you can join #hoodie-pouch on our <a href="http://hood.ie/chat/">Hoodie Community Slack</a>.</p>
+</section>
+          <div class="footer site-footer">
+            <div class="span site-footer-owner"><a href="https://github.com/mr-doc/mr-doc-theme-cayman">Cayman</a> is maintained by <a href="https://github.com/iwatakeshi">iwatakeshi</a>.</div>
+            <div class="span site-footer-credits">This page was generated by <a href="https://github.com/mr-doc/mr-doc">Mr. Doc</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/affix.js"></script>
+    <script src="js/dropdown.js"></script>
+    <script src="js/scrollspy.js"></script>
+    <script src="js/prism.js"></script>
+    <script src="js/prism-bash.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('body').scrollspy({
+          target: ".bs-docs-sidebar",
+          offset: 40
+        });
+        $('#sidebar').affix({
+          offset:{
+            bottom:60,
+            top: 60
+          }
+        }) 
+      });
+    </script>
+  </body>
+</html>
