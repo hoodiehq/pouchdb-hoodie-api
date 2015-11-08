@@ -220,5 +220,4 @@ test('findOrAdd() as required by end user', function (t) {
     t.is(objects[0].id, 'findOrAddMany', 'object1 to be created')
     t.is(objects[0].foo, 'bar', 'object1 to be created')
   })
-
 })

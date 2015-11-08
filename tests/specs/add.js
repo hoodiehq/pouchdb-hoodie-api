@@ -51,7 +51,7 @@ test('adds object with id to db', function (t) {
     foo: 'bar'
   })
 
- .then(function (object) {
+  .then(function (object) {
     t.is(object.id, 'baz', 'resolves id')
     return db.get('baz')
   })
@@ -156,7 +156,6 @@ test('store.add(object) makes createdAt and updatedAt timestamps', function (t) 
 
     clock.uninstall()
   })
-
 })
 
 test('store.add([objects]) makes createdAt and updatedAt timestamps', function (t) {

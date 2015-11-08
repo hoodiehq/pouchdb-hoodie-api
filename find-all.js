@@ -24,6 +24,8 @@ function findAll (filter) {
         return toObject(row.doc)
       })
 
-    return typeof filter === 'function' ? objects.filter(filter) : objects
+    return typeof filter === 'function'
+      ? objects.filter(filter)
+      : objects
   })
 }

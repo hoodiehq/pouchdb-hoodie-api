@@ -15,7 +15,7 @@ module.exports = updateOrAdd
  * @return {Promise}
  */
 function updateOrAdd (idOrObjectOrArray, newObject) {
-  return Array.isArray(idOrObjectOrArray) ?
-    updateOrAddMany.call(this, idOrObjectOrArray) :
-    updateOrAddOne.call(this, idOrObjectOrArray, newObject)
+  return Array.isArray(idOrObjectOrArray)
+    ? updateOrAddMany.call(this, idOrObjectOrArray)
+    : updateOrAddOne.call(this, idOrObjectOrArray, newObject)
 }

@@ -13,7 +13,7 @@ module.exports = add
  * @return {Promise}
  */
 function add (objects) {
-  return Array.isArray(objects) ?
-    addMany.call(this, objects) :
-    addOne.call(this, objects)
+  return Array.isArray(objects)
+    ? addMany.call(this, objects)
+    : addOne.call(this, objects)
 }

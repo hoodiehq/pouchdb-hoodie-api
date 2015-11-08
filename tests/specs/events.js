@@ -666,7 +666,6 @@ test('store.one("update") with updating two', function (t) {
   ])
 
   .then(function (obj) {
-
     return store.update([
       { id: 'first', foo: 'bar' },
       { id: 'second', foo: 'baz' }

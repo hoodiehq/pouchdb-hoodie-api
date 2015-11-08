@@ -20,7 +20,7 @@ function update (objectsOrIds, change) {
     )
   }
 
-  return Array.isArray(objectsOrIds) ?
-    updateMany.call(this, objectsOrIds, change) :
-    updateOne.call(this, objectsOrIds, change)
+  return Array.isArray(objectsOrIds)
+    ? updateMany.call(this, objectsOrIds, change)
+    : updateOne.call(this, objectsOrIds, change)
 }

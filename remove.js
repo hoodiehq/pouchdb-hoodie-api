@@ -16,7 +16,7 @@ module.exports = remove
  * @return {Promise}
  */
 function remove (objectsOrIds, change) {
-  return Array.isArray(objectsOrIds) ?
-    updateMany.call(this, objectsOrIds.map(markAsDeleted.bind(null, change))) :
-    updateOne.call(this, markAsDeleted(change, objectsOrIds))
+  return Array.isArray(objectsOrIds)
+    ? updateMany.call(this, objectsOrIds.map(markAsDeleted.bind(null, change)))
+    : updateOne.call(this, markAsDeleted(change, objectsOrIds))
 }

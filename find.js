@@ -13,7 +13,7 @@ module.exports = find
  * @return {Promise}
  */
 function find (objectsOrIds) {
-  return Array.isArray(objectsOrIds) ?
-    findMany.call(this, objectsOrIds) :
-    findOne.call(this, objectsOrIds)
+  return Array.isArray(objectsOrIds)
+    ? findMany.call(this, objectsOrIds)
+    : findOne.call(this, objectsOrIds)
 }
