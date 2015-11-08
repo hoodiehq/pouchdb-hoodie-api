@@ -1,6 +1,4 @@
+.gitignore
 bin
 coverage
 node_modules
-.gitignore
-*.yml
-*.log
