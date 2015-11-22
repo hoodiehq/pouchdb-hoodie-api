@@ -1,31 +1,22 @@
 language: node_js
 node_js:
-- stable
+- 4
 sudo: false
 cache:
   directories:
   - node_modules
 notifications:
   email: false
-before_install:
-- nvm install $NODE
-- nvm use $NODE
-- npm i -g npm@3
 before_script:
 - npm prune
 script: npm run $COMMAND
 after_success:
-- if [[ $COMMAND = test:coverage ]]; then npm run test:coverage:upload; fi
 - if [[ $TRAVIS_BRANCH == 'master' ]]; npm run docs && npm run deploydocs; fi
 - npm run semantic-release
 env:
   matrix:
-  - NODE=4 COMMAND=test:browser:cloud
-  - NODE=4 COMMAND=test:coverage
-  - NODE=0.10 COMMAND=test
-  - NODE=0.12 COMMAND=test
-  - NODE=4 COMMAND=test
-  - NODE=5 COMMAND=test
+  - COMMAND=test:browser:cloud
+  - COMMAND=test
 branches:
   except:
     - "/^v\\d+\\.\\d+\\.\\d+$/"
