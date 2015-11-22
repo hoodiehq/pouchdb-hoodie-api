@@ -60,6 +60,7 @@
     "docs": "mr-doc --source ./ --output docs --name pouchdb-hoodie-api --theme cayman --ignore docs,coverage,bin,dist,helpers,node_modules,tests,utils,index.js",
     "presemantic-release": "npm run -s build",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "postsemantic-release": "npm run test:coverage && npm run test:coverage:upload",
     "test": "standard && npm run -s test:node | tap-spec",
     "pretest:browser:cloud": "npm run build",
     "test:browser:cloud": "zuul -- tests",
