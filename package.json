@@ -8,7 +8,7 @@
     "pouchdb-extend": "^0.1.2"
   },
   "devDependencies": {
-    "browserify": "^12.0.1",
+    "browserify": "^13.0.0",
     "cracks": "^3.0.2",
     "gh-pages-deploy": "^0.4.0",
     "hoodie-zuul-config": "^2.0.0",
