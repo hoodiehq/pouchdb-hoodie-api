@@ -93,6 +93,24 @@ test('fails for existing object', function (t) {
   })
 })
 
+test('returns custom conflict error for existing object', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  store.add({id: 'foo', foo: 'bar'})
+
+  .then(function () {
+    return store.add({id: 'foo', foo: 'baz'})
+  })
+
+  .catch(function (err) {
+    t.is(err.name, 'Conflict', 'custom conflict name')
+    t.is(err.message, 'Object with id "foo" already exists', 'custom error message')
+  })
+})
+
 test('adds multiple objects to db', function (t) {
   t.plan(8)
 
