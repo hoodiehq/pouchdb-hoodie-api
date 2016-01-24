@@ -74,7 +74,7 @@ test('store.update("unknown", changedProperties) returns custom not found error'
 
   .catch(function (error) {
     t.is(error.name, 'Not found', 'rejects with custom name')
-    t.is(error.message, 'Object with id "foo" is missing', 'rejects with custom message')
+    t.is(error.message, 'Object with id "unknown" is missing', 'rejects with custom message')
   })
 })
 
