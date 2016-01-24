@@ -78,6 +78,20 @@ test('store.find fails for non-existing', function (t) {
   })
 })
 
+test('store.find returns custom not found error for non-existing', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  store.find({id: 'foo'})
+
+  .catch(function (err) {
+    t.is(err.name, 'Not found', 'rejects with custom name')
+    t.is(err.message, 'Object with id "foo" is missing', 'rejects with custom message')
+  })
+})
+
 test('store.find(array)', function (t) {
   t.plan(2)
 
@@ -116,6 +130,26 @@ test('store.find(array) with non-existing', function (t) {
   .then(function (objects) {
     t.is(objects[0].id, 'exists', 'resolves with value for existing')
     t.is(objects[1].status, 404, 'resolves with 404 error for unknown')
+  })
+})
+
+test('store.find(array) returns custom not found error for non-existing', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  store.add([
+    { id: 'exists' }
+  ])
+
+  .then(function () {
+    return store.find(['exists', 'unknown'])
+  })
+
+  .then(function (objects) {
+    t.is(objects[1].name, 'Not found', 'rejects with custom name for unknown')
+    t.is(objects[1].message, 'Object with id "unknown" is missing', 'rejects with custom message for unknown')
   })
 })
 

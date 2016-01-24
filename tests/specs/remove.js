@@ -85,6 +85,27 @@ test('fails for non-existing', function (t) {
   })
 })
 
+test('returns custom not found error for non-existing', function (t) {
+  t.plan(4)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  store.remove('foo')
+
+  .catch(function (err) {
+    t.is(err.name, 'Not found', 'rejects with custom name')
+    t.is(err.message, 'Object with id "foo" is missing', 'rejects with custom message')
+  })
+
+  store.remove({id: 'foo'})
+
+  .catch(function (err) {
+    t.is(err.name, 'Not found', 'rejects with custom name')
+    t.is(err.message, 'Object with id "foo" is missing', 'rejects with custom message')
+  })
+})
+
 test('store.remove(array) removes existing, returns error for non-existing', function (t) {
   t.plan(7)
 
@@ -112,6 +133,31 @@ test('store.remove(array) removes existing, returns error for non-existing', fun
     t.is(objects[1].foo, 'baz', 'resolves with value for existing')
     t.is(parseInt(objects[1]._rev, 10), 2, 'resolves with revision 2')
     t.is(objects[2].status, 404, 'resolves with 404 error for non-existing')
+  })
+})
+
+test('store.remove(array) removes existing, returns custom not found error for non-existing', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  store.add([
+    { id: 'exists1', foo: 'bar' },
+    { id: 'exists2', foo: 'baz' }
+  ])
+
+  .then(function () {
+    return store.remove([
+      'exists1',
+      { id: 'exists2' },
+      'unknown'
+    ])
+  })
+
+  .then(function (objects) {
+    t.is(objects[2].name, 'Not found', 'rejects with custom name for unknown')
+    t.is(objects[2].message, 'Object with id "unknown" is missing', 'rejects with custom message for unknown')
   })
 })
 
