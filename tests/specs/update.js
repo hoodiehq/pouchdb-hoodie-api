@@ -64,6 +64,20 @@ test('store.update("unknown", changedProperties)', function (t) {
   })
 })
 
+test('store.update("unknown", changedProperties) returns custom not found error', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  store.update('unknown', {foo: 'bar'})
+
+  .catch(function (error) {
+    t.is(error.name, 'Not found', 'rejects with custom name')
+    t.is(error.message, 'Object with id "foo" is missing', 'rejects with custom message')
+  })
+})
+
 test('store.update(id, updateFunction)', function (t) {
   t.plan(3)
 
@@ -157,6 +171,27 @@ test('store.update(array) with non-existent object', function (t) {
     t.is(objects[0].foo, 'bar')
     t.is(parseInt(objects[0]._rev, 10), 2)
     t.is(objects[1].status, 404)
+  })
+})
+
+test('store.update(array) returns custom not found error for non-existent object', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  store.add({ id: 'exists' })
+
+  .then(function () {
+    return store.update([
+      { id: 'exists', foo: 'bar' },
+      { id: 'unknown', foo: 'baz' }
+    ])
+  })
+
+  .then(function (objects) {
+    t.is(objects[1].name, 'Not found', 'rejects with custom name for unknown')
+    t.is(objects[1].message, 'Object with id "unknown" is missing', 'rejects with custom message for unknown')
   })
 })
 
