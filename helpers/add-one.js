@@ -20,4 +20,15 @@ module.exports = function addOne (object) {
     object._rev = response.rev
     return object
   })
+
+  .catch(function (error) {
+    if (error.status === 409) {
+      var conflict = new Error('Object with id "' + object.id + '" already exists')
+      conflict.name = 'Conflict'
+      conflict.status = 409
+      throw conflict
+    } else {
+      throw error
+    }
+  })
 }

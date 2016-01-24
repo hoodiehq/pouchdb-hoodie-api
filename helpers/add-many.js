@@ -10,7 +10,14 @@ module.exports = function addMany (objects) {
   .then(function (responses) {
     return responses.map(function (response, i) {
       if (response instanceof Error) {
-        return response
+        if (response.status === 409) {
+          var conflict = new Error('Object with id "' + objects[i].id + '" already exists')
+          conflict.name = 'Conflict'
+          conflict.status = 409
+          return conflict
+        } else {
+          return response
+        }
       }
 
       objects[i].id = response.id
