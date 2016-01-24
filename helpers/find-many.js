@@ -4,7 +4,6 @@ var toId = require('../utils/to-id')
 var toObject = require('../utils/to-object')
 
 module.exports = function findMany (idsOrObjects) {
-  var errors = this.constructor.Errors
   var ids = idsOrObjects.map(toId)
 
   return this.allDocs({keys: ids, include_docs: true})
@@ -20,7 +19,10 @@ module.exports = function findMany (idsOrObjects) {
         return doc
       }
 
-      return errors.MISSING_DOC
+      var missing = new Error('Object with id "' + id + '" is missing')
+      missing.name = 'Not found'
+      missing.status = 404
+      return missing
     })
 
     return docs.map(toObject)
