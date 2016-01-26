@@ -75,5 +75,6 @@
     "ignore": [
       "dist/**"
     ]
-  }
+  },
+  "author": "The Hoodie Community and other contributors | http://hood.ie/"
 }

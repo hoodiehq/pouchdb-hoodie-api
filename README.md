@@ -142,3 +142,7 @@ This will start a local server. All tests and coverage will be run at [http://lo
 
 Have a look at the Hoodie project's [contribution guidelines](https://github.com/hoodiehq/hoodie-dotfiles/blob/master/static/CONTRIBUTING.md).
 If you want to hang out you can join #hoodie-pouch on our [Hoodie Community Slack](http://hood.ie/chat/).
+
+## License
+
+[Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
