@@ -9,7 +9,6 @@
   },
   "devDependencies": {
     "browserify": "^13.0.0",
-    "cracks": "^3.1.2",
     "gh-pages-deploy": "^0.4.0",
     "hoodie-zuul-config": "^2.0.0",
     "istanbul": "^0.4.2",
@@ -43,9 +42,6 @@
     "sync"
   ],
   "license": "Apache-2.0",
-  "release": {
-    "verifyRelease": "cracks"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/hoodiehq/pouchdb-hoodie-api.git"
