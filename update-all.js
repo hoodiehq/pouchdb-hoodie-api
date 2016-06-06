@@ -1,13 +1,12 @@
-'use strict'
+module.exports = updateAll
 
 var extend = require('pouchdb-extend')
+var Promise = require('lie')
 
 var toObject = require('./utils/to-object')
 var toDoc = require('./utils/to-doc')
 var addTimestamps = require('./utils/add-timestamps')
 var isntDesignDoc = require('./utils/isnt-design-doc')
-
-module.exports = updateAll
 
 /**
  * updates all existing objects
@@ -17,8 +16,6 @@ module.exports = updateAll
  * @return {Promise}
  */
 function updateAll (changedProperties) {
-  var Promise = this.constructor.utils.Promise
-
   var type = typeof changedProperties
   var objects
 

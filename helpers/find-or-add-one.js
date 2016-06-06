@@ -1,20 +1,23 @@
+module.exports = findOrAddOne
+
+var PouchDBErrors = require('pouchdb-errors')
+var Promise = require('lie')
+
 var toId = require('../utils/to-id')
 var findOne = require('./find-one')
 var addOne = require('./add-one')
 var eventify = require('./eventify')
 
-module.exports = function findOrAddOne (state, idOrObject, newObject) {
+function findOrAddOne (state, idOrObject, newObject) {
   var self = this
-  var Promise = this.constructor.utils.Promise
-  var errors = this.constructor.Errors
   var id = toId(idOrObject)
 
   if (!id) {
-    return Promise.reject(errors.MISSING_ID)
+    return Promise.reject(PouchDBErrors.MISSING_ID)
   }
 
   if (idOrObject === id && !newObject) {
-    return Promise.reject(errors.MISSING_ID)
+    return Promise.reject(PouchDBErrors.MISSING_ID)
   }
 
   return findOne.call(this, id)

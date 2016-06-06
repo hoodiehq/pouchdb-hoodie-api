@@ -1,6 +1,7 @@
 'use strict'
 
 var extend = require('pouchdb-extend')
+var PouchDBErrors = require('pouchdb-errors')
 
 var changeObject = require('../utils/change-object')
 var toDoc = require('../utils/to-doc')
@@ -11,7 +12,6 @@ var findMany = require('./find-many')
 
 module.exports = function updateMany (array, change) {
   var self = this
-  var errors = this.constructor.Errors
   var objects
   var ids = array.map(toId)
 
@@ -33,7 +33,7 @@ module.exports = function updateMany (array, change) {
         return object
       }
       if (typeof passedObject !== 'object') {
-        return errors.NOT_AN_OBJECT
+        return PouchDBErrors.NOT_AN_OBJECT
       }
       return extend(object, passedObject)
     })
