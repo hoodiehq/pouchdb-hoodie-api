@@ -190,19 +190,13 @@ test('#58 store.findOrAdd([object1, object2]) triggers no events when finds exis
 test('findOrAdd() as required by end user', function (t) {
   t.plan(5)
 
-  var PouchDB = process.browser ? global.PouchDB : require('pouchdb')
+  var PouchDB = process.browser ? global.PouchDB : require('pouchdb-memory')
 
   PouchDB.plugin({
     findOrAdd: require('../../find-or-add')
   })
 
-  var options = process.browser ? {
-    adapter: 'memory'
-  } : {
-    db: require('memdown')
-  }
-
-  var db = new PouchDB('db-findOrAdd-as-required', options)
+  var db = new PouchDB('db-findOrAdd-as-required')
 
   t.isNot(PouchDB.prototype.findOrAdd, 'undefined', 'check findOrAdd plugin is active')
 
