@@ -4,6 +4,15 @@
   "bugs": {
     "url": "https://github.com/hoodiehq/pouchdb-hoodie-api/issues"
   },
+  "files": [
+    "*.js",
+    "!zuul.config.js",
+    "lib",
+    "helpers",
+    "utils",
+    "dist/pouchdb-hoodie-api.js",
+    "dist/pouchdb-hoodie-api.min.js"
+  ],
   "dependencies": {
     "lie": "^3.0.4",
     "pouchdb-errors": "^5.4.0",
