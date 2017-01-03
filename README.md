@@ -84,7 +84,7 @@ npm install pouchdb-hoodie-api
 
 ### Including the plugin
 
-#### With browserify or on node.js/io.js
+#### With browserify or on node.js
 
 Attach this plugin to the `PouchDB` object:
 
