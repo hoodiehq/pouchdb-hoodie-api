@@ -4,8 +4,12 @@ module.exports = eventify
  * runs a method from the API and triggers events on each object.
  *
  * Note that we didn't implement this pased on PouchDB's .changes()
- * API on purpose, because of the timeing the events would get triggered.
- * See https://github.com/hoodiehq/pouchdb-hoodie-api/issues/54
+ * API on purpose, because of
+ *
+ * 1. the timeing the events would get triggered.
+ *    See https://github.com/hoodiehq/pouchdb-hoodie-api/issues/54
+ * 2. PouchDB’s .changes() events do not distinguish between local and remote
+ *    changes, and for Hoodie we need this distinguishing.
  **/
 function eventify (db, state, method, eventName) {
   return function () {
