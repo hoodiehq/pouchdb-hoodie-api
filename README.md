@@ -71,6 +71,14 @@ api.on('clear', function() {})
 api.one(eventName, eventHandlerFunction)
 api.off(eventName, eventHandlerFunction)
 
+// returns an API with all methods above, but implicitly scoped to the passed
+// id prefix. Meaning events are only triggered for documents that match the id
+// prefix, and documents are not found unless they have the id prefix.
+// See https://github.com/hoodiehq/discussion/issues/106 for more context.
+var todoStore = api.withIdPrefix('todo/')
+todoStore.on('change', renderTodoList)
+todoStore.add({text: 'Remember the milk!'})
+
 // original PouchDB (http://pouchdb.com/api.html) instance used for the store
 api.db
 ```
