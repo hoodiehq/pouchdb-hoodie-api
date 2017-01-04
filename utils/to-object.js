@@ -1,6 +1,6 @@
 'use strict'
 
-var extend = require('pouchdb-extend')
+var extend = require('pouchdb-utils').extend
 
 module.exports = function docToObject (doc) {
   if (doc instanceof Error) {

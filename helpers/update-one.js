@@ -1,6 +1,6 @@
 'use strict'
 
-var extend = require('pouchdb-extend')
+var extend = require('pouchdb-utils').extend
 var PouchDBErrors = require('pouchdb-errors')
 var Promise = require('lie')
 

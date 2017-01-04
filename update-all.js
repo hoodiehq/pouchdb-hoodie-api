@@ -1,6 +1,6 @@
 module.exports = updateAll
 
-var extend = require('pouchdb-extend')
+var extend = require('pouchdb-utils').extend
 var Promise = require('lie')
 
 var toObject = require('./utils/to-object')

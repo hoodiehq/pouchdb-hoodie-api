@@ -1,6 +1,6 @@
 'use strict'
 
-var extend = require('pouchdb-extend')
+var extend = require('pouchdb-utils').extend
 
 /**
   * change object either by passing changed properties
