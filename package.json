@@ -15,8 +15,8 @@
   ],
   "dependencies": {
     "lie": "^3.0.4",
-    "pouchdb-errors": "^6.0.4",
-    "pouchdb-extend": "^0.1.2"
+    "pouchdb-errors": "6.1.0",
+    "pouchdb-utils": "6.1.0"
   },
   "devDependencies": {
     "browserify": "^13.0.0",
