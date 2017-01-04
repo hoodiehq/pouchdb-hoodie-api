@@ -36,6 +36,7 @@ api.add(object)
 api.add([object1, id2])
 api.find(id)
 api.find(object) // with id property
+api.find([object1, id2])
 api.findOrAdd(id, object)
 api.findOrAdd(object)
 api.findOrAdd([object1, id2])
