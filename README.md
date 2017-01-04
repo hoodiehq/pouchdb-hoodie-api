@@ -39,7 +39,7 @@ api.find(object) // with id property
 api.find([object1, id2])
 api.findOrAdd(id, object)
 api.findOrAdd(object)
-api.findOrAdd([object1, id2])
+api.findOrAdd([object1, object2])
 api.findAll()
 api.findAll(filterFunction)
 api.update(id, changedProperties)
