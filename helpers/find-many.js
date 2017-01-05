@@ -3,8 +3,14 @@
 var toId = require('../utils/to-id')
 var toObject = require('../utils/to-object')
 
-module.exports = function findMany (idsOrObjects) {
+module.exports = function findMany (idsOrObjects, prefix) {
   var ids = idsOrObjects.map(toId)
+
+  if (prefix) {
+    ids = ids.map(function (id) {
+      return id.substr(0, prefix.length) === prefix ? id : prefix + id
+    })
+  }
 
   return this.allDocs({keys: ids, include_docs: true})
 

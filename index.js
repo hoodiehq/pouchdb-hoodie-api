@@ -22,6 +22,7 @@ function hoodieApi (options) {
     updateAll: eventify(this, state, require('./update-all')),
     remove: eventify(this, state, require('./remove'), 'remove'),
     removeAll: eventify(this, state, require('./remove-all'), 'remove'),
+    withIdPrefix: require('./with-id-prefix').bind(this, state),
     on: require('./lib/on').bind(this, state),
     one: require('./lib/one').bind(this, state),
     off: require('./lib/off').bind(this, state),
