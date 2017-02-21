@@ -6,7 +6,6 @@ var Promise = require('lie')
 var toId = require('../utils/to-id')
 var findOne = require('./find-one')
 var addOne = require('./add-one')
-var eventify = require('./eventify')
 
 function findOrAddOne (state, idOrObject, newObject) {
   var self = this
@@ -30,7 +29,7 @@ function findOrAddOne (state, idOrObject, newObject) {
     }
 
     if (state) {
-      return eventify(self, state, addOne)(newObject)
+      return addOne.call(self, newObject)
     }
 
     return addOne.call(self, newObject)

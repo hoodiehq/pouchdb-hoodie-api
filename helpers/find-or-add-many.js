@@ -1,7 +1,6 @@
 var toId = require('../utils/to-id')
 var findMany = require('./find-many')
 var addMany = require('./add-many')
-var eventify = require('./eventify')
 
 module.exports = function findOrAddMany (state, passedObjects) {
   var self = this
@@ -22,7 +21,7 @@ module.exports = function findOrAddMany (state, passedObjects) {
     }, [])
 
     if (state) {
-      return eventify(self, state, addMany)(notFoundObjects)
+      return addMany.call(self, notFoundObjects)
     }
 
     return addMany.call(self, notFoundObjects)
