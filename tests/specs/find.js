@@ -162,6 +162,10 @@ test('store.find(object) should return timestamps', function (t) {
   store.add({ id: 'shouldHaveTimestamps' })
 
   .then(function () {
+    return store.update('shouldHaveTimestamps', {foo: 'bar'})
+  })
+
+  .then(function () {
     return store.find(['shouldHaveTimestamps'])
   })
 
@@ -183,6 +187,8 @@ test('store.find([object]) should return timestamps', function (t) {
   }, {
     id: 'shouldAlsoHaveTimestamps'
   }])
+
+  .then(store.update)
 
   .then(function () {
     return store.find(['shouldHaveTimestamps', 'shouldAlsoHaveTimestamps'])

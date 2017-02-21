@@ -33,7 +33,7 @@ test('store.update(id, changedProperties)', function (t) {
 
   .then(function (object) {
     t.ok(object.id)
-    t.ok(/^2\-/.test(object._rev), 'revision is 2')
+    t.ok(/^2-/.test(object._rev), 'revision is 2')
     t.is(object.foo, 'baz', 'passes properties')
   })
 })
