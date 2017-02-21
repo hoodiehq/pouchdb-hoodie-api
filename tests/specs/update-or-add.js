@@ -131,25 +131,18 @@ test('#58 store.updateOrAdd(id, object) triggers no extra events', function (t) 
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var triggeredAddEvents = 0
-  var triggeredUpdateEvents = 0
 
   store.on('add', function () {
-    triggeredAddEvents++
+    t.pass('triggers only one add event')
   })
 
   store.on('update', function () {
-    triggeredUpdateEvents++
+    t.pass('triggers only one update event')
   })
 
   store.add({id: 'exists', foo: 'bar'})
 
   .then(function () {
-    return store.updateOrAdd('exists', {foo: 'baz'})
-  })
-
-  .then(function () {
-    t.is(triggeredAddEvents, 1, 'triggers only one add event')
-    t.is(triggeredUpdateEvents, 1, 'triggers only one update event')
+    store.updateOrAdd('exists', {foo: 'baz'})
   })
 })

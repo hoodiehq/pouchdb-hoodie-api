@@ -170,7 +170,7 @@ test('store.add(object) makes createdAt and updatedAt timestamps', function (t) 
     t.is(object.id, 'shouldHaveTimestamps', 'resolves doc')
     t.ok(isValidDate(object.createdAt), 'createdAt should be a valid date')
     t.is(now(), object.createdAt, 'createdAt should be the same time as right now')
-    t.is(object.createdAt, object.updatedAt, 'createdAt and updatedAt should be the same')
+    t.is(object.updatedAt, undefined, 'updatedAt should be undefined')
 
     clock.uninstall()
   })
@@ -198,7 +198,7 @@ test('store.add([objects]) makes createdAt and updatedAt timestamps', function (
     objects.forEach(function (object) {
       t.ok(isValidDate(object.createdAt), 'createdAt should be a valid date')
       t.is(now(), object.createdAt, 'createdAt should be the same time as right now')
-      t.is(object.createdAt, object.updatedAt, 'createdAt and updatedAt should be the same')
+      t.is(object.updatedAt, undefined, 'updatedAt should be undefined')
     })
 
     clock.uninstall()

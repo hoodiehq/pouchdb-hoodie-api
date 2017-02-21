@@ -35,17 +35,14 @@ test('store.on("add") with adding one', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var addEvents = []
 
-  store.on('add', addEventToArray.bind(null, addEvents))
+  store.on('add', function (object) {
+    t.pass('triggers 1 add event')
+    t.is(object.foo, 'bar', 'event passes object')
+  })
 
   store.add({
     foo: 'bar'
-  })
-
-  .then(function () {
-    t.is(addEvents.length, 1, 'triggers 1 add event')
-    t.is(addEvents[0].object.foo, 'bar', 'event passes object')
   })
 })
 
@@ -54,25 +51,29 @@ test('store.on("add") with adding two', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var addEvents = []
+  var objects = []
 
-  store.on('add', addEventToArray.bind(null, addEvents))
+  store.on('add', function (object) {
+    objects.push(object)
 
-  store.add([
-    {foo: 'bar'},
-    {foo: 'baz'}
-  ])
+    if (objects.length < 2) {
+      return
+    }
 
-  .then(function () {
     var orderedObjAttrs = [
-      addEvents[0].object.foo,
-      addEvents[1].object.foo
+      objects[0].foo,
+      objects[1].foo
     ].sort()
 
     t.is(orderedObjAttrs.length, 2, 'triggers 2 add event')
     t.is(orderedObjAttrs[0], 'bar', '1st event passes object')
     t.is(orderedObjAttrs[1], 'baz', '2nd event passes object')
   })
+
+  store.add([
+    {foo: 'bar'},
+    {foo: 'baz'}
+  ])
 })
 
 test('store.on("add") with one element added before registering event and one after', function (t) {
@@ -80,23 +81,20 @@ test('store.on("add") with one element added before registering event and one af
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var addEvents = []
 
   store.add({
     foo: 'bar'
   })
 
   .then(function () {
-    store.on('add', addEventToArray.bind(null, addEvents))
+    store.on('add', function (object) {
+      t.pass('triggers only 1 add event')
+      t.is(object.foo, 'baz', 'event passes object')
+    })
 
-    return store.add({
+    store.add({
       foo: 'baz'
     })
-  })
-
-  .then(function () {
-    t.is(addEvents.length, 1, 'triggers only 1 add event')
-    t.is(addEvents[0].object.foo, 'baz', 'event passes object')
   })
 })
 
@@ -105,9 +103,11 @@ test('store.on("add") with add & update', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var addEvents = []
 
-  store.on('add', addEventToArray.bind(null, addEvents))
+  store.on('add', function (object) {
+    t.pass('triggers only 1 add event')
+    t.is(object.nr, 1, 'event passes object')
+  })
 
   store.updateOrAdd({
     id: 'test',
@@ -115,12 +115,7 @@ test('store.on("add") with add & update', function (t) {
   })
 
   .then(function () {
-    return store.updateOrAdd('test', {nr: 2})
-  })
-
-  .then(function () {
-    t.is(addEvents.length, 1, 'triggers 1 add event')
-    t.is(addEvents[0].object.nr, 1, 'event passes object')
+    store.updateOrAdd('test', {nr: 2})
   })
 })
 
@@ -129,24 +124,21 @@ test('store.on("update") with updating one', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var updateEvents = []
 
-  store.on('update', addEventToArray.bind(null, updateEvents))
+  store.on('update', function (object) {
+    t.pass('triggers only 1 add event')
+    t.is(object.foo, 'bar', 'event passes object')
+  })
 
   store.add({
     id: 'test'
   })
 
   .then(function (obj) {
-    return store.update({
+    store.update({
       id: 'test',
       foo: 'bar'
     })
-  })
-
-  .then(function () {
-    t.is(updateEvents.length, 1, 'triggers 1 update event')
-    t.is(updateEvents[0].object.foo, 'bar', 'event passes object')
   })
 })
 
@@ -155,9 +147,24 @@ test('store.on("update") with updating two', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var updateEvents = []
+  var objects = []
 
-  store.on('update', addEventToArray.bind(null, updateEvents))
+  store.on('update', function (object) {
+    objects.push(object)
+
+    if (objects.length < 2) {
+      return
+    }
+
+    var orderedObjAttrs = [
+      objects[0].foo,
+      objects[1].foo
+    ].sort()
+
+    t.is(orderedObjAttrs.length, 2, 'triggers 2 update event')
+    t.is(orderedObjAttrs[0], 'bar', '1st event passes object')
+    t.is(orderedObjAttrs[1], 'baz', '2nd event passes object')
+  })
 
   store.add([
     {id: 'first'},
@@ -165,21 +172,10 @@ test('store.on("update") with updating two', function (t) {
   ])
 
   .then(function (obj) {
-    return store.update([
+    store.update([
       { id: 'first', foo: 'bar' },
       { id: 'second', foo: 'baz' }
     ])
-  })
-
-  .then(function () {
-    var orderedObjAttrs = [
-      updateEvents[0].object.foo,
-      updateEvents[1].object.foo
-    ].sort()
-
-    t.is(orderedObjAttrs.length, 2, 'triggers 2 update event')
-    t.is(orderedObjAttrs[0], 'bar', '1st event passes object')
-    t.is(orderedObjAttrs[1], 'baz', '2nd event passes object')
   })
 })
 
@@ -188,9 +184,11 @@ test('store.on("update") with add & update', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var updateEvents = []
 
-  store.on('update', addEventToArray.bind(null, updateEvents))
+  store.on('update', function (object) {
+    t.pass('triggers 1 update event')
+    t.is(object.nr, 2, 'event passes object')
+  })
 
   store.updateOrAdd({
     id: 'test',
@@ -198,12 +196,7 @@ test('store.on("update") with add & update', function (t) {
   })
 
   .then(function () {
-    return store.updateOrAdd('test', {nr: 2})
-  })
-
-  .then(function () {
-    t.is(updateEvents.length, 1, 'triggers 1 update event')
-    t.is(updateEvents[0].object.nr, 2, 'event passes object')
+    store.updateOrAdd('test', {nr: 2})
   })
 })
 
@@ -212,9 +205,24 @@ test('store.on("update") with update all', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var updateEvents = []
+  var objects = []
 
-  store.on('update', addEventToArray.bind(null, updateEvents))
+  store.on('update', function (object) {
+    objects.push(object)
+
+    if (objects.length < 2) {
+      return
+    }
+
+    var orderedObjAttrs = [
+      objects[0].foo,
+      objects[1].foo
+    ].sort()
+
+    t.is(orderedObjAttrs.length, 2, 'triggers 2 update events')
+    t.is(orderedObjAttrs[0], '1', '1st event passes object')
+    t.is(orderedObjAttrs[1], '2', '2nd event passes object')
+  })
 
   store.add([
     {id: 'first', foo: '1'},
@@ -222,20 +230,9 @@ test('store.on("update") with update all', function (t) {
   ])
 
   .then(function () {
-    return store.updateAll({
+    store.updateAll({
       bar: 'baz'
     })
-  })
-
-  .then(function () {
-    var orderedObjAttrs = [
-      updateEvents[0].object.foo,
-      updateEvents[1].object.foo
-    ].sort()
-
-    t.is(orderedObjAttrs.length, 2, 'triggers 2 update events')
-    t.is(orderedObjAttrs[0], '1', '1st event passes object')
-    t.is(orderedObjAttrs[1], '2', '2nd event passes object')
   })
 })
 
@@ -244,9 +241,11 @@ test('store.on("remove") with removing one', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var removeEvents = []
 
-  store.on('remove', addEventToArray.bind(null, removeEvents))
+  store.on('remove', function (object) {
+    t.pass('triggers 1 remove event')
+    t.is(object.foo, 'bar', 'event passes object')
+  })
 
   store.add({
     id: 'one',
@@ -255,11 +254,6 @@ test('store.on("remove") with removing one', function (t) {
 
   .then(function () {
     return store.remove('one')
-  })
-
-  .then(function () {
-    t.is(removeEvents.length, 1, 'triggers 1 remove event')
-    t.is(removeEvents[0].object.foo, 'bar', 'event passes object')
   })
 })
 
@@ -268,9 +262,24 @@ test('store.on("remove") with removing two', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var removeEvents = []
+  var objects = []
 
-  store.on('remove', addEventToArray.bind(null, removeEvents))
+  store.on('remove', function (object) {
+    objects.push(object)
+
+    if (objects.length < 2) {
+      return
+    }
+
+    var orderedObjAttrs = [
+      objects[0].id,
+      objects[1].id
+    ].sort()
+
+    t.is(orderedObjAttrs.length, 2, 'triggers 2 remove events')
+    t.is(orderedObjAttrs[0], 'one', '1st event passes object')
+    t.is(orderedObjAttrs[1], 'two', '2nd event passes object')
+  })
 
   store.add([
     {id: 'one'},
@@ -278,18 +287,7 @@ test('store.on("remove") with removing two', function (t) {
   ])
 
   .then(function () {
-    return store.remove(['one', 'two'])
-  })
-
-  .then(function () {
-    var orderedObjAttrs = [
-      removeEvents[0].object.id,
-      removeEvents[1].object.id
-    ].sort()
-
-    t.is(orderedObjAttrs.length, 2, 'triggers 2 remove events')
-    t.is(orderedObjAttrs[0], 'one', '1st event passes object')
-    t.is(orderedObjAttrs[1], 'two', '2nd event passes object')
+    store.remove(['one', 'two'])
   })
 })
 
@@ -298,9 +296,24 @@ test('store.on("remove") with remove all', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var removeEvents = []
+  var objects = []
 
-  store.on('remove', addEventToArray.bind(null, removeEvents))
+  store.on('remove', function (object) {
+    objects.push(object)
+
+    if (objects.length < 2) {
+      return
+    }
+
+    var orderedObjAttrs = [
+      objects[0].id,
+      objects[1].id
+    ].sort()
+
+    t.is(orderedObjAttrs.length, 2, 'triggers 2 remove events')
+    t.is(orderedObjAttrs[0], 'one', '1st event passes object')
+    t.is(orderedObjAttrs[1], 'two', '2nd event passes object')
+  })
 
   store.add([
     {id: 'one'},
@@ -308,18 +321,7 @@ test('store.on("remove") with remove all', function (t) {
   ])
 
   .then(function () {
-    return store.removeAll()
-  })
-
-  .then(function () {
-    var orderedObjAttrs = [
-      removeEvents[0].object.id,
-      removeEvents[1].object.id
-    ].sort()
-
-    t.is(orderedObjAttrs.length, 2, 'triggers 2 remove events')
-    t.is(orderedObjAttrs[0], 'one', '1st event passes object')
-    t.is(orderedObjAttrs[1], 'two', '2nd event passes object')
+    store.removeAll()
   })
 })
 
@@ -328,18 +330,15 @@ test('store.on("change") with adding one', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var changeEvents = []
 
-  store.on('change', addEventToArray.bind(null, changeEvents))
+  store.on('change', function (eventName, object) {
+    t.pass('triggers 1 change event')
+    t.is(eventName, 'add', 'passes the event name')
+    t.is(object.foo, 'bar', 'event passes object')
+  })
 
   store.add({
     foo: 'bar'
-  })
-
-  .then(function () {
-    t.is(changeEvents.length, 1, 'triggers 1 change event')
-    t.is(changeEvents[0].eventName, 'add', 'passes the event name')
-    t.is(changeEvents[0].object.foo, 'bar', 'event passes object')
   })
 })
 
@@ -348,25 +347,21 @@ test('store.on("change") with updating one', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var changeEvents = []
-
   store.add({
     id: 'test'
   })
 
   .then(function () {
-    store.on('change', addEventToArray.bind(null, changeEvents))
+    store.on('change', function (eventName, object) {
+      t.pass('triggers 1 change event')
+      t.is(eventName, 'update', 'passes the event name')
+      t.is(object.foo, 'bar', 'event passes object')
+    })
 
-    return store.update({
+    store.update({
       id: 'test',
       foo: 'bar'
     })
-  })
-
-  .then(function () {
-    t.is(changeEvents.length, 1, 'triggers 1 change event')
-    t.is(changeEvents[0].eventName, 'update', 'passes the event name')
-    t.is(changeEvents[0].object.foo, 'bar', 'event passes object')
   })
 })
 
@@ -375,7 +370,6 @@ test('store.on("change") with removing one', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var changeEvents = []
 
   store.add({
     id: 'test',
@@ -383,26 +377,35 @@ test('store.on("change") with removing one', function (t) {
   })
 
   .then(function () {
-    store.on('change', addEventToArray.bind(null, changeEvents))
+    store.on('change', function (eventName, object) {
+      t.pass('triggers 1 change event')
+      t.is(eventName, 'remove', 'passes the event name')
+      t.is(object.foo, 'bar', 'event passes object')
+    })
 
-    return store.remove('test')
-  })
-
-  .then(function () {
-    t.is(changeEvents.length, 1, 'triggers 1 change event')
-    t.is(changeEvents[0].eventName, 'remove', 'passes the event name')
-    t.is(changeEvents[0].object.foo, 'bar', 'event passes object')
+    store.remove('test')
   })
 })
 
 test('store.on("change") with adding one and updating it afterwards', function (t) {
-  t.plan(5)
+  t.plan(4)
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var changeEvents = []
 
-  store.on('change', addEventToArray.bind(null, changeEvents))
+  function handleFirstChange (eventName, object) {
+    t.is(object.foo, 'bar', '1st event passes object')
+    t.is(eventName, 'add', '1st event passes the event name')
+
+    store.on('change', handleSecondChange)
+  }
+
+  function handleSecondChange (eventName, object) {
+    t.is(object.foo, 'baz', '2nd event passes object')
+    t.is(eventName, 'update', '2nd event passes the event name')
+  }
+
+  store.one('change', handleFirstChange)
 
   store.add({
     id: 'one',
@@ -410,18 +413,10 @@ test('store.on("change") with adding one and updating it afterwards', function (
   })
 
   .then(function () {
-    return store.update({
+    store.update({
       id: 'one',
       foo: 'baz'
     })
-  })
-
-  .then(function () {
-    t.is(changeEvents.length, 2, 'triggers 2 change events')
-    t.is(changeEvents[0].object.foo, 'bar', '1st event passes object')
-    t.is(changeEvents[0].eventName, 'add', '1st event passes the event name')
-    t.is(changeEvents[1].object.foo, 'baz', '2nd event passes object')
-    t.is(changeEvents[1].eventName, 'update', '2nd event passes the event name')
   })
 })
 
@@ -430,23 +425,19 @@ test('store.off("add") with one add handler', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var addEvents = []
-  var changeEvents = []
 
   var addHandler = function () {
-    return addEventToArray.bind(null, addEvents)
+    t.fail('should not trigger add event')
   }
 
   store.on('add', addHandler)
-  store.on('change', addEventToArray.bind(null, changeEvents))
+  store.on('change', function () {
+    t.pass('triggers change event')
+  })
   store.off('add', addHandler)
 
   store.add({
     foo: 'bar'
-  })
-
-  .then(function () {
-    t.is(addEvents.length, 0, 'triggers no add event')
   })
 })
 
@@ -455,23 +446,21 @@ test('store.off("add") with removing one of two add handlers', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var firstAddHandlerEvents = []
-  var secondAddHandlerEvents = []
 
   var firstAddHandler = function () {
-    return addEventToArray.bind(null, firstAddHandlerEvents)
+    t.fail('should not call first event handler')
+  }
+
+  var secondAddHandler = function () {
+    t.pass('should call second event handler')
   }
 
   store.on('add', firstAddHandler)
-  store.on('add', addEventToArray.bind(null, secondAddHandlerEvents))
-  store.off('add', addEventToArray)
+  store.on('add', secondAddHandler)
+  store.off('add', firstAddHandler)
 
   store.add({
     foo: 'bar'
-  })
-
-  .then(function () {
-    t.is(firstAddHandlerEvents.length, 0, 'triggers no add event on removed handler')
   })
 })
 
@@ -480,31 +469,24 @@ test('store.off("update") with one update handler', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var updateEvents = []
-  var changeEvents = []
 
-  var updateHandler = function (object) {
-    return addEventToArray.bind(null, updateEvents)
+  var updateHandler = function () {
+    t.fail('should not trigger update event')
   }
 
+  store.on('update', updateHandler)
+  store.on('change', function (eventName) {
+    if (eventName === 'update') {
+      t.pass('triggers change event')
+    }
+  })
+  store.off('update', updateHandler)
+
   store.add({
-    id: 'one'
+    foo: 'bar'
   })
 
-  .then(function () {
-    store.on('update', updateHandler)
-    store.on('change', addEventToArray.bind(null, changeEvents))
-    store.off('update', updateHandler)
-
-    return store.update({
-      id: 'one',
-      foo: 'bar'
-    })
-  })
-
-  .then(function () {
-    t.is(updateEvents.length, 0, 'triggers no update event')
-  })
+  .then(store.update)
 })
 
 test('store.off("remove") with one remove handler', function (t) {
@@ -512,28 +494,24 @@ test('store.off("remove") with one remove handler', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var removeEvents = []
-  var changeEvents = []
 
   var removeHandler = function () {
-    return addEventToArray.bind(null, removeEvents)
+    t.fail('should not trigger remove event')
   }
 
+  store.on('remove', removeHandler)
+  store.on('change', function (eventName) {
+    if (eventName === 'remove') {
+      t.pass('triggers change event')
+    }
+  })
+  store.off('remove', removeHandler)
+
   store.add({
-    id: 'one'
+    foo: 'bar'
   })
 
-  .then(function () {
-    store.on('remove', removeHandler)
-    store.on('change', addEventToArray.bind(null, changeEvents))
-    store.off('remove', removeHandler)
-
-    return store.remove('one')
-  })
-
-  .then(function () {
-    t.is(removeEvents.length, 0, 'triggers no remove event')
-  })
+  .then(store.remove)
 })
 
 test('store.one("add") with adding one', function (t) {
@@ -541,40 +519,34 @@ test('store.one("add") with adding one', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var addEvents = []
 
-  store.one('add', addEventToArray.bind(null, addEvents))
+  store.one('add', function (object) {
+    t.pass('triggers 1 add event')
+    t.is(object.foo, 'bar', 'event passes object')
+  })
 
   store.add({
     foo: 'bar'
   })
-
-  .then(function () {
-    t.is(addEvents.length, 1, 'triggers 1 add event')
-    t.is(addEvents[0].object.foo, 'bar', 'event passes object')
-  })
 })
 
 test('store.one("add") with adding two', function (t) {
-  t.plan(2)
+  t.plan(3)
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var oneAddEvent = []
-  var addEvents = []
 
-  store.one('add', addEventToArray.bind(null, oneAddEvent))
-  store.on('add', addEventToArray.bind(null, addEvents))
+  store.one('add', function () {
+    t.pass('store.one handler')
+  })
+  store.on('add', function () {
+    t.pass('store.on handler')
+  })
 
   store.add([
     {foo: 'bar'},
     {foo: 'baz'}
   ])
-
-  .then(function () {
-    t.is(oneAddEvent.length, 1, 'triggers only add event')
-    t.is(oneAddEvent[0].object.foo, 'bar', 'event passes object')
-  })
 })
 
 test('store.one("add") with add & update', function (t) {
@@ -582,19 +554,16 @@ test('store.one("add") with add & update', function (t) {
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var addEvents = []
 
-  store.one('add', addEventToArray.bind(null, addEvents))
-
-  store.updateOrAdd({id: 'test', nr: 1})
-
-  .then(function () {
-    return store.updateOrAdd('test', {nr: 2})
+  store.one('add', function (object) {
+    t.pass('store.one handler')
+    t.is(object.nr, 1, 'event passes object')
   })
 
+  store.add({id: 'test', nr: 1})
+
   .then(function () {
-    t.is(addEvents.length, 1, 'triggers 1 add event')
-    t.is(addEvents[0].object.nr, 1, 'event passes object')
+    store.updateOrAdd('test', {nr: 2})
   })
 })
 
@@ -603,252 +572,20 @@ test('store.one("add") with one element added before registering event and one a
 
   var db = dbFactory()
   var store = db.hoodieApi()
-  var addEvents = []
 
   store.add({
     foo: 'bar'
   })
 
   .then(function () {
-    store.one('add', addEventToArray.bind(null, addEvents))
+    store.one('add', function (object) {
+      t.pass('store.one handler')
+      t.is(object.foo, 'baz', 'event passes object')
+    })
 
-    return store.add({
+    store.add({
       foo: 'baz'
     })
-  })
-
-  .then(function () {
-    t.is(addEvents.length, 1, 'triggers only 1 add event')
-    t.is(addEvents[0].object.foo, 'baz', 'event passes object')
-  })
-})
-
-test('store.one("update") with updating one', function (t) {
-  t.plan(2)
-
-  var db = dbFactory()
-  var store = db.hoodieApi()
-  var updateEvents = []
-
-  store.one('update', addEventToArray.bind(null, updateEvents))
-
-  store.add({
-    id: 'test'
-  })
-
-  .then(function (obj) {
-    return store.update({
-      id: 'test',
-      foo: 'bar'
-    })
-  })
-
-  .then(function () {
-    t.is(updateEvents.length, 1, 'triggers 1 update event')
-    t.is(updateEvents[0].object.foo, 'bar', 'event passes object')
-  })
-})
-
-test('store.one("update") with updating two', function (t) {
-  t.plan(2)
-
-  var db = dbFactory()
-  var store = db.hoodieApi()
-  var oneUpdateEvent = []
-  var updateEvents = []
-
-  store.one('update', addEventToArray.bind(null, oneUpdateEvent))
-  store.on('update', addEventToArray.bind(null, updateEvents))
-
-  store.add([
-    {id: 'first'},
-    {id: 'second'}
-  ])
-
-  .then(function (obj) {
-    return store.update([
-      { id: 'first', foo: 'bar' },
-      { id: 'second', foo: 'baz' }
-    ])
-  })
-
-  .then(function () {
-    t.is(oneUpdateEvent.length, 1, 'triggers 1 update event')
-    t.is(oneUpdateEvent[0].object.foo, 'bar', 'event passes object')
-  })
-})
-
-test('store.one("update") with add & update', function (t) {
-  t.plan(2)
-
-  var db = dbFactory()
-  var store = db.hoodieApi()
-  var updateEvents = []
-
-  store.one('update', addEventToArray.bind(null, updateEvents))
-
-  store.updateOrAdd({
-    id: 'test',
-    nr: 1
-  })
-
-  .then(function (obj) {
-    return store.updateOrAdd({
-      id: 'test',
-      foo: 'bar'
-    })
-  })
-
-  .then(function () {
-    t.is(updateEvents.length, 1, 'triggers 1 update event')
-    t.is(updateEvents[0].object.foo, 'bar', 'event passes object')
-  })
-})
-
-test('store.one("update") with update all', function (t) {
-  t.plan(2)
-
-  var db = dbFactory()
-  var store = db.hoodieApi()
-  var oneUpdateEvent = []
-  var updateEvents = []
-
-  store.one('update', addEventToArray.bind(null, oneUpdateEvent))
-  store.on('update', addEventToArray.bind(null, updateEvents))
-
-  store.add([
-    {id: 'first'},
-    {id: 'second'}
-  ])
-
-  .then(function () {
-    return store.updateAll({
-      foo: 'bar'
-    })
-  })
-
-  .then(function () {
-    t.is(oneUpdateEvent.length, 1, 'triggers 1 update event')
-    t.is(oneUpdateEvent[0].object.id, 'first', 'event passes object')
-  })
-})
-
-test('store.one("remove") with removing one', function (t) {
-  t.plan(2)
-
-  var db = dbFactory()
-  var store = db.hoodieApi()
-  var removeEvents = []
-
-  store.one('remove', addEventToArray.bind(null, removeEvents))
-
-  store.add({
-    id: 'one',
-    foo: 'bar'
-  })
-
-  .then(function () {
-    return store.remove('one')
-  })
-
-  .then(function () {
-    t.is(removeEvents.length, 1, 'triggers 1 remove event')
-    t.is(removeEvents[0].object.id, 'one', 'event passes object')
-  })
-})
-
-test('store.one("remove") with removing two', function (t) {
-  t.plan(2)
-
-  var db = dbFactory()
-  var store = db.hoodieApi()
-  var oneRemoveEvent = []
-  var removeEvents = []
-
-  store.one('remove', addEventToArray.bind(null, oneRemoveEvent))
-  store.on('remove', addEventToArray.bind(null, removeEvents))
-
-  store.add([
-    {id: 'one'},
-    {id: 'two'}
-  ])
-
-  .then(function () {
-    return store.remove(['one', 'two'])
-  })
-
-  .then(function () {
-    t.is(oneRemoveEvent.length, 1, 'triggers 1 remove event')
-    t.is(oneRemoveEvent[0].object.id, 'one', 'event passes object')
-  })
-})
-
-test('store.one("remove") with remove all', function (t) {
-  t.plan(2)
-
-  var db = dbFactory()
-  var store = db.hoodieApi()
-  var oneRemoveEvent = []
-  var removeEvents = []
-
-  store.one('remove', addEventToArray.bind(null, oneRemoveEvent))
-  store.on('remove', addEventToArray.bind(null, removeEvents))
-
-  store.add([
-    {id: 'one'},
-    {id: 'two'}
-  ])
-
-  .then(function () {
-    return store.removeAll()
-  })
-
-  .then(function () {
-    t.is(oneRemoveEvent.length, 1, 'triggers 1 remove event')
-    t.is(oneRemoveEvent[0].object.id, 'one', 'event passes object')
-  })
-})
-
-test('store.one("change") with adding one', function (t) {
-  t.plan(3)
-
-  var db = dbFactory()
-  var store = db.hoodieApi()
-  var changeEvents = []
-
-  store.one('change', addEventToArray.bind(null, changeEvents))
-
-  store.add({
-    foo: 'bar'
-  })
-
-  .then(function () {
-    t.is(changeEvents.length, 1, 'triggers 1 change event')
-    t.is(changeEvents[0].eventName, 'add', 'passes the event name')
-    t.is(changeEvents[0].object.foo, 'bar', 'event passes object')
-  })
-})
-
-test('store.one("change") with adding two', function (t) {
-  t.plan(3)
-
-  var db = dbFactory()
-  var store = db.hoodieApi()
-  var oneChangeEvent = []
-  var changeEvents = []
-
-  store.one('change', addEventToArray.bind(null, oneChangeEvent))
-  store.on('change', addEventToArray.bind(null, changeEvents))
-
-  store.add([
-    {foo: 'bar'},
-    {foo: 'baz'}
-  ])
-
-  .then(function () {
-    t.is(oneChangeEvent.length, 1, 'triggers 1 change event')
-    t.is(oneChangeEvent[0].eventName, 'add', 'passes the event name')
-    t.is(oneChangeEvent[0].object.foo, 'bar', 'event passes object')
   })
 })
 
@@ -882,17 +619,27 @@ test('store.off returns store', function (t) {
   t.ok(isFunction, 'allows chaining')
 })
 
-function addEventToArray (array, object) {
-  if (arguments.length > 2) {
-    arguments[0].push({
-      eventName: arguments[1],
-      object: arguments[2]
-    })
-  } else {
-    arguments[0].push({
-      object: arguments[1]
-    })
-  }
-}
+// We rely on PouchDB’s .changes() feed for events and hence have no control
+// on when the events get triggered. Most often they seem to be emitted after
+// the respective methods resolve, but not always. We could guarantee that events
+// get emitted before a method resolves, but only with a tremendous amount of
+// added complexity, so we decided against it and instead document that fact.
+// But we left this test for reference, maybe things will change in future.
+// see also: https://github.com/hoodiehq/pouchdb-hoodie-api/issues/54
+test.skip('events should emit before methods resolve', function (t) {
+  t.plan(1)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var eventTriggered = false
+
+  store.on('add', function () {
+    eventTriggered = true
+  })
+
+  store.add().then(function () {
+    t.ok(eventTriggered)
+  })
+})
 
 function noop () {}
