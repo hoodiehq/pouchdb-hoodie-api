@@ -8,12 +8,13 @@ module.exports = find
 /**
  * finds existing object in local database
  *
+ * @param  {String}        prefix       optional id prefix
  * @param  {String|Object} idOrObject   Id of object or object with
  *                                      `.id` property
  * @return {Promise}
  */
-function find (objectsOrIds) {
+function find (prefix, objectsOrIds) {
   return Array.isArray(objectsOrIds)
-    ? findMany.call(this, objectsOrIds)
-    : findOne.call(this, objectsOrIds)
+    ? findMany.call(this, objectsOrIds, prefix)
+    : findOne.call(this, objectsOrIds, prefix)
 }

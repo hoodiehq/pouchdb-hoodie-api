@@ -8,14 +8,15 @@ module.exports = updateOrAdd
 /**
  * updates existing object, or creates otherwise.
  *
+ * @param  {String} prefix            optional id prefix
  * @param  {String|Object|Object[]} - id or object with `.id` property, or
  *                                    array of properties
  * @param  {Object} [properties]      If id passed, properties for new
  *                                    or existing object
  * @return {Promise}
  */
-function updateOrAdd (idOrObjectOrArray, newObject) {
+function updateOrAdd (prefix, idOrObjectOrArray, newObject) {
   return Array.isArray(idOrObjectOrArray)
-    ? updateOrAddMany.call(this, idOrObjectOrArray)
-    : updateOrAddOne.call(this, idOrObjectOrArray, newObject)
+    ? updateOrAddMany.call(this, idOrObjectOrArray, prefix)
+    : updateOrAddOne.call(this, idOrObjectOrArray, newObject, prefix)
 }
