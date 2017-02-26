@@ -3,8 +3,13 @@
 var toId = require('../utils/to-id')
 var toObject = require('../utils/to-object')
 
-module.exports = function findOne (idOrObject) {
+module.exports = function findOne (idOrObject, prefix) {
   var id = toId(idOrObject)
+
+  if (prefix && id.substr(0, prefix.length) !== prefix) {
+    id = prefix + id
+  }
+
   return this.get(id)
 
   .then(toObject)
