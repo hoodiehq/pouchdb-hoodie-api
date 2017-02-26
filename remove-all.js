@@ -10,16 +10,24 @@ module.exports = removeAll
 /**
  * removes all existing objects
  *
+ * @param  {String}   prefix     optional id prefix
  * @param  {Function} [filter]   Function returning `true` for any object
  *                               to be removed.
  * @return {Promise}
  */
-function removeAll (filter) {
+function removeAll (prefix, filter) {
   var objects
 
-  return this.allDocs({
+  var options = {
     include_docs: true
-  })
+  }
+
+  if (prefix) {
+    options.startkey = prefix
+    options.endkey = prefix + '\uffff'
+  }
+
+  return this.allDocs(options)
 
   .then(function (res) {
     objects = res.rows

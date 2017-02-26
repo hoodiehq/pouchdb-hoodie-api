@@ -10,13 +10,14 @@ module.exports = remove
 /**
  * removes existing object
  *
+ * @param  {String}          prefix         optional id prefix
  * @param  {Object|Function} objectsOrIds   id or object with `.id` property
  * @param  {Object|Function} [change]       Change properties or function that
  *                                          changes existing object
  * @return {Promise}
  */
-function remove (objectsOrIds, change) {
+function remove (prefix, objectsOrIds, change) {
   return Array.isArray(objectsOrIds)
-    ? updateMany.call(this, objectsOrIds.map(markAsDeleted.bind(null, change)))
-    : updateOne.call(this, markAsDeleted(change, objectsOrIds))
+    ? updateMany.call(this, objectsOrIds.map(markAsDeleted.bind(null, change)), null, prefix)
+    : updateOne.call(this, markAsDeleted(change, objectsOrIds), null, prefix)
 }
