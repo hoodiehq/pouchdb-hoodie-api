@@ -1,11 +1,28 @@
 'use strict'
 
+var uuid = require('pouchdb-utils').uuid
+
 var toDoc = require('../utils/to-doc')
 var addTimestamps = require('../utils/add-timestamps')
 
-module.exports = function addMany (objects) {
+module.exports = function addMany (objects, prefix) {
   objects.forEach(addTimestamps)
-  return this.bulkDocs(objects.map(toDoc))
+
+  if (prefix) {
+    objects.forEach(function (object) {
+      if (!object.id) {
+        object.id = uuid()
+      }
+
+      if (prefix) {
+        object.id = prefix + object.id
+      }
+    })
+  }
+
+  var docs = objects.map(toDoc)
+
+  return this.bulkDocs(docs)
 
   .then(function (responses) {
     return responses.map(function (response, i) {

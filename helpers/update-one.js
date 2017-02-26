@@ -10,7 +10,7 @@ var addTimestamps = require('../utils/add-timestamps')
 
 var findOne = require('./find-one')
 
-module.exports = function updateOne (idOrObject, change) {
+module.exports = function updateOne (idOrObject, change, prefix) {
   var self = this
   var object
 
@@ -18,11 +18,11 @@ module.exports = function updateOne (idOrObject, change) {
     return Promise.reject(PouchDBErrors.NOT_AN_OBJECT)
   }
 
-  return findOne.call(this, idOrObject)
+  return findOne.call(this, idOrObject, prefix)
 
   .then(function (object) {
     if (!change) {
-      return extend(object, idOrObject)
+      return extend(object, idOrObject, {id: object.id, _rev: object._rev})
     }
     return changeObject(change, object)
   })
