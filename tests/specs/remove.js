@@ -264,7 +264,7 @@ test('store.remove(object) creates deletedAt timestamp', function (t) {
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  var now = require('../../utils/now')
+  var now = require('../../lib/utils/now')
   var isValidDate = require('../utils/is-valid-date')
 
   store.add({
@@ -290,7 +290,7 @@ test('store.remove([objects]) creates deletedAt timestamps', function (t) {
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  var now = require('../../utils/now')
+  var now = require('../../lib/utils/now')
   var isValidDate = require('../utils/is-valid-date')
 
   store.add([{

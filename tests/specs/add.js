@@ -159,7 +159,7 @@ test('store.add(object) makes createdAt and updatedAt timestamps', function (t) 
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  var now = require('../../utils/now')
+  var now = require('../../lib/utils/now')
   var isValidDate = require('../utils/is-valid-date')
 
   store.add({
@@ -183,7 +183,7 @@ test('store.add([objects]) makes createdAt and updatedAt timestamps', function (
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  var now = require('../../utils/now')
+  var now = require('../../lib/utils/now')
   var isValidDate = require('../utils/is-valid-date')
 
   store.add([{
