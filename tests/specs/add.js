@@ -26,7 +26,7 @@ test('adds object to db', function (t) {
 
   .then(function (object) {
     t.is(object.foo, 'bar', 'resolves value')
-    t.is(typeof object.id, 'string', 'resolves id')
+    t.is(typeof object._id, 'string', 'resolves id')
     t.is(typeof object._rev, 'string', 'resolves _rev')
 
     return db.allDocs({
@@ -47,12 +47,12 @@ test('adds object with id to db', function (t) {
   var store = db.hoodieApi()
 
   store.add({
-    id: 'baz',
+    _id: 'baz',
     foo: 'bar'
   })
 
   .then(function (object) {
-    t.is(object.id, 'baz', 'resolves id')
+    t.is(object._id, 'baz', 'resolves id')
     return db.get('baz')
   })
 
@@ -81,10 +81,10 @@ test('fails for existing object', function (t) {
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  store.add({id: 'foo', foo: 'bar'})
+  store.add({_id: 'foo', foo: 'bar'})
 
   .then(function () {
-    return store.add({id: 'foo', foo: 'baz'})
+    return store.add({_id: 'foo', foo: 'baz'})
   })
 
   .catch(function (err) {
@@ -99,10 +99,10 @@ test('returns custom conflict error for existing object', function (t) {
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  store.add({id: 'foo', foo: 'bar'})
+  store.add({_id: 'foo', foo: 'bar'})
 
   .then(function () {
-    return store.add({id: 'foo', foo: 'baz'})
+    return store.add({_id: 'foo', foo: 'baz'})
   })
 
   .catch(function (err) {
@@ -118,7 +118,7 @@ test('adds multiple objects to db', function (t) {
   var store = db.hoodieApi()
 
   store.add({
-    id: 'foo',
+    _id: 'foo',
     foo: 'bar'
   })
 
@@ -128,18 +128,18 @@ test('adds multiple objects to db', function (t) {
     }, {
       foo: 'baz'
     }, {
-      id: 'foo',
+      _id: 'foo',
       foo: 'baz'
     }])
   })
 
   .then(function (objects) {
     t.is(objects[0].foo, 'bar', 'resolves first value')
-    t.ok(objects[0].id, 'resolves first id')
+    t.ok(objects[0]._id, 'resolves first id')
     t.ok(objects[0]._rev, 'resolves first _rev')
 
     t.is(objects[1].foo, 'baz', 'resolves second value')
-    t.ok(objects[1].id, 'resolves second id')
+    t.ok(objects[1]._id, 'resolves second id')
     t.ok(objects[1]._rev, 'resolves second _rev')
 
     t.ok(objects[2] instanceof Error, 'resolves third w/ error')
@@ -163,14 +163,14 @@ test('store.add(object) makes createdAt and updatedAt timestamps', function (t) 
   var isValidDate = require('../utils/is-valid-date')
 
   store.add({
-    id: 'shouldHaveTimestamps'
+    _id: 'shouldHaveTimestamps'
   })
 
   .then(function (object) {
-    t.is(object.id, 'shouldHaveTimestamps', 'resolves doc')
-    t.ok(isValidDate(object.createdAt), 'createdAt should be a valid date')
-    t.is(now(), object.createdAt, 'createdAt should be the same time as right now')
-    t.is(object.updatedAt, undefined, 'updatedAt should be undefined')
+    t.is(object._id, 'shouldHaveTimestamps', 'resolves doc')
+    t.ok(isValidDate(object.hoodie.createdAt), 'createdAt should be a valid date')
+    t.is(now(), object.hoodie.createdAt, 'createdAt should be the same time as right now')
+    t.is(object.hoodie.updatedAt, undefined, 'updatedAt should be undefined')
 
     clock.uninstall()
   })
@@ -187,20 +187,69 @@ test('store.add([objects]) makes createdAt and updatedAt timestamps', function (
   var isValidDate = require('../utils/is-valid-date')
 
   store.add([{
-    id: 'shouldHaveTimestamps'
+    _id: 'shouldHaveTimestamps'
   }, {
-    id: 'shouldAlsoHaveTimestamps'
+    _id: 'shouldAlsoHaveTimestamps'
   }])
 
   .then(function (objects) {
-    t.is(objects[0].id, 'shouldHaveTimestamps', 'resolves doc')
-    t.is(objects[1].id, 'shouldAlsoHaveTimestamps', 'resolves doc')
+    t.is(objects[0]._id, 'shouldHaveTimestamps', 'resolves doc')
+    t.is(objects[1]._id, 'shouldAlsoHaveTimestamps', 'resolves doc')
     objects.forEach(function (object) {
-      t.ok(isValidDate(object.createdAt), 'createdAt should be a valid date')
-      t.is(now(), object.createdAt, 'createdAt should be the same time as right now')
-      t.is(object.updatedAt, undefined, 'updatedAt should be undefined')
+      t.ok(isValidDate(object.hoodie.createdAt), 'createdAt should be a valid date')
+      t.is(now(), object.hoodie.createdAt, 'createdAt should be the same time as right now')
+      t.is(object.hoodie.updatedAt, undefined, 'updatedAt should be undefined')
     })
 
     clock.uninstall()
   })
+})
+
+test('store.add(doc) ignores doc.hoodie properties', function (t) {
+  t.plan(2)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+  var doc = {
+    foo: 'bar',
+    hoodie: {
+      foo: 'bar'
+    }
+  }
+
+  store.add(doc)
+
+  .then(function (doc) {
+    t.is(doc.hoodie.foo, undefined)
+  })
+
+  t.is(doc.hoodie.foo, 'bar', 'does not alter passed doc')
+})
+
+test('store.add(docs) ignores doc.hoodie properties', function (t) {
+  t.plan(3)
+
+  var db = dbFactory()
+  var store = db.hoodieApi()
+
+  var docs = [{
+    foo: 'bar',
+    hoodie: {
+      foo: 'bar'
+    }
+  }, {
+    foo: 'baz',
+    hoodie: {
+      foo: 'baz'
+    }
+  }]
+
+  store.add(docs)
+
+  .then(function (docs) {
+    t.is(docs[0].hoodie.foo, undefined)
+    t.is(docs[1].hoodie.foo, undefined)
+  })
+
+  t.is(docs[0].hoodie.foo, 'bar', 'does not alter passed doc')
 })
