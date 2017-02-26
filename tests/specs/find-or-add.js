@@ -19,14 +19,14 @@ test('store.findOrAdd(id, object) finds existing', function (t) {
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  store.add({id: 'exists', foo: 'bar'})
+  store.add({_id: 'exists', foo: 'bar'})
 
   .then(function () {
     return store.findOrAdd('exists', {foo: 'baz'})
   })
 
   .then(function (object) {
-    t.is(object.id, 'exists', 'resolves with id')
+    t.is(object._id, 'exists', 'resolves with id')
     t.is(object.foo, 'bar', 'resolves with old object')
   })
 })
@@ -39,7 +39,7 @@ test('store.findOrAdd(id, object) adds new', function (t) {
   return store.findOrAdd('newid', {foo: 'baz'})
 
   .then(function (object) {
-    t.is(object.id, 'newid', 'resolves with id')
+    t.is(object._id, 'newid', 'resolves with id')
     t.is(object.foo, 'baz', 'resolves with new object')
   })
 })
@@ -62,14 +62,14 @@ test('store.findOrAdd(object) finds existing', function (t) {
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  store.add({id: 'exists', foo: 'bar'})
+  store.add({_id: 'exists', foo: 'bar'})
 
   .then(function (object) {
-    return store.findOrAdd({id: 'exists', foo: 'baz'})
+    return store.findOrAdd({_id: 'exists', foo: 'baz'})
   })
 
   .then(function (object) {
-    t.is(object.id, 'exists', 'resolves with id')
+    t.is(object._id, 'exists', 'resolves with id')
     t.is(object.foo, 'bar', 'resolves with old object')
   })
 })
@@ -80,10 +80,10 @@ test('store.findOrAdd(object) adds new', function (t) {
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  return store.findOrAdd({id: 'newid', foo: 'baz'})
+  return store.findOrAdd({_id: 'newid', foo: 'baz'})
 
   .then(function (object) {
-    t.is(object.id, 'newid', 'resolves with id')
+    t.is(object._id, 'newid', 'resolves with id')
     t.is(object.foo, 'baz', 'resolves with new object')
   })
 })
@@ -108,16 +108,16 @@ test('store.findOrAdd([object1, object2])', function (t) {
   var store = db.hoodieApi()
 
   store.add([
-    {id: 'exists'}
+    {_id: 'exists'}
   ]).then(function () {
     return store.findOrAdd([
-      {id: 'exists', foo: 'bar'},
-      {id: 'unknown', foo: 'baz'}
+      {_id: 'exists', foo: 'bar'},
+      {_id: 'unknown', foo: 'baz'}
     ])
     .then(function (objects) {
-      t.is(objects[0].id, 'exists', 'object1 to be found')
+      t.is(objects[0]._id, 'exists', 'object1 to be found')
       t.is(objects[0].foo, undefined, 'object1 to be found')
-      t.is(objects[1].id, 'unknown', 'object2 to be created')
+      t.is(objects[1]._id, 'unknown', 'object2 to be created')
       t.is(objects[1].foo, 'baz', 'object2 to be created')
     })
   })
@@ -133,7 +133,7 @@ test('#58 store.findOrAdd(id, object) triggers no events when finds existing', f
     t.pass('add event')
   })
 
-  store.add({id: 'exists', foo: 'bar'})
+  store.add({_id: 'exists', foo: 'bar'})
 
   .then(function () {
     return store.findOrAdd('exists', {foo: 'baz'})
@@ -154,17 +154,17 @@ test('#58 store.findOrAdd([object1, object2]) triggers no events when finds exis
     t.pass('add event')
   })
 
-  store.add({id: 'exists', foo: 'bar'})
+  store.add({_id: 'exists', foo: 'bar'})
 
   .then(function () {
     return store.findOrAdd([
-      {id: 'exists', foo: 'bar'}
+      {_id: 'exists', foo: 'bar'}
     ])
   })
 
   .then(function () {
     return store.findOrAdd([
-      {id: 'unknown', foo: 'baz'}
+      {_id: 'unknown', foo: 'baz'}
     ])
   })
 })

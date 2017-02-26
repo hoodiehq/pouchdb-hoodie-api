@@ -110,7 +110,7 @@ test('store.on("add") with add & update', function (t) {
   })
 
   store.updateOrAdd({
-    id: 'test',
+    _id: 'test',
     nr: 1
   })
 
@@ -131,12 +131,12 @@ test('store.on("update") with updating one', function (t) {
   })
 
   store.add({
-    id: 'test'
+    _id: 'test'
   })
 
   .then(function (obj) {
     store.update({
-      id: 'test',
+      _id: 'test',
       foo: 'bar'
     })
   })
@@ -167,14 +167,14 @@ test('store.on("update") with updating two', function (t) {
   })
 
   store.add([
-    {id: 'first'},
-    {id: 'second'}
+    {_id: 'first'},
+    {_id: 'second'}
   ])
 
   .then(function (obj) {
     store.update([
-      { id: 'first', foo: 'bar' },
-      { id: 'second', foo: 'baz' }
+      { _id: 'first', foo: 'bar' },
+      { _id: 'second', foo: 'baz' }
     ])
   })
 })
@@ -191,7 +191,7 @@ test('store.on("update") with add & update', function (t) {
   })
 
   store.updateOrAdd({
-    id: 'test',
+    _id: 'test',
     nr: 1
   })
 
@@ -225,8 +225,8 @@ test('store.on("update") with update all', function (t) {
   })
 
   store.add([
-    {id: 'first', foo: '1'},
-    {id: 'second', foo: '2'}
+    {_id: 'first', foo: '1'},
+    {_id: 'second', foo: '2'}
   ])
 
   .then(function () {
@@ -248,7 +248,7 @@ test('store.on("remove") with removing one', function (t) {
   })
 
   store.add({
-    id: 'one',
+    _id: 'one',
     foo: 'bar'
   })
 
@@ -272,8 +272,8 @@ test('store.on("remove") with removing two', function (t) {
     }
 
     var orderedObjAttrs = [
-      objects[0].id,
-      objects[1].id
+      objects[0]._id,
+      objects[1]._id
     ].sort()
 
     t.is(orderedObjAttrs.length, 2, 'triggers 2 remove events')
@@ -282,8 +282,8 @@ test('store.on("remove") with removing two', function (t) {
   })
 
   store.add([
-    {id: 'one'},
-    {id: 'two'}
+    {_id: 'one'},
+    {_id: 'two'}
   ])
 
   .then(function () {
@@ -306,8 +306,8 @@ test('store.on("remove") with remove all', function (t) {
     }
 
     var orderedObjAttrs = [
-      objects[0].id,
-      objects[1].id
+      objects[0]._id,
+      objects[1]._id
     ].sort()
 
     t.is(orderedObjAttrs.length, 2, 'triggers 2 remove events')
@@ -316,8 +316,8 @@ test('store.on("remove") with remove all', function (t) {
   })
 
   store.add([
-    {id: 'one'},
-    {id: 'two'}
+    {_id: 'one'},
+    {_id: 'two'}
   ])
 
   .then(function () {
@@ -348,7 +348,7 @@ test('store.on("change") with updating one', function (t) {
   var db = dbFactory()
   var store = db.hoodieApi()
   store.add({
-    id: 'test'
+    _id: 'test'
   })
 
   .then(function () {
@@ -359,7 +359,7 @@ test('store.on("change") with updating one', function (t) {
     })
 
     store.update({
-      id: 'test',
+      _id: 'test',
       foo: 'bar'
     })
   })
@@ -372,7 +372,7 @@ test('store.on("change") with removing one', function (t) {
   var store = db.hoodieApi()
 
   store.add({
-    id: 'test',
+    _id: 'test',
     foo: 'bar'
   })
 
@@ -408,13 +408,13 @@ test('store.on("change") with adding one and updating it afterwards', function (
   store.one('change', handleFirstChange)
 
   store.add({
-    id: 'one',
+    _id: 'one',
     foo: 'bar'
   })
 
   .then(function () {
     store.update({
-      id: 'one',
+      _id: 'one',
       foo: 'baz'
     })
   })
@@ -560,7 +560,7 @@ test('store.one("add") with add & update', function (t) {
     t.is(object.nr, 1, 'event passes object')
   })
 
-  store.add({id: 'test', nr: 1})
+  store.add({_id: 'test', nr: 1})
 
   .then(function () {
     store.updateOrAdd('test', {nr: 2})

@@ -35,7 +35,7 @@ test('store.withIdPrefix("test/").add(properties)', function (t) {
   })
 
   .then(function (doc) {
-    t.ok(/^test\//.test(doc.id), 'prefixes id with "test/"')
+    t.ok(/^test\//.test(doc._id), 'prefixes id with "test/"')
     t.end()
   })
 
@@ -53,8 +53,8 @@ test('store.withIdPrefix("test/").add([doc1, doc2])', function (t) {
   }])
 
   .then(function (docs) {
-    t.ok(/^test\//.test(docs[0].id), 'prefixes id with "test/"')
-    t.ok(/^test\//.test(docs[1].id), 'prefixes id with "test/"')
+    t.ok(/^test\//.test(docs[0]._id), 'prefixes id with "test/"')
+    t.ok(/^test\//.test(docs[1]._id), 'prefixes id with "test/"')
     t.end()
   })
 
@@ -116,8 +116,8 @@ test('store.withIdPrefix("test/").find(["foo", "test/bar"])', function (t) {
   })
 
   .then(function (docs) {
-    t.is(docs[0].id, 'test/foo', 'finds doc with id: test/foo')
-    t.is(docs[1].id, 'test/bar', 'finds doc with id: test/bar')
+    t.is(docs[0]._id, 'test/foo', 'finds doc with _id: test/foo')
+    t.is(docs[1]._id, 'test/bar', 'finds doc with _id: test/bar')
 
     t.end()
   })
@@ -155,7 +155,7 @@ test('store.withIdPrefix("test/").findOrAdd(id, object) when added', function (t
 
   .then(function (doc) {
     t.is(doc.foo, 'baz', 'adds doc')
-    t.ok(/^test\//.test(doc.id), 'prefixes .id')
+    t.ok(/^test\//.test(doc._id), 'prefixes ._id')
 
     t.end()
   })
@@ -174,17 +174,17 @@ test('store.withIdPrefix("test/").findOrAdd([object1, object2])', function (t) {
 
   .then(function () {
     return testStore.findOrAdd([{
-      id: 'foo',
+      _id: 'foo',
       foo: 'baz'
     }, {
-      id: 'baz',
+      _id: 'baz',
       baz: 'ar'
     }])
   })
 
   .then(function (docs) {
-    t.is(docs[0].foo, 'bar', 'finds doc with id: test/foo')
-    t.is(docs[1].baz, 'ar', 'adds doc with id: test/baz')
+    t.is(docs[0].foo, 'bar', 'finds doc with _id: test/foo')
+    t.is(docs[1].baz, 'ar', 'adds doc with _id: test/baz')
 
     t.end()
   })
@@ -208,7 +208,7 @@ test('store.withIdPrefix("test/").findAll()', function (t) {
 
   .then(function (docs) {
     t.is(docs.length, 1)
-    t.is(docs[0].id, 'test/foo')
+    t.is(docs[0]._id, 'test/foo')
 
     t.end()
   })
@@ -250,10 +250,10 @@ test('store.withIdPrefix("test/").update([object1, object2])', function (t) {
 
   .then(function () {
     return testStore.update([{
-      id: 'test/foo',
+      _id: 'test/foo',
       foo: 'bar2'
     }, {
-      id: 'test/bar',
+      _id: 'test/bar',
       bar: 'baz2'
     }])
   })
@@ -296,7 +296,7 @@ test('store.withIdPrefix("test/").updateOrAdd(object) when added', function (t) 
   return testStore.updateOrAdd('foo', {foo: 'baz'})
 
   .then(function (doc) {
-    t.ok(/^test\//.test(doc.id), 'adds doc')
+    t.ok(/^test\//.test(doc._id), 'adds doc')
 
     t.end()
   })
@@ -314,17 +314,17 @@ test('store.withIdPrefix("test/").updateOrAdd([object1, object2])', function (t)
 
   .then(function () {
     return testStore.updateOrAdd([{
-      id: 'foo',
+      _id: 'foo',
       foo: 'baz'
     }, {
-      id: 'baz',
+      _id: 'baz',
       baz: 'ar'
     }])
   })
 
   .then(function (docs) {
-    t.is(docs[0].foo, 'baz', 'finds doc with id: test/foo')
-    t.is(docs[1].baz, 'ar', 'adds doc with id: test/baz')
+    t.is(docs[0].foo, 'baz', 'finds doc with _id: test/foo')
+    t.is(docs[1].baz, 'ar', 'adds doc with _id: test/baz')
 
     t.end()
   })
@@ -368,7 +368,7 @@ test('store.withIdPrefix("test/").remove(id)', function (t) {
   })
 
   .then(function (doc) {
-    t.is(doc.id, 'test/foo')
+    t.is(doc._id, 'test/foo')
 
     t.end()
   })
@@ -389,7 +389,7 @@ test('store.withIdPrefix("test/").remove([object1, id2])', function (t) {
 
   .then(function () {
     return testStore.remove([{
-      id: 'test/foo',
+      _id: 'test/foo',
       foo: 'bar2'
     }, 'test/bar'])
   })
@@ -418,7 +418,7 @@ test('store.withIdPrefix("test/").removeAll()', function (t) {
 
   .then(function (docs) {
     t.is(docs.length, 1)
-    t.is(docs[0].id, 'test/foo')
+    t.is(docs[0]._id, 'test/foo')
 
     t.end()
   })
@@ -435,7 +435,7 @@ test('store.withIdPrefix("test/").withIdPrefix("onetwo/").add(properties)', func
   })
 
   .then(function (doc) {
-    t.ok(/^test\/onetwo\//.test(doc.id), 'prefixes id with "test/onetwo/"')
+    t.ok(/^test\/onetwo\//.test(doc._id), 'prefixes id with "test/onetwo/"')
     t.end()
   })
 
@@ -449,13 +449,13 @@ test('store.withIdPrefix("test/").on("change", handler) events', function (t) {
   var testStore = store.withIdPrefix('test/')
 
   testStore.on('change', function (eventName, object) {
-    t.is(object.id, 'test/foo')
+    t.is(object._id, 'test/foo')
   })
 
   testStore.on('add', function (object) {
-    t.is(object.id, 'test/foo')
+    t.is(object._id, 'test/foo')
   })
 
-  store.add({id: 'foo'})
-  testStore.add({id: 'foo'})
+  store.add({_id: 'foo'})
+  testStore.add({_id: 'foo'})
 })

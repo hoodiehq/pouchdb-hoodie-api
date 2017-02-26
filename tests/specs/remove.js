@@ -21,7 +21,7 @@ test('removes existing by id', function (t) {
   var store = db.hoodieApi()
 
   store.add({
-    id: 'foo'
+    _id: 'foo'
   })
 
   .then(function () {
@@ -29,7 +29,7 @@ test('removes existing by id', function (t) {
   })
 
   .then(function (object) {
-    t.is(object.id, 'foo', 'resolves value')
+    t.is(object._id, 'foo', 'resolves value')
 
     return store.find('foo')
   })
@@ -46,16 +46,16 @@ test('removes existing by object', function (t) {
   var store = db.hoodieApi()
 
   store.add({
-    id: 'foo',
+    _id: 'foo',
     foo: 'bar'
   })
 
   .then(function () {
-    return store.remove({id: 'foo'})
+    return store.remove({_id: 'foo'})
   })
 
   .then(function (object) {
-    t.is(object.id, 'foo', 'resolves value')
+    t.is(object._id, 'foo', 'resolves value')
     t.is(object.foo, 'bar', 'resolves value')
 
     return store.find('foo')
@@ -78,7 +78,7 @@ test('fails for non-existing', function (t) {
     t.ok(err instanceof Error, 'rejects error')
   })
 
-  store.remove({id: 'foo'})
+  store.remove({_id: 'foo'})
 
   .catch(function (err) {
     t.ok(err instanceof Error, 'rejects error')
@@ -98,7 +98,7 @@ test('returns custom not found error for non-existing', function (t) {
     t.is(err.message, 'Object with id "foo" is missing', 'rejects with custom message')
   })
 
-  store.remove({id: 'foo'})
+  store.remove({_id: 'foo'})
 
   .catch(function (err) {
     t.is(err.name, 'Not found', 'rejects with custom name')
@@ -113,23 +113,23 @@ test('store.remove(array) removes existing, returns error for non-existing', fun
   var store = db.hoodieApi()
 
   store.add([
-    { id: 'exists1', foo: 'bar' },
-    { id: 'exists2', foo: 'baz' }
+    { _id: 'exists1', foo: 'bar' },
+    { _id: 'exists2', foo: 'baz' }
   ])
 
   .then(function () {
     return store.remove([
       'exists1',
-      { id: 'exists2' },
+      { _id: 'exists2' },
       'unknown'
     ])
   })
 
   .then(function (objects) {
-    t.is(objects[0].id, 'exists1', 'resolves with value for existing')
+    t.is(objects[0]._id, 'exists1', 'resolves with value for existing')
     t.is(objects[0].foo, 'bar', 'resolves with value for existing')
     t.is(parseInt(objects[0]._rev, 10), 2, 'resolves with revision 2')
-    t.is(objects[1].id, 'exists2', 'resolves with value for existing')
+    t.is(objects[1]._id, 'exists2', 'resolves with value for existing')
     t.is(objects[1].foo, 'baz', 'resolves with value for existing')
     t.is(parseInt(objects[1]._rev, 10), 2, 'resolves with revision 2')
     t.is(objects[2].status, 404, 'resolves with 404 error for non-existing')
@@ -143,14 +143,14 @@ test('store.remove(array) removes existing, returns custom not found error for n
   var store = db.hoodieApi()
 
   store.add([
-    { id: 'exists1', foo: 'bar' },
-    { id: 'exists2', foo: 'baz' }
+    { _id: 'exists1', foo: 'bar' },
+    { _id: 'exists2', foo: 'baz' }
   ])
 
   .then(function () {
     return store.remove([
       'exists1',
-      { id: 'exists2' },
+      { _id: 'exists2' },
       'unknown'
     ])
   })
@@ -162,53 +162,55 @@ test('store.remove(array) removes existing, returns custom not found error for n
 })
 
 test('store.remove([changedObjects]) updates before removing', function (t) {
-  t.plan(4)
+  t.plan(5)
 
   var db = dbFactory()
   var store = db.hoodieApi()
 
   store.add([{
-    id: 'foo',
+    _id: 'foo',
     foo: 'bar'
   }, {
-    id: 'bar',
+    _id: 'bar',
     foo: 'foo'
   }])
 
   .then(function () {
     return store.remove([{
-      id: 'foo', foo: 'changed'
+      _id: 'foo', foo: 'changed', hoodie: {ignore: 'me'}
     }, {
-      id: 'bar', foo: 'changed'
+      _id: 'bar', foo: 'changed'
     }])
   })
 
   .then(function (object) {
-    t.is(object[0].id, 'foo', 'resolves value')
+    t.is(object[0]._id, 'foo', 'resolves value')
     t.is(object[0].foo, 'changed', 'check foo is changed')
-    t.is(object[1].id, 'bar', 'resolves value')
+    t.is(object[0].hoodie.ignore, undefined, 'ignores hoodie property')
+    t.is(object[1]._id, 'bar', 'resolves value')
     t.is(object[1].foo, 'changed', 'check foo is changed')
   })
 })
 
 test('store.remove(changedObject) updates before removing', function (t) {
-  t.plan(2)
+  t.plan(3)
 
   var db = dbFactory()
   var store = db.hoodieApi()
 
   store.add({
-    id: 'foo',
+    _id: 'foo',
     foo: 'bar'
   })
 
   .then(function () {
-    return store.remove({ id: 'foo', foo: 'changed' })
+    return store.remove({ _id: 'foo', foo: 'changed', hoodie: {ignore: 'me'} })
   })
 
   .then(function (object) {
-    t.is(object.id, 'foo', 'resolves value')
+    t.is(object._id, 'foo', 'resolves value')
     t.is(object.foo, 'changed', 'check foo is changed')
+    t.is(object.hoodie.ignore, undefined, 'ignores hoodie property')
   })
 })
 
@@ -219,7 +221,7 @@ test('store.remove(id, changedProperties) updates before removing', function (t)
   var store = db.hoodieApi()
 
   store.add({
-    id: 'foo',
+    _id: 'foo',
     foo: 'bar'
   })
 
@@ -228,7 +230,7 @@ test('store.remove(id, changedProperties) updates before removing', function (t)
   })
 
   .then(function (object) {
-    t.is(object.id, 'foo', 'resolves value')
+    t.is(object._id, 'foo', 'resolves value')
     t.is(object.foo, 'changed', 'check foo is changed')
   })
 })
@@ -240,7 +242,7 @@ test('remove(id, changeFunction) updates before removing', function (t) {
   var store = db.hoodieApi()
 
   store.add({
-    id: 'foo',
+    _id: 'foo',
     foo: 'bar'
   })
 
@@ -252,7 +254,7 @@ test('remove(id, changeFunction) updates before removing', function (t) {
   })
 
   .then(function (object) {
-    t.is(object.id, 'foo', 'resolves value')
+    t.is(object._id, 'foo', 'resolves value')
     t.is(object.foo, 'changed', 'check foo is changed')
   })
 })
@@ -268,16 +270,16 @@ test('store.remove(object) creates deletedAt timestamp', function (t) {
   var isValidDate = require('../utils/is-valid-date')
 
   store.add({
-    id: 'shouldHaveTimestamps'
+    _id: 'shouldHaveTimestamps'
   })
 
   .then(store.remove.bind(store))
 
   .then(function (object) {
-    t.is(object.id, 'shouldHaveTimestamps', 'resolves doc')
-    t.ok(object.deletedAt, 'should have deleteAt timestamps')
-    t.ok(isValidDate(object.deletedAt), 'createdAt should be a valid date')
-    t.is(now(), object.deletedAt, 'createdAt should be the same time as right now')
+    t.is(object._id, 'shouldHaveTimestamps', 'resolves doc')
+    t.ok(object.hoodie.deletedAt, 'should have deleteAt timestamps')
+    t.ok(isValidDate(object.hoodie.deletedAt), 'createdAt should be a valid date')
+    t.is(now(), object.hoodie.deletedAt, 'createdAt should be the same time as right now')
 
     clock.uninstall()
   })
@@ -294,22 +296,22 @@ test('store.remove([objects]) creates deletedAt timestamps', function (t) {
   var isValidDate = require('../utils/is-valid-date')
 
   store.add([{
-    id: 'shouldHaveTimestamps'
+    _id: 'shouldHaveTimestamps'
   }, {
-    id: 'shouldAlsoHaveTimestamps'
+    _id: 'shouldAlsoHaveTimestamps'
   }])
 
   .then(store.remove.bind(store))
 
   .then(function (objects) {
-    t.is(objects[0].id, 'shouldHaveTimestamps', 'resolves doc')
-    t.is(objects[1].id, 'shouldAlsoHaveTimestamps', 'resolves doc')
+    t.is(objects[0]._id, 'shouldHaveTimestamps', 'resolves doc')
+    t.is(objects[1]._id, 'shouldAlsoHaveTimestamps', 'resolves doc')
     objects.forEach(function (object) {
-      t.ok(object.createdAt, 'should have createdAt timestamp')
-      t.ok(object.updatedAt, 'should have updatedAt timestamp')
-      t.ok(object.deletedAt, 'should have deleteAt timestamp')
-      t.ok(isValidDate(object.deletedAt), 'createdAt should be a valid date')
-      t.is(now(), object.deletedAt, 'createdAt should be the same time as right now')
+      t.ok(object.hoodie.createdAt, 'should have createdAt timestamp')
+      t.ok(object.hoodie.updatedAt, 'should have updatedAt timestamp')
+      t.ok(object.hoodie.deletedAt, 'should have deleteAt timestamp')
+      t.ok(isValidDate(object.hoodie.deletedAt), 'createdAt should be a valid date')
+      t.is(now(), object.hoodie.deletedAt, 'createdAt should be the same time as right now')
     })
 
     clock.uninstall()
