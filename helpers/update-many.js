@@ -10,12 +10,12 @@ var toId = require('../utils/to-id')
 
 var findMany = require('./find-many')
 
-module.exports = function updateMany (array, change) {
+module.exports = function updateMany (array, change, prefix) {
   var self = this
   var objects
   var ids = array.map(toId)
 
-  return findMany.call(this, array)
+  return findMany.call(this, array, prefix)
 
   .then(function (objects) {
     if (change) {

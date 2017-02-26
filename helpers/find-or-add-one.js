@@ -7,7 +7,7 @@ var toId = require('../utils/to-id')
 var findOne = require('./find-one')
 var addOne = require('./add-one')
 
-function findOrAddOne (state, idOrObject, newObject) {
+function findOrAddOne (state, idOrObject, newObject, prefix) {
   var self = this
   var id = toId(idOrObject)
 
@@ -19,7 +19,7 @@ function findOrAddOne (state, idOrObject, newObject) {
     return Promise.reject(PouchDBErrors.MISSING_ID)
   }
 
-  return findOne.call(this, id)
+  return findOne.call(this, id, prefix)
 
   .catch(function (/* error */) {
     if (typeof newObject === 'object') {
@@ -29,7 +29,7 @@ function findOrAddOne (state, idOrObject, newObject) {
     }
 
     if (state) {
-      return addOne.call(self, newObject)
+      return addOne.call(self, newObject, prefix)
     }
 
     return addOne.call(self, newObject)

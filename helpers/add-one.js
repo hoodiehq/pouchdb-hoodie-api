@@ -2,18 +2,25 @@
 
 var PouchDBErrors = require('pouchdb-errors')
 var Promise = require('lie')
+var uuid = require('pouchdb-utils').uuid
 
 var toDoc = require('../utils/to-doc')
 var addTimestamps = require('../utils/add-timestamps')
 
-module.exports = function addOne (object) {
+module.exports = function addOne (object, prefix) {
   if (typeof object !== 'object') {
     return Promise.reject(PouchDBErrors.NOT_AN_OBJECT)
   }
 
-  var method = object.id ? 'put' : 'post'
+  if (!object.id) {
+    object.id = uuid()
+  }
 
-  return this[method](toDoc(addTimestamps(object)))
+  if (prefix) {
+    object.id = prefix + object.id
+  }
+
+  return this.put(toDoc(addTimestamps(object)))
 
   .then(function (response) {
     object.id = response.id
