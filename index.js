@@ -3,7 +3,7 @@
 var exports = module.exports = { hoodieApi: hoodieApi }
 
 var EventEmitter = require('events').EventEmitter
-var startListenToChanges = require('./helpers/start-listen-to-changes')
+var startListenToChanges = require('./lib/helpers/start-listen-to-changes')
 
 function hoodieApi (options) {
   var state = {
@@ -14,20 +14,20 @@ function hoodieApi (options) {
 
   return {
     db: this,
-    add: require('./add').bind(this, null),
-    find: require('./find').bind(this, null),
-    findAll: require('./find-all').bind(this, null),
-    findOrAdd: require('./find-or-add').bind(this, state, null),
-    update: require('./update').bind(this, null),
-    updateOrAdd: require('./update-or-add').bind(this, null),
-    updateAll: require('./update-all').bind(this, null),
-    remove: require('./remove').bind(this, null),
-    removeAll: require('./remove-all').bind(this, null),
-    withIdPrefix: require('./with-id-prefix').bind(this, state),
+    add: require('./lib/add').bind(this, null),
+    find: require('./lib/find').bind(this, null),
+    findAll: require('./lib/find-all').bind(this, null),
+    findOrAdd: require('./lib/find-or-add').bind(this, state, null),
+    update: require('./lib/update').bind(this, null),
+    updateOrAdd: require('./lib/update-or-add').bind(this, null),
+    updateAll: require('./lib/update-all').bind(this, null),
+    remove: require('./lib/remove').bind(this, null),
+    removeAll: require('./lib/remove-all').bind(this, null),
+    withIdPrefix: require('./lib/with-id-prefix').bind(this, state),
     on: require('./lib/on').bind(this, state),
     one: require('./lib/one').bind(this, state),
     off: require('./lib/off').bind(this, state),
-    clear: require('./clear').bind(this, state)
+    clear: require('./lib/clear').bind(this, state)
   }
 }
 

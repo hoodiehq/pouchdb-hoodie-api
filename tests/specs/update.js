@@ -317,7 +317,7 @@ test('store.update(object) updates updatedAt timestamp', function (t) {
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  var now = require('../../utils/now')
+  var now = require('../../lib/utils/now')
   var isValidDate = require('../utils/is-valid-date')
 
   store.add({
@@ -351,7 +351,7 @@ test('store.update([objects]) updates updatedAt timestamps', function (t) {
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  var now = require('../../utils/now')
+  var now = require('../../lib/utils/now')
   var isValidDate = require('../utils/is-valid-date')
 
   var updatedCount = 0
