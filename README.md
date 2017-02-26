@@ -59,6 +59,10 @@ api.removeAll(filterFunction)
 api.clear()
 
 // events
+// Important: the order of when the methods promises resolve and the events get
+//            triggered cannot be guaranteed as we rely on PouchDB’s .changes().
+//            We would love to enforce promises to resolve after changes get
+//            emitted, but the required complexity to do that is not worth it.
 api.on('add', function(object, options) {})
 api.on('update', function(object, options) {})
 api.on('remove', function(object, options) {})
