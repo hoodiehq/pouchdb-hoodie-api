@@ -15,7 +15,7 @@ test('has "updateAll" method', function (t) {
 })
 
 test('store.updateAll(changedProperties)', function (t) {
-  t.plan(12)
+  t.plan(13)
 
   var db = dbFactory()
   var store = db.hoodieApi()
@@ -31,14 +31,16 @@ test('store.updateAll(changedProperties)', function (t) {
 
   .then(function () {
     return store.updateAll({
-      bar: 'bar'
+      bar: 'bar',
+      hoodie: {ignore: 'me'}
     })
   })
 
   .then(function (results) {
     t.is(results.length, 3, 'resolves all')
-    t.ok(results[0].id, 'resolves with id')
+    t.ok(results[0]._id, 'resolves with id')
     t.is(results[0].bar, 'bar', 'resolves with properties')
+    t.is(results[0].hoodie.ignore, undefined, 'ignores hoodie property')
 
     results.forEach(function (result) {
       t.ok(/^2-/.test(result._rev), 'new revision')
@@ -146,7 +148,7 @@ test('store.updateAll() doesnt update design docs', function (t) {
 
   .then(function (results) {
     t.is(results.length, 1, 'resolves everything but _design/bar')
-    t.isNot(results[0].id, '_design/bar', 'resolves with id')
+    t.isNot(results[0]._id, '_design/bar', 'resolves with id')
 
     return null
   })
@@ -172,9 +174,9 @@ test('store.updateAll([objects]) updates all updatedAt timestamps', function (t)
 
   var updatedCount = 0
   var objectsToAdd = [{
-    id: 'shouldHaveTimestamps'
+    _id: 'shouldHaveTimestamps'
   }, {
-    id: 'shouldAlsoHaveTimestamps'
+    _id: 'shouldAlsoHaveTimestamps'
   }]
 
   store.add(objectsToAdd)
@@ -186,10 +188,10 @@ test('store.updateAll([objects]) updates all updatedAt timestamps', function (t)
   })
 
   store.on('update', function (object) {
-    t.ok(object.id, 'resolves doc')
-    t.ok(isValidDate(object.updatedAt), 'updatedAt should be a valid date')
-    t.is(now(), object.updatedAt, 'updatedAt should be the same time as right now')
-    t.not(object.createdAt, object.updatedAt, 'createdAt and updatedAt should not be the same')
+    t.ok(object._id, 'resolves doc')
+    t.ok(isValidDate(object.hoodie.updatedAt), 'updatedAt should be a valid date')
+    t.is(now(), object.hoodie.updatedAt, 'updatedAt should be the same time as right now')
+    t.not(object.hoodie.createdAt, object.hoodie.updatedAt, 'createdAt and updatedAt should not be the same')
 
     if (++updatedCount === objectsToAdd.length) {
       clock.uninstall()

@@ -149,7 +149,7 @@ test.skip('store.removeAll(changedProperties) updates before removing', function
   .then(function (results) {
     t.is(results.length, 3, 'resolves all')
     results.forEach(function (result) {
-      t.ok(result.id, 'resolves with id')
+      t.ok(result._id, 'resolves with id')
       t.is(result.foo, 'changed', 'check all results have changed')
     })
   })
@@ -179,7 +179,7 @@ test.skip('store.removeAll(updateFunction) updates before removing', function (t
   .then(function (results) {
     t.is(results.length, 3, 'resolves all')
     results.forEach(function (result) {
-      t.ok(result.id, 'resolves with id')
+      t.ok(result._id, 'resolves with id')
       t.is(result.foo, 'changed', 'check all results have changed')
     })
   })
@@ -196,21 +196,21 @@ test('store.removeAll([objects]) creates deletedAt timestamps', function (t) {
   var isValidDate = require('../utils/is-valid-date')
 
   store.add([{
-    id: 'shouldHaveTimestamps'
+    _id: 'shouldHaveTimestamps'
   }, {
-    id: 'shouldAlsoHaveTimestamps'
+    _id: 'shouldAlsoHaveTimestamps'
   }])
 
   .then(store.removeAll.bind(store))
 
   .then(function (objects) {
     objects.forEach(function (object) {
-      t.ok(object.id, 'resolves doc')
-      t.ok(object.createdAt, 'should have createdAt timestamp')
-      t.ok(object.updatedAt, 'should have updatedAt timestamp')
-      t.ok(object.deletedAt, 'should have deleteAt timestamp')
-      t.ok(isValidDate(object.deletedAt), 'createdAt should be a valid date')
-      t.is(now(), object.deletedAt, 'createdAt should be the same time as right now')
+      t.ok(object._id, 'resolves doc')
+      t.ok(object.hoodie.createdAt, 'should have createdAt timestamp')
+      t.ok(object.hoodie.updatedAt, 'should have updatedAt timestamp')
+      t.ok(object.hoodie.deletedAt, 'should have deleteAt timestamp')
+      t.ok(isValidDate(object.hoodie.deletedAt), 'createdAt should be a valid date')
+      t.is(now(), object.hoodie.deletedAt, 'createdAt should be the same time as right now')
     })
 
     clock.uninstall()

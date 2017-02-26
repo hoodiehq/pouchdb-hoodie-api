@@ -20,7 +20,7 @@ test('store.find(id)', function (t) {
   var store = db.hoodieApi()
 
   store.add({
-    id: 'foo'
+    _id: 'foo'
   })
 
   .then(function () {
@@ -28,7 +28,7 @@ test('store.find(id)', function (t) {
   })
 
   .then(function (object) {
-    t.is(object.id, 'foo', 'resolves value')
+    t.is(object._id, 'foo', 'resolves value')
   })
 })
 
@@ -39,15 +39,15 @@ test('store.find(object)', function (t) {
   var store = db.hoodieApi()
 
   store.add({
-    id: 'foo'
+    _id: 'foo'
   })
 
   .then(function () {
-    return store.find({id: 'foo'})
+    return store.find({_id: 'foo'})
   })
 
   .then(function (object) {
-    t.is(object.id, 'foo', 'resolves value')
+    t.is(object._id, 'foo', 'resolves value')
   })
 })
 
@@ -58,7 +58,7 @@ test('store.find fails for non-existing', function (t) {
   var store = db.hoodieApi()
 
   store.add({
-    id: 'unrelated'
+    _id: 'unrelated'
   })
 
   .then(function () {
@@ -70,7 +70,7 @@ test('store.find fails for non-existing', function (t) {
     t.is(err.status, 404)
   })
 
-  store.find({id: 'foo'})
+  store.find({_id: 'foo'})
 
   .catch(function (err) {
     t.ok(err instanceof Error, 'rejects error')
@@ -84,7 +84,7 @@ test('store.find returns custom not found error for non-existing', function (t) 
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  store.find({id: 'foo'})
+  store.find({_id: 'foo'})
 
   .catch(function (err) {
     t.is(err.name, 'Not found', 'rejects with custom name')
@@ -99,17 +99,17 @@ test('store.find(array)', function (t) {
   var store = db.hoodieApi()
 
   store.add([
-    { id: 'foo' },
-    { id: 'bar' }
+    { _id: 'foo' },
+    { _id: 'bar' }
   ])
 
   .then(function () {
-    return store.find(['foo', {id: 'bar'}])
+    return store.find(['foo', {_id: 'bar'}])
   })
 
   .then(function (objects) {
-    t.is(objects[0].id, 'foo', 'resolves value')
-    t.is(objects[1].id, 'bar', 'resolves value')
+    t.is(objects[0]._id, 'foo', 'resolves value')
+    t.is(objects[1]._id, 'bar', 'resolves value')
   })
 })
 
@@ -120,7 +120,7 @@ test('store.find(array) with non-existing', function (t) {
   var store = db.hoodieApi()
 
   store.add([
-    { id: 'exists' }
+    { _id: 'exists' }
   ])
 
   .then(function () {
@@ -128,7 +128,7 @@ test('store.find(array) with non-existing', function (t) {
   })
 
   .then(function (objects) {
-    t.is(objects[0].id, 'exists', 'resolves with value for existing')
+    t.is(objects[0]._id, 'exists', 'resolves with value for existing')
     t.is(objects[1].status, 404, 'resolves with 404 error for unknown')
   })
 })
@@ -140,7 +140,7 @@ test('store.find(array) returns custom not found error for non-existing', functi
   var store = db.hoodieApi()
 
   store.add([
-    { id: 'exists' }
+    { _id: 'exists' }
   ])
 
   .then(function () {
@@ -159,7 +159,7 @@ test('store.find(object) should return timestamps', function (t) {
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  store.add({ id: 'shouldHaveTimestamps' })
+  store.add({ _id: 'shouldHaveTimestamps' })
 
   .then(function () {
     return store.update('shouldHaveTimestamps', {foo: 'bar'})
@@ -170,9 +170,9 @@ test('store.find(object) should return timestamps', function (t) {
   })
 
   .then(function (objects) {
-    t.is(objects[0].id, 'shouldHaveTimestamps', 'resolves with value for existing')
-    t.ok(objects[0].createdAt, 'resolves with createdAt timestamp')
-    t.ok(objects[0].updatedAt, 'resolves with updatedAt timestamp')
+    t.is(objects[0]._id, 'shouldHaveTimestamps', 'resolves with value for existing')
+    t.ok(objects[0].hoodie.createdAt, 'resolves with createdAt timestamp')
+    t.ok(objects[0].hoodie.updatedAt, 'resolves with updatedAt timestamp')
   })
 })
 
@@ -183,9 +183,9 @@ test('store.find([object]) should return timestamps', function (t) {
   var store = db.hoodieApi()
 
   store.add([{
-    id: 'shouldHaveTimestamps'
+    _id: 'shouldHaveTimestamps'
   }, {
-    id: 'shouldAlsoHaveTimestamps'
+    _id: 'shouldAlsoHaveTimestamps'
   }])
 
   .then(store.update)
@@ -196,9 +196,9 @@ test('store.find([object]) should return timestamps', function (t) {
 
   .then(function (objects) {
     objects.forEach(function (object) {
-      t.ok(object.id, 'resolves with value for existing')
-      t.ok(object.createdAt, 'resolves with createdAt timestamp')
-      t.ok(object.updatedAt, 'resolves with updatedAt timestamp')
+      t.ok(object._id, 'resolves with value for existing')
+      t.ok(object.hoodie.createdAt, 'resolves with createdAt timestamp')
+      t.ok(object.hoodie.updatedAt, 'resolves with updatedAt timestamp')
     })
   })
 })
