@@ -8,14 +8,23 @@ module.exports = findAll
 /**
  * finds all existing objects in local database.
  *
+ * @param  {String}   prefix     optional id prefix
  * @param  {Function} [filter]   Function returning `true` for any object
  *                               to be returned.
  * @return {Promise}
  */
-function findAll (filter) {
-  return this.allDocs({
+
+function findAll (prefix, filter) {
+  var options = {
     include_docs: true
-  })
+  }
+
+  if (prefix) {
+    options.startkey = prefix
+    options.endkey = prefix + '\uffff'
+  }
+
+  return this.allDocs(options)
 
   .then(function (res) {
     var objects = res.rows

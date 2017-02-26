@@ -11,11 +11,13 @@ var isntDesignDoc = require('./utils/isnt-design-doc')
 /**
  * updates all existing objects
  *
+ * @param  {String}          prefix   optional id prefix
  * @param  {Object|Function} change   changed properties or function that
  *                                    alters passed object
  * @return {Promise}
  */
-function updateAll (changedProperties) {
+
+function updateAll (prefix, changedProperties) {
   var type = typeof changedProperties
   var objects
 
@@ -23,9 +25,16 @@ function updateAll (changedProperties) {
     return Promise.reject(new Error('Must provide object or function'))
   }
 
-  return this.allDocs({
+  var options = {
     include_docs: true
-  })
+  }
+
+  if (prefix) {
+    options.startkey = prefix
+    options.endkey = prefix + '\uffff'
+  }
+
+  return this.allDocs(options)
 
   .then(function (res) {
     objects = res.rows

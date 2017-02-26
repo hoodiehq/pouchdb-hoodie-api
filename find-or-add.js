@@ -9,13 +9,14 @@ module.exports = findOrAdd
  * tries to find object in local database, otherwise creates new one
  * with passed properties.
  *
+ * @param  {String}        prefix       optional id prefix
  * @param  {String|Object} idOrObject   id or object with `.id` property
  * @param  {Object}        [properties] Optional properties if id passed
  *                                      as first option
  * @return {Promise}
  */
-function findOrAdd (idOrObjectOrArray, newObject) {
+function findOrAdd (state, prefix, idOrObjectOrArray, newObject) {
   return Array.isArray(idOrObjectOrArray)
-    ? findOrAddMany.call(this, null, idOrObjectOrArray)
-    : findOrAddOne.call(this, null, idOrObjectOrArray, newObject)
+    ? findOrAddMany.call(this, state, idOrObjectOrArray, prefix)
+    : findOrAddOne.call(this, state, idOrObjectOrArray, newObject, prefix)
 }
