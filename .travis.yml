@@ -11,7 +11,10 @@ notifications:
   email: false
 before_script:
 - npm prune
-script: npm run $COMMAND
+
+# travis_retry will try up to 3 times to run the script, which usually helps
+# with flaky saucelabs connections for the `test:browser:cloud` command
+script: travis_retry npm run $COMMAND
 after_success:
 - if [[ $TRAVIS_BRANCH == 'master' ]]; npm run docs && npm run deploydocs; fi
 - npm run semantic-release
