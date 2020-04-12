@@ -1,7 +1,7 @@
 'use strict'
 
 var test = require('tape')
-var lolex = require('lolex')
+var fakeTimers = require('@sinonjs/fake-timers')
 
 var dbFactory = require('../utils/db')
 
@@ -165,7 +165,10 @@ test('store.updateAll() doesnt update design docs', function (t) {
 test('store.updateAll([objects]) updates all updatedAt timestamps', function (t) {
   t.plan(8)
 
-  var clock = lolex.install(0, ['Date'])
+  var clock = fakeTimers.install({
+    now: 0,
+    toFake: ['Date']
+  })
   var db = dbFactory()
   var store = db.hoodieApi()
 

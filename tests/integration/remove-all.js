@@ -1,7 +1,7 @@
 'use strict'
 
 var test = require('tape')
-var lolex = require('lolex')
+var fakeTimers = require('@sinonjs/fake-timers')
 
 var dbFactory = require('../utils/db')
 
@@ -188,7 +188,10 @@ test.skip('store.removeAll(updateFunction) updates before removing', function (t
 test('store.removeAll([objects]) creates deletedAt timestamps', function (t) {
   t.plan(12)
 
-  var clock = lolex.install(0, ['Date'])
+  var clock = fakeTimers.install({
+    now: 0,
+    toFake: ['Date']
+  })
   var db = dbFactory()
   var store = db.hoodieApi()
 
