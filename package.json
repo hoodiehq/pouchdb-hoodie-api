@@ -14,9 +14,9 @@
     "dist/pouchdb-hoodie-api.min.js"
   ],
   "dependencies": {
-    "lie": "^3.0.4",
-    "pouchdb-errors": "6.1.0",
-    "pouchdb-utils": "6.1.0"
+    "lie": "^3.3.0",
+    "pouchdb-errors": "^7.2.1",
+    "pouchdb-utils": "^7.2.1"
   },
   "devDependencies": {
     "@sinonjs/fake-timers": "^6.0.1",
