@@ -34,12 +34,12 @@ test('store.withIdPrefix("test/").add(properties)', function (t) {
     foo: 'bar'
   })
 
-  .then(function (doc) {
-    t.ok(/^test\//.test(doc._id), 'prefixes id with "test/"')
-    t.end()
-  })
+    .then(function (doc) {
+      t.ok(/^test\//.test(doc._id), 'prefixes id with "test/"')
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('store.withIdPrefix("test/").add([doc1, doc2])', function (t) {
@@ -52,13 +52,13 @@ test('store.withIdPrefix("test/").add([doc1, doc2])', function (t) {
     baz: 'ar'
   }])
 
-  .then(function (docs) {
-    t.ok(/^test\//.test(docs[0]._id), 'prefixes id with "test/"')
-    t.ok(/^test\//.test(docs[1]._id), 'prefixes id with "test/"')
-    t.end()
-  })
+    .then(function (docs) {
+      t.ok(/^test\//.test(docs[0]._id), 'prefixes id with "test/"')
+      t.ok(/^test\//.test(docs[1]._id), 'prefixes id with "test/"')
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('store.withIdPrefix("test/").find("foo")', function (t) {
@@ -69,16 +69,16 @@ test('store.withIdPrefix("test/").find("foo")', function (t) {
     _id: 'test/foo'
   })
 
-  .then(function () {
-    return testStore.find('foo')
-  })
+    .then(function () {
+      return testStore.find('foo')
+    })
 
-  .then(function (doc) {
-    t.pass('finds doc')
-    t.end()
-  })
+    .then(function (doc) {
+      t.pass('finds doc')
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('store.withIdPrefix("test/").find("test/foo")', function (t) {
@@ -89,16 +89,16 @@ test('store.withIdPrefix("test/").find("test/foo")', function (t) {
     _id: 'test/foo'
   })
 
-  .then(function () {
-    return testStore.find('test/foo')
-  })
+    .then(function () {
+      return testStore.find('test/foo')
+    })
 
-  .then(function (doc) {
-    t.pass('finds doc')
-    t.end()
-  })
+    .then(function (doc) {
+      t.pass('finds doc')
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('store.withIdPrefix("test/").find(["foo", "test/bar"])', function (t) {
@@ -111,18 +111,18 @@ test('store.withIdPrefix("test/").find(["foo", "test/bar"])', function (t) {
     _id: 'test/bar'
   }])
 
-  .then(function () {
-    return testStore.find(['foo', 'test/bar'])
-  })
+    .then(function () {
+      return testStore.find(['foo', 'test/bar'])
+    })
 
-  .then(function (docs) {
-    t.is(docs[0]._id, 'test/foo', 'finds doc with _id: test/foo')
-    t.is(docs[1]._id, 'test/bar', 'finds doc with _id: test/bar')
+    .then(function (docs) {
+      t.is(docs[0]._id, 'test/foo', 'finds doc with _id: test/foo')
+      t.is(docs[1]._id, 'test/bar', 'finds doc with _id: test/bar')
 
-    t.end()
-  })
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('store.withIdPrefix("test/").findOrAdd(id, object) when found', function (t) {
@@ -134,33 +134,33 @@ test('store.withIdPrefix("test/").findOrAdd(id, object) when found', function (t
     foo: 'bar'
   })
 
-  .then(function () {
-    return testStore.findOrAdd('foo', {foo: 'baz'})
-  })
+    .then(function () {
+      return testStore.findOrAdd('foo', { foo: 'baz' })
+    })
 
-  .then(function (doc) {
-    t.is(doc.foo, 'bar', 'finds doc')
+    .then(function (doc) {
+      t.is(doc.foo, 'bar', 'finds doc')
 
-    t.end()
-  })
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('store.withIdPrefix("test/").findOrAdd(id, object) when added', function (t) {
   var db = dbFactory()
   var testStore = db.hoodieApi().withIdPrefix('test/')
 
-  return testStore.findOrAdd('foo', {foo: 'baz'})
+  return testStore.findOrAdd('foo', { foo: 'baz' })
 
-  .then(function (doc) {
-    t.is(doc.foo, 'baz', 'adds doc')
-    t.ok(/^test\//.test(doc._id), 'prefixes ._id')
+    .then(function (doc) {
+      t.is(doc.foo, 'baz', 'adds doc')
+      t.ok(/^test\//.test(doc._id), 'prefixes ._id')
 
-    t.end()
-  })
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('store.withIdPrefix("test/").findOrAdd([object1, object2])', function (t) {
@@ -172,24 +172,24 @@ test('store.withIdPrefix("test/").findOrAdd([object1, object2])', function (t) {
     foo: 'bar'
   })
 
-  .then(function () {
-    return testStore.findOrAdd([{
-      _id: 'foo',
-      foo: 'baz'
-    }, {
-      _id: 'baz',
-      baz: 'ar'
-    }])
-  })
+    .then(function () {
+      return testStore.findOrAdd([{
+        _id: 'foo',
+        foo: 'baz'
+      }, {
+        _id: 'baz',
+        baz: 'ar'
+      }])
+    })
 
-  .then(function (docs) {
-    t.is(docs[0].foo, 'bar', 'finds doc with _id: test/foo')
-    t.is(docs[1].baz, 'ar', 'adds doc with _id: test/baz')
+    .then(function (docs) {
+      t.is(docs[0].foo, 'bar', 'finds doc with _id: test/foo')
+      t.is(docs[1].baz, 'ar', 'adds doc with _id: test/baz')
 
-    t.end()
-  })
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('store.withIdPrefix("test/").findAll()', function (t) {
@@ -202,18 +202,18 @@ test('store.withIdPrefix("test/").findAll()', function (t) {
     _id: 'bar'
   }])
 
-  .then(function () {
-    return testStore.findAll()
-  })
+    .then(function () {
+      return testStore.findAll()
+    })
 
-  .then(function (docs) {
-    t.is(docs.length, 1)
-    t.is(docs[0]._id, 'test/foo')
+    .then(function (docs) {
+      t.is(docs.length, 1)
+      t.is(docs[0]._id, 'test/foo')
 
-    t.end()
-  })
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 test('store.withIdPrefix("test/").update(id, changedProperties)', function (t) {
   var db = dbFactory()
@@ -224,17 +224,17 @@ test('store.withIdPrefix("test/").update(id, changedProperties)', function (t) {
     foo: 'bar'
   })
 
-  .then(function () {
-    return testStore.update('foo', {foo: 'baz'})
-  })
+    .then(function () {
+      return testStore.update('foo', { foo: 'baz' })
+    })
 
-  .then(function (doc) {
-    t.is(doc.foo, 'baz')
+    .then(function (doc) {
+      t.is(doc.foo, 'baz')
 
-    t.end()
-  })
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 test('store.withIdPrefix("test/").update([object1, object2])', function (t) {
   var db = dbFactory()
@@ -248,25 +248,25 @@ test('store.withIdPrefix("test/").update([object1, object2])', function (t) {
     bar: 'baz'
   }])
 
-  .then(function () {
-    return testStore.update([{
-      _id: 'test/foo',
-      foo: 'bar2'
-    }, {
-      _id: 'test/bar',
-      bar: 'baz2'
-    }])
-  })
+    .then(function () {
+      return testStore.update([{
+        _id: 'test/foo',
+        foo: 'bar2'
+      }, {
+        _id: 'test/bar',
+        bar: 'baz2'
+      }])
+    })
 
-  .then(function (docs) {
-    t.is(docs.length, 2)
-    t.is(docs[0].foo, 'bar2')
-    t.is(docs[1].bar, 'baz2')
+    .then(function (docs) {
+      t.is(docs.length, 2)
+      t.is(docs[0].foo, 'bar2')
+      t.is(docs[1].bar, 'baz2')
 
-    t.end()
-  })
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 test('store.withIdPrefix("test/").updateOrAdd(object) when found', function (t) {
   var db = dbFactory()
@@ -277,31 +277,31 @@ test('store.withIdPrefix("test/").updateOrAdd(object) when found', function (t) 
     foo: 'bar'
   })
 
-  .then(function () {
-    return testStore.updateOrAdd('foo', {foo: 'baz'})
-  })
+    .then(function () {
+      return testStore.updateOrAdd('foo', { foo: 'baz' })
+    })
 
-  .then(function (doc) {
-    t.is(doc.foo, 'baz', 'finds doc')
+    .then(function (doc) {
+      t.is(doc.foo, 'baz', 'finds doc')
 
-    t.end()
-  })
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 test('store.withIdPrefix("test/").updateOrAdd(object) when added', function (t) {
   var db = dbFactory()
   var testStore = db.hoodieApi().withIdPrefix('test/')
 
-  return testStore.updateOrAdd('foo', {foo: 'baz'})
+  return testStore.updateOrAdd('foo', { foo: 'baz' })
 
-  .then(function (doc) {
-    t.ok(/^test\//.test(doc._id), 'adds doc')
+    .then(function (doc) {
+      t.ok(/^test\//.test(doc._id), 'adds doc')
 
-    t.end()
-  })
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 test('store.withIdPrefix("test/").updateOrAdd([object1, object2])', function (t) {
   var db = dbFactory()
@@ -312,24 +312,24 @@ test('store.withIdPrefix("test/").updateOrAdd([object1, object2])', function (t)
     foo: 'bar'
   })
 
-  .then(function () {
-    return testStore.updateOrAdd([{
-      _id: 'foo',
-      foo: 'baz'
-    }, {
-      _id: 'baz',
-      baz: 'ar'
-    }])
-  })
+    .then(function () {
+      return testStore.updateOrAdd([{
+        _id: 'foo',
+        foo: 'baz'
+      }, {
+        _id: 'baz',
+        baz: 'ar'
+      }])
+    })
 
-  .then(function (docs) {
-    t.is(docs[0].foo, 'baz', 'finds doc with _id: test/foo')
-    t.is(docs[1].baz, 'ar', 'adds doc with _id: test/baz')
+    .then(function (docs) {
+      t.is(docs[0].foo, 'baz', 'finds doc with _id: test/foo')
+      t.is(docs[1].baz, 'ar', 'adds doc with _id: test/baz')
 
-    t.end()
-  })
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 test('store.withIdPrefix("test/").updateAll(changedProperties)', function (t) {
   var db = dbFactory()
@@ -341,18 +341,18 @@ test('store.withIdPrefix("test/").updateAll(changedProperties)', function (t) {
     _id: 'bar'
   }])
 
-  .then(function () {
-    return testStore.updateAll({foo: 'bar'})
-  })
+    .then(function () {
+      return testStore.updateAll({ foo: 'bar' })
+    })
 
-  .then(function (docs) {
-    t.is(docs.length, 1)
-    t.is(docs[0].foo, 'bar')
+    .then(function (docs) {
+      t.is(docs.length, 1)
+      t.is(docs[0].foo, 'bar')
 
-    t.end()
-  })
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 test('store.withIdPrefix("test/").remove(id)', function (t) {
   var db = dbFactory()
@@ -363,17 +363,17 @@ test('store.withIdPrefix("test/").remove(id)', function (t) {
     foo: 'bar'
   })
 
-  .then(function () {
-    return testStore.remove('foo')
-  })
+    .then(function () {
+      return testStore.remove('foo')
+    })
 
-  .then(function (doc) {
-    t.is(doc._id, 'test/foo')
+    .then(function (doc) {
+      t.is(doc._id, 'test/foo')
 
-    t.end()
-  })
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 test('store.withIdPrefix("test/").remove([object1, id2])', function (t) {
   var db = dbFactory()
@@ -387,20 +387,20 @@ test('store.withIdPrefix("test/").remove([object1, id2])', function (t) {
     bar: 'baz'
   }])
 
-  .then(function () {
-    return testStore.remove([{
-      _id: 'test/foo',
-      foo: 'bar2'
-    }, 'test/bar'])
-  })
+    .then(function () {
+      return testStore.remove([{
+        _id: 'test/foo',
+        foo: 'bar2'
+      }, 'test/bar'])
+    })
 
-  .then(function (docs) {
-    t.is(docs.length, 2)
+    .then(function (docs) {
+      t.is(docs.length, 2)
 
-    t.end()
-  })
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 test('store.withIdPrefix("test/").removeAll()', function (t) {
   var db = dbFactory()
@@ -412,18 +412,18 @@ test('store.withIdPrefix("test/").removeAll()', function (t) {
     _id: 'bar'
   }])
 
-  .then(function () {
-    return testStore.removeAll()
-  })
+    .then(function () {
+      return testStore.removeAll()
+    })
 
-  .then(function (docs) {
-    t.is(docs.length, 1)
-    t.is(docs[0]._id, 'test/foo')
+    .then(function (docs) {
+      t.is(docs.length, 1)
+      t.is(docs[0]._id, 'test/foo')
 
-    t.end()
-  })
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('store.withIdPrefix("test/").withIdPrefix("onetwo/").add(properties)', function (t) {
@@ -434,12 +434,12 @@ test('store.withIdPrefix("test/").withIdPrefix("onetwo/").add(properties)', func
     foo: 'bar'
   })
 
-  .then(function (doc) {
-    t.ok(/^test\/onetwo\//.test(doc._id), 'prefixes id with "test/onetwo/"')
-    t.end()
-  })
+    .then(function (doc) {
+      t.ok(/^test\/onetwo\//.test(doc._id), 'prefixes id with "test/onetwo/"')
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('store.withIdPrefix("test/").on("change", handler) events', function (t) {
@@ -456,6 +456,6 @@ test('store.withIdPrefix("test/").on("change", handler) events', function (t) {
     t.is(object._id, 'test/foo')
   })
 
-  store.add({_id: 'foo'})
-  testStore.add({_id: 'foo'})
+  store.add({ _id: 'foo' })
+  testStore.add({ _id: 'foo' })
 })

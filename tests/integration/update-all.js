@@ -29,34 +29,34 @@ test('store.updateAll(changedProperties)', function (t) {
     foo: 'baz'
   }])
 
-  .then(function () {
-    return store.updateAll({
-      bar: 'bar',
-      hoodie: {ignore: 'me'}
-    })
-  })
-
-  .then(function (results) {
-    t.is(results.length, 3, 'resolves all')
-    t.ok(results[0]._id, 'resolves with id')
-    t.is(results[0].bar, 'bar', 'resolves with properties')
-    t.is(results[0].hoodie.ignore, undefined, 'ignores hoodie property')
-
-    results.forEach(function (result) {
-      t.ok(/^2-/.test(result._rev), 'new revision')
+    .then(function () {
+      return store.updateAll({
+        bar: 'bar',
+        hoodie: { ignore: 'me' }
+      })
     })
 
-    return null
-  })
+    .then(function (results) {
+      t.is(results.length, 3, 'resolves all')
+      t.ok(results[0]._id, 'resolves with id')
+      t.is(results[0].bar, 'bar', 'resolves with properties')
+      t.is(results[0].hoodie.ignore, undefined, 'ignores hoodie property')
 
-  .then(store.findAll)
+      results.forEach(function (result) {
+        t.ok(/^2-/.test(result._rev), 'new revision')
+      })
 
-  .then(function (objects) {
-    objects.forEach(function (object) {
-      t.ok(object.foo, 'old value remains')
-      t.is(object.bar, 'bar', 'updated object')
+      return null
     })
-  })
+
+    .then(store.findAll)
+
+    .then(function (objects) {
+      objects.forEach(function (object) {
+        t.ok(object.foo, 'old value remains')
+        t.is(object.bar, 'bar', 'updated object')
+      })
+    })
 })
 
 test('store.updateAll(updateFunction)', function (t) {
@@ -74,31 +74,31 @@ test('store.updateAll(updateFunction)', function (t) {
     foo: 'baz'
   }])
 
-  .then(function () {
-    return store.updateAll(function (object) {
-      object.bar = 'bar'
-      return object
-    })
-  })
-
-  .then(function (results) {
-    t.is(results.length, 3, 'resolves all')
-
-    results.forEach(function (result) {
-      t.ok(/^2-/.test(result._rev), 'new revision')
+    .then(function () {
+      return store.updateAll(function (object) {
+        object.bar = 'bar'
+        return object
+      })
     })
 
-    return null
-  })
+    .then(function (results) {
+      t.is(results.length, 3, 'resolves all')
 
-  .then(store.findAll)
+      results.forEach(function (result) {
+        t.ok(/^2-/.test(result._rev), 'new revision')
+      })
 
-  .then(function (objects) {
-    objects.forEach(function (object) {
-      t.ok(object.foo, 'old value remains')
-      t.is(object.bar, 'bar', 'updated object')
+      return null
     })
-  })
+
+    .then(store.findAll)
+
+    .then(function (objects) {
+      objects.forEach(function (object) {
+        t.ok(object.foo, 'old value remains')
+        t.is(object.bar, 'bar', 'updated object')
+      })
+    })
 })
 
 test('fails store.updateAll()', function (t) {
@@ -109,9 +109,9 @@ test('fails store.updateAll()', function (t) {
 
   store.updateAll()
 
-  .catch(function (err) {
-    t.ok(err instanceof Error, 'rejects error')
-  })
+    .catch(function (err) {
+      t.ok(err instanceof Error, 'rejects error')
+    })
 })
 
 test('store.updateAll(change) no objects', function (t) {
@@ -122,9 +122,9 @@ test('store.updateAll(change) no objects', function (t) {
 
   store.updateAll({})
 
-  .then(function (results) {
-    t.same(results, [], 'reolves empty array')
-  })
+    .then(function (results) {
+      t.same(results, [], 'reolves empty array')
+    })
 })
 
 test('store.updateAll() doesnt update design docs', function (t) {
@@ -140,26 +140,26 @@ test('store.updateAll() doesnt update design docs', function (t) {
     bar: 'foo'
   }])
 
-  .then(function () {
-    return store.updateAll({
-      bar: 'bar'
+    .then(function () {
+      return store.updateAll({
+        bar: 'bar'
+      })
     })
-  })
 
-  .then(function (results) {
-    t.is(results.length, 1, 'resolves everything but _design/bar')
-    t.isNot(results[0]._id, '_design/bar', 'resolves with id')
+    .then(function (results) {
+      t.is(results.length, 1, 'resolves everything but _design/bar')
+      t.isNot(results[0]._id, '_design/bar', 'resolves with id')
 
-    return null
-  })
+      return null
+    })
 
-  .then(function () {
-    return db.get('_design/bar')
-  })
+    .then(function () {
+      return db.get('_design/bar')
+    })
 
-  .then(function (doc) {
-    t.isNot(doc.bar, 'bar', 'check _design/bar for mutation')
-  })
+    .then(function (doc) {
+      t.isNot(doc.bar, 'bar', 'check _design/bar for mutation')
+    })
 })
 
 test('store.updateAll([objects]) updates all updatedAt timestamps', function (t) {
@@ -184,11 +184,11 @@ test('store.updateAll([objects]) updates all updatedAt timestamps', function (t)
 
   store.add(objectsToAdd)
 
-  .then(function () {
-    clock.tick(100)
+    .then(function () {
+      clock.tick(100)
 
-    store.updateAll({ foo: 'bar' })
-  })
+      store.updateAll({ foo: 'bar' })
+    })
 
   store.on('update', function (object) {
     t.ok(object._id, 'resolves doc')

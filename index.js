@@ -7,7 +7,7 @@ var startListenToChanges = require('./lib/helpers/start-listen-to-changes')
 
 function hoodieApi (options) {
   var state = {
-    emitter: options && options.emitter || new EventEmitter(),
+    emitter: (options && options.emitter) || new EventEmitter(),
     db: this
   }
 

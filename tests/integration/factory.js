@@ -22,7 +22,7 @@ test('creates store with custom EventEmitter instance', function (t) {
 
   var db = dbFactory()
   var emitter = new EventEmitter()
-  var store = db.hoodieApi({emitter: emitter})
+  var store = db.hoodieApi({ emitter: emitter })
 
   store.on('foo', function () {
     t.ok('emitter used from options')

@@ -21,25 +21,25 @@ test('store.findAll()', function (t) {
 
   store.findAll()
 
-  .then(function (objects) {
-    t.same(objects, [], 'resolves empty array')
+    .then(function (objects) {
+      t.same(objects, [], 'resolves empty array')
 
-    return store.add([{foo: 'bar'}, {foo: 'baz'}])
-  })
+      return store.add([{ foo: 'bar' }, { foo: 'baz' }])
+    })
 
-  .then(store.findAll)
+    .then(store.findAll)
 
-  .then(function (objects) {
-    t.is(objects.length, 2, 'resolves all')
+    .then(function (objects) {
+      t.is(objects.length, 2, 'resolves all')
 
-    return store.remove(objects[0])
-  })
+      return store.remove(objects[0])
+    })
 
-  .then(store.findAll)
+    .then(store.findAll)
 
-  .then(function (objects) {
-    t.is(objects.length, 1, 'resolves all')
-  })
+    .then(function (objects) {
+      t.is(objects.length, 1, 'resolves all')
+    })
 })
 
 test('store.findAll(filterFunction)', function (t) {
@@ -64,15 +64,15 @@ test('store.findAll(filterFunction)', function (t) {
     foo: 4
   }])
 
-  .then(function () {
-    return store.findAll(function (object) {
-      return typeof object.foo === 'number'
+    .then(function () {
+      return store.findAll(function (object) {
+        return typeof object.foo === 'number'
+      })
     })
-  })
 
-  .then(function (objects) {
-    t.is(objects.length, 4, 'resolves filtered')
-  })
+    .then(function (objects) {
+      t.is(objects.length, 4, 'resolves filtered')
+    })
 })
 
 test('store.findAll() doesnt return _design docs', function (t) {
@@ -81,12 +81,12 @@ test('store.findAll() doesnt return _design docs', function (t) {
   var db = dbFactory()
   var store = db.hoodieApi()
 
-  store.add([{foo: 'bar'}, {_id: '_design/bar'}])
+  store.add([{ foo: 'bar' }, { _id: '_design/bar' }])
 
-  .then(store.findAll)
+    .then(store.findAll)
 
-  .then(function (objects) {
-    t.is(objects.length, 1, 'resolves everything but _design/bar')
-    t.isNot(objects[0]._id, '_design/bar', 'resolved doc isn\'t _design/bar')
-  })
+    .then(function (objects) {
+      t.is(objects.length, 1, 'resolves everything but _design/bar')
+      t.isNot(objects[0]._id, '_design/bar', 'resolved doc isn\'t _design/bar')
+    })
 })
