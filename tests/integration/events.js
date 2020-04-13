@@ -71,8 +71,8 @@ test('store.on("add") with adding two', function (t) {
   })
 
   store.add([
-    {foo: 'bar'},
-    {foo: 'baz'}
+    { foo: 'bar' },
+    { foo: 'baz' }
   ])
 })
 
@@ -86,16 +86,16 @@ test('store.on("add") with one element added before registering event and one af
     foo: 'bar'
   })
 
-  .then(function () {
-    store.on('add', function (object) {
-      t.pass('triggers only 1 add event')
-      t.is(object.foo, 'baz', 'event passes object')
-    })
+    .then(function () {
+      store.on('add', function (object) {
+        t.pass('triggers only 1 add event')
+        t.is(object.foo, 'baz', 'event passes object')
+      })
 
-    store.add({
-      foo: 'baz'
+      store.add({
+        foo: 'baz'
+      })
     })
-  })
 })
 
 test('store.on("add") with add & update', function (t) {
@@ -114,9 +114,9 @@ test('store.on("add") with add & update', function (t) {
     nr: 1
   })
 
-  .then(function () {
-    store.updateOrAdd('test', {nr: 2})
-  })
+    .then(function () {
+      store.updateOrAdd('test', { nr: 2 })
+    })
 })
 
 test('store.on("update") with updating one', function (t) {
@@ -134,12 +134,12 @@ test('store.on("update") with updating one', function (t) {
     _id: 'test'
   })
 
-  .then(function (obj) {
-    store.update({
-      _id: 'test',
-      foo: 'bar'
+    .then(function (obj) {
+      store.update({
+        _id: 'test',
+        foo: 'bar'
+      })
     })
-  })
 })
 
 test('store.on("update") with updating two', function (t) {
@@ -167,16 +167,16 @@ test('store.on("update") with updating two', function (t) {
   })
 
   store.add([
-    {_id: 'first'},
-    {_id: 'second'}
+    { _id: 'first' },
+    { _id: 'second' }
   ])
 
-  .then(function (obj) {
-    store.update([
-      { _id: 'first', foo: 'bar' },
-      { _id: 'second', foo: 'baz' }
-    ])
-  })
+    .then(function (obj) {
+      store.update([
+        { _id: 'first', foo: 'bar' },
+        { _id: 'second', foo: 'baz' }
+      ])
+    })
 })
 
 test('store.on("update") with add & update', function (t) {
@@ -195,9 +195,9 @@ test('store.on("update") with add & update', function (t) {
     nr: 1
   })
 
-  .then(function () {
-    store.updateOrAdd('test', {nr: 2})
-  })
+    .then(function () {
+      store.updateOrAdd('test', { nr: 2 })
+    })
 })
 
 test('store.on("update") with update all', function (t) {
@@ -225,15 +225,15 @@ test('store.on("update") with update all', function (t) {
   })
 
   store.add([
-    {_id: 'first', foo: '1'},
-    {_id: 'second', foo: '2'}
+    { _id: 'first', foo: '1' },
+    { _id: 'second', foo: '2' }
   ])
 
-  .then(function () {
-    store.updateAll({
-      bar: 'baz'
+    .then(function () {
+      store.updateAll({
+        bar: 'baz'
+      })
     })
-  })
 })
 
 test('store.on("remove") with removing one', function (t) {
@@ -252,9 +252,9 @@ test('store.on("remove") with removing one', function (t) {
     foo: 'bar'
   })
 
-  .then(function () {
-    return store.remove('one')
-  })
+    .then(function () {
+      return store.remove('one')
+    })
 })
 
 test('store.on("remove") with removing two', function (t) {
@@ -282,13 +282,13 @@ test('store.on("remove") with removing two', function (t) {
   })
 
   store.add([
-    {_id: 'one'},
-    {_id: 'two'}
+    { _id: 'one' },
+    { _id: 'two' }
   ])
 
-  .then(function () {
-    store.remove(['one', 'two'])
-  })
+    .then(function () {
+      store.remove(['one', 'two'])
+    })
 })
 
 test('store.on("remove") with remove all', function (t) {
@@ -316,13 +316,13 @@ test('store.on("remove") with remove all', function (t) {
   })
 
   store.add([
-    {_id: 'one'},
-    {_id: 'two'}
+    { _id: 'one' },
+    { _id: 'two' }
   ])
 
-  .then(function () {
-    store.removeAll()
-  })
+    .then(function () {
+      store.removeAll()
+    })
 })
 
 test('store.on("change") with adding one', function (t) {
@@ -351,18 +351,18 @@ test('store.on("change") with updating one', function (t) {
     _id: 'test'
   })
 
-  .then(function () {
-    store.on('change', function (eventName, object) {
-      t.pass('triggers 1 change event')
-      t.is(eventName, 'update', 'passes the event name')
-      t.is(object.foo, 'bar', 'event passes object')
-    })
+    .then(function () {
+      store.on('change', function (eventName, object) {
+        t.pass('triggers 1 change event')
+        t.is(eventName, 'update', 'passes the event name')
+        t.is(object.foo, 'bar', 'event passes object')
+      })
 
-    store.update({
-      _id: 'test',
-      foo: 'bar'
+      store.update({
+        _id: 'test',
+        foo: 'bar'
+      })
     })
-  })
 })
 
 test('store.on("change") with removing one', function (t) {
@@ -376,15 +376,15 @@ test('store.on("change") with removing one', function (t) {
     foo: 'bar'
   })
 
-  .then(function () {
-    store.on('change', function (eventName, object) {
-      t.pass('triggers 1 change event')
-      t.is(eventName, 'remove', 'passes the event name')
-      t.is(object.foo, 'bar', 'event passes object')
-    })
+    .then(function () {
+      store.on('change', function (eventName, object) {
+        t.pass('triggers 1 change event')
+        t.is(eventName, 'remove', 'passes the event name')
+        t.is(object.foo, 'bar', 'event passes object')
+      })
 
-    store.remove('test')
-  })
+      store.remove('test')
+    })
 })
 
 test('store.on("change") with adding one and updating it afterwards', function (t) {
@@ -412,12 +412,12 @@ test('store.on("change") with adding one and updating it afterwards', function (
     foo: 'bar'
   })
 
-  .then(function () {
-    store.update({
-      _id: 'one',
-      foo: 'baz'
+    .then(function () {
+      store.update({
+        _id: 'one',
+        foo: 'baz'
+      })
     })
-  })
 })
 
 test('store.off("add") with one add handler', function (t) {
@@ -486,7 +486,7 @@ test('store.off("update") with one update handler', function (t) {
     foo: 'bar'
   })
 
-  .then(store.update)
+    .then(store.update)
 })
 
 test('store.off("remove") with one remove handler', function (t) {
@@ -511,7 +511,7 @@ test('store.off("remove") with one remove handler', function (t) {
     foo: 'bar'
   })
 
-  .then(store.remove)
+    .then(store.remove)
 })
 
 test('store.one("add") with adding one', function (t) {
@@ -544,8 +544,8 @@ test('store.one("add") with adding two', function (t) {
   })
 
   store.add([
-    {foo: 'bar'},
-    {foo: 'baz'}
+    { foo: 'bar' },
+    { foo: 'baz' }
   ])
 })
 
@@ -560,11 +560,11 @@ test('store.one("add") with add & update', function (t) {
     t.is(object.nr, 1, 'event passes object')
   })
 
-  store.add({_id: 'test', nr: 1})
+  store.add({ _id: 'test', nr: 1 })
 
-  .then(function () {
-    store.updateOrAdd('test', {nr: 2})
-  })
+    .then(function () {
+      store.updateOrAdd('test', { nr: 2 })
+    })
 })
 
 test('store.one("add") with one element added before registering event and one after', function (t) {
@@ -577,16 +577,16 @@ test('store.one("add") with one element added before registering event and one a
     foo: 'bar'
   })
 
-  .then(function () {
-    store.one('add', function (object) {
-      t.pass('store.one handler')
-      t.is(object.foo, 'baz', 'event passes object')
-    })
+    .then(function () {
+      store.one('add', function (object) {
+        t.pass('store.one handler')
+        t.is(object.foo, 'baz', 'event passes object')
+      })
 
-    store.add({
-      foo: 'baz'
+      store.add({
+        foo: 'baz'
+      })
     })
-  })
 })
 
 test('store.on returns store', function (t) {

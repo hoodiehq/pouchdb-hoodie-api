@@ -1,7 +1,7 @@
 'use strict'
 
 var test = require('tape')
-var lolex = require('lolex')
+var fakeTimers = require('@sinonjs/fake-timers')
 
 var dbFactory = require('../utils/db')
 
@@ -28,28 +28,28 @@ test('store.removeAll()', function (t) {
     foo: 'foo'
   }])
 
-  .then(function () {
-    return store.removeAll()
-  })
-
-  .then(function (objects) {
-    t.is(objects.length, 3, 'resolves all')
-    t.is(objects[0].foo, 'foo', 'resolves with properties')
-
-    objects.forEach(function (object) {
-      t.is(parseInt(object._rev, 10), 2, 'new revision')
+    .then(function () {
+      return store.removeAll()
     })
 
-    return null
-  })
+    .then(function (objects) {
+      t.is(objects.length, 3, 'resolves all')
+      t.is(objects[0].foo, 'foo', 'resolves with properties')
 
-  .then(function () {
-    return store.findAll()
-  })
+      objects.forEach(function (object) {
+        t.is(parseInt(object._rev, 10), 2, 'new revision')
+      })
 
-  .then(function (objects) {
-    t.is(objects.length, 0, 'no objects can be found in store')
-  })
+      return null
+    })
+
+    .then(function () {
+      return store.findAll()
+    })
+
+    .then(function (objects) {
+      t.is(objects.length, 0, 'no objects can be found in store')
+    })
 })
 
 test('store.removeAll(filterFunction)', function (t) {
@@ -74,23 +74,23 @@ test('store.removeAll(filterFunction)', function (t) {
     foo: 4
   }])
 
-  .then(function () {
-    return store.removeAll(function (object) {
-      return typeof object.foo === 'number'
+    .then(function () {
+      return store.removeAll(function (object) {
+        return typeof object.foo === 'number'
+      })
     })
-  })
 
-  .then(function (objects) {
-    t.is(objects.length, 4, 'removes 4 objects')
-  })
+    .then(function (objects) {
+      t.is(objects.length, 4, 'removes 4 objects')
+    })
 
-  .then(function (objects) {
-    return store.findAll()
-  })
+    .then(function (objects) {
+      return store.findAll()
+    })
 
-  .then(function (objects) {
-    t.is(objects.length, 3, 'does not remove other 3 objects')
-  })
+    .then(function (objects) {
+      t.is(objects.length, 3, 'does not remove other 3 objects')
+    })
 })
 
 test('store.removeAll()', function (t) {
@@ -106,24 +106,24 @@ test('store.removeAll()', function (t) {
     foo: 'foo'
   }])
 
-  .then(function () {
-    return store.removeAll()
-  })
+    .then(function () {
+      return store.removeAll()
+    })
 
-  .then(function (objects) {
-    t.is(objects.length, 1, 'resolves everything but _design/bar')
-    t.is(objects[0].foo, 'foo', 'resolves with properties')
+    .then(function (objects) {
+      t.is(objects.length, 1, 'resolves everything but _design/bar')
+      t.is(objects[0].foo, 'foo', 'resolves with properties')
 
-    return null
-  })
+      return null
+    })
 
-  .then(function () {
-    return db.get('_design/bar')
-  })
+    .then(function () {
+      return db.get('_design/bar')
+    })
 
-  .then(function (doc) {
-    t.is(doc._id, '_design/bar', 'check _design/bar still exists')
-  })
+    .then(function (doc) {
+      t.is(doc._id, '_design/bar', 'check _design/bar still exists')
+    })
 })
 
 test.skip('store.removeAll(changedProperties) updates before removing', function (t) {
@@ -140,19 +140,19 @@ test.skip('store.removeAll(changedProperties) updates before removing', function
     foo: 'baz'
   }])
 
-  .then(function () {
-    return store.removeAll({
-      foo: 'changed'
+    .then(function () {
+      return store.removeAll({
+        foo: 'changed'
+      })
     })
-  })
 
-  .then(function (results) {
-    t.is(results.length, 3, 'resolves all')
-    results.forEach(function (result) {
-      t.ok(result._id, 'resolves with id')
-      t.is(result.foo, 'changed', 'check all results have changed')
+    .then(function (results) {
+      t.is(results.length, 3, 'resolves all')
+      results.forEach(function (result) {
+        t.ok(result._id, 'resolves with id')
+        t.is(result.foo, 'changed', 'check all results have changed')
+      })
     })
-  })
 })
 
 test.skip('store.removeAll(updateFunction) updates before removing', function (t) {
@@ -169,26 +169,29 @@ test.skip('store.removeAll(updateFunction) updates before removing', function (t
     foo: 'baz'
   }])
 
-  .then(function () {
-    return store.removeAll(function (object) {
-      object.foo = 'changed'
-      return object
+    .then(function () {
+      return store.removeAll(function (object) {
+        object.foo = 'changed'
+        return object
+      })
     })
-  })
 
-  .then(function (results) {
-    t.is(results.length, 3, 'resolves all')
-    results.forEach(function (result) {
-      t.ok(result._id, 'resolves with id')
-      t.is(result.foo, 'changed', 'check all results have changed')
+    .then(function (results) {
+      t.is(results.length, 3, 'resolves all')
+      results.forEach(function (result) {
+        t.ok(result._id, 'resolves with id')
+        t.is(result.foo, 'changed', 'check all results have changed')
+      })
     })
-  })
 })
 
 test('store.removeAll([objects]) creates deletedAt timestamps', function (t) {
   t.plan(12)
 
-  var clock = lolex.install(0, ['Date'])
+  var clock = fakeTimers.install({
+    now: 0,
+    toFake: ['Date']
+  })
   var db = dbFactory()
   var store = db.hoodieApi()
 
@@ -201,18 +204,18 @@ test('store.removeAll([objects]) creates deletedAt timestamps', function (t) {
     _id: 'shouldAlsoHaveTimestamps'
   }])
 
-  .then(store.removeAll.bind(store))
+    .then(store.removeAll.bind(store))
 
-  .then(function (objects) {
-    objects.forEach(function (object) {
-      t.ok(object._id, 'resolves doc')
-      t.ok(object.hoodie.createdAt, 'should have createdAt timestamp')
-      t.ok(object.hoodie.updatedAt, 'should have updatedAt timestamp')
-      t.ok(object.hoodie.deletedAt, 'should have deleteAt timestamp')
-      t.ok(isValidDate(object.hoodie.deletedAt), 'createdAt should be a valid date')
-      t.is(now(), object.hoodie.deletedAt, 'createdAt should be the same time as right now')
+    .then(function (objects) {
+      objects.forEach(function (object) {
+        t.ok(object._id, 'resolves doc')
+        t.ok(object.hoodie.createdAt, 'should have createdAt timestamp')
+        t.ok(object.hoodie.updatedAt, 'should have updatedAt timestamp')
+        t.ok(object.hoodie.deletedAt, 'should have deleteAt timestamp')
+        t.ok(isValidDate(object.hoodie.deletedAt), 'createdAt should be a valid date')
+        t.is(now(), object.hoodie.deletedAt, 'createdAt should be the same time as right now')
+      })
+
+      clock.uninstall()
     })
-
-    clock.uninstall()
-  })
 })
